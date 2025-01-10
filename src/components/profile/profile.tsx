@@ -1,6 +1,6 @@
 import { useState } from "react";
-import AboutCard from "./user-about-card";
-import UserInformation from "./user-information-card";
+import AboutCard from "./userAboutCard/userAboutCard";
+import UserInformation from "./userInformationCard/userInformationCard";
 import { User } from "../../types/index";
 import useUserStore from "@/stores/setUserStore";
 
@@ -21,6 +21,7 @@ export default function ProfilePage() {
       location: "kfar saba",
       avatar: "url",
       password: "1",
+      username: "hila.ohana",
     });
   };
 

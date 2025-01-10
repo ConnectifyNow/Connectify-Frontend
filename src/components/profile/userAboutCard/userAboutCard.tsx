@@ -44,7 +44,7 @@ export default function UserAboutCard({
               <Label htmlFor="skills">Skills (comma-separated)</Label>
               <Input
                 id="skills"
-                value={profile.skills.join(", ")}
+                value={profile?.skills?.join(", ")}
                 onChange={(e: any) => handleSkillsChange(e.target.value)}
               />
             </div>
@@ -55,7 +55,7 @@ export default function UserAboutCard({
             <div>
               <strong>Skills:</strong>
               <div className="flex flex-wrap gap-2 mt-2">
-                {profile?.skills.map((skill) => (
+                {profile?.skills?.map((skill) => (
                   <span
                     key={skill}
                     className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-sm"
