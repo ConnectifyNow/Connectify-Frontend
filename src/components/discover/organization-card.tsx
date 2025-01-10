@@ -1,5 +1,13 @@
 import { Organization } from "@/types";
 import { randomAvatarUrl } from "@/utils/functions";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "@radix-ui/react-tooltip";
+import { MessageSquareText } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function OrganizationCard({
   organization
@@ -32,7 +40,7 @@ export default function OrganizationCard({
       <div className="mb-2">
         <strong className="text-gray-700">Focus Areas:</strong>
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 mb-4">
         {organization.focusAreas.map((focusArea) => (
           <span
             key={focusArea.id}
@@ -43,18 +51,17 @@ export default function OrganizationCard({
         ))}
       </div>
       <Link to={`/chat`} className="self-end mt-4">
-      <TooltipProvider>
+        <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <button className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
                 <MessageSquareText></MessageSquareText>
               </button>
             </TooltipTrigger>
-            <TooltipContent>Go to chat</TooltipContent>
+            <TooltipContent side="bottom">Go to chat</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </Link>
     </div>
-  );
   );
 }
