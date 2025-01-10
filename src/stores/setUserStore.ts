@@ -3,14 +3,15 @@ import { create } from "zustand";
 
 const initialState: User = {
   id: "",
-  name: "",
-  email: "",
-  password: "",
+  name: "hila ohana",
+  email: "hila.ohana@example.com",
+  password: "1234",
+  //0 means organization, 1 means user
   role: undefined,
-  avatar: "",
-  bio: "blab lbabablbablalabla",
-  location: " kfar saba",
-  skills: ["java", "react"],
+  avatar: "HI",
+  bio: "Passionate web developer with 5 years of experience. Always eager to learn and contribute to meaningful projects.",
+  skills: ["React", "Node.js", "TypeScript", "Python"],
+  location: "kfar saba",
 };
 
 interface UserState {
