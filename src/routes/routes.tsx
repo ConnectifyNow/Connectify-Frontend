@@ -4,6 +4,8 @@ import Filter from "@/views/filter/page";
 import Chat from "@/views/chat/page";
 import Home from "@/views/home/page";
 import RootLayout from "@/RootLayout";
+import ProfilePage from "@/components/profile";
+import useUserStore from "@/stores/setUserStore";
 import SignUpModePage from "@/components/signup/mode/page";
 import UserSignUpPage from "@/components/signup/user/page";
 import OrganizationSignUpPage from "@/components/signup/organization/page";
@@ -17,7 +19,6 @@ import SignUpPage from "@/components/signup/page";
 //   }
 //   return redirect("/login");
 // };
-
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -25,11 +26,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Onboarding />
+        element: <Onboarding />,
       },
       {
         path: "/filter",
-        element: <Filter />
+        element: <Filter />,
       },
       {
         path: "/signin",
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
       {
         path: "/home",
         element: <Home />
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
       },
     ]
   }

@@ -1,8 +1,5 @@
-'use client'
-
-import {Link, useNavigate} from 'react-router-dom'
-// import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Navbar() {
   const router = useNavigate()
