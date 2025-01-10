@@ -1,4 +1,4 @@
-import { Post } from '../../data/posts'
+import { Post } from '../../types'
 
 export default function PostCard({ post }: { post: Post }) {
   return (
