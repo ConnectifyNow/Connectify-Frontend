@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import {Link, useNavigate} from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -16,13 +16,10 @@ export default function SignUpModePage() {
     setIsLoading(true)
 
     try {
-      // Simulate an API call
       await new Promise(resolve => setTimeout(resolve, 1000))
 
-      // Here you would typically handle the mode selection logic
       console.log('Selected mode:', mode)
 
-      // Redirect to the appropriate sign-up page
       router(`/signup/${mode}`)
     } catch (err) {
       setError('Failed to select mode. Please try again.')

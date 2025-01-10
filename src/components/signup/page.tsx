@@ -20,17 +20,13 @@ export default function SignUpPage() {
     setIsLoading(true)
 
     try {
-      // Simulate an API call
       await new Promise(resolve => setTimeout(resolve, 1000))
 
-      // Here you would typically validate the email and password
       console.log('Continuing with:', { email, password })
 
-      // Store email and password in localStorage for the next step
       localStorage.setItem('signupEmail', email)
       localStorage.setItem('signupPassword', password)
 
-      // Redirect to the mode selection page
       router('/signup/mode')
     } catch (err) {
       setError('Failed to proceed. Please try again.')

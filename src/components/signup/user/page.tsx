@@ -9,8 +9,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import useUserStore from '@/stores/setUserStore'
 
-// Mock data for cities and occupations
 const cities = [
   { id: 1, name: 'New York' },
   { id: 2, name: 'Los Angeles' },
@@ -37,6 +37,7 @@ export default function UserSignUpPage() {
   })
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const user = useUserStore()
   const router = useNavigate()
 
   useEffect(() => {
@@ -71,13 +72,15 @@ export default function UserSignUpPage() {
     setIsLoading(true)
 
     try {
-      // Simulate an API call
       await new Promise(resolve => setTimeout(resolve, 1000))
 
-      // Here you would typically send the form data to your backend
       console.log('Submitting user data:', formData)
+      user.setUser({id: "mock-id",
+        username: "mock-username",
+        email: formData.email,
+        password: formData.password,
+        role: 0})
 
-      // After successful sign-up, redirect to the home page
       router('/')
     } catch (err) {
       setError('Failed to complete sign-up. Please try again.')
