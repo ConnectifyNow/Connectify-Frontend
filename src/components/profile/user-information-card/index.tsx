@@ -20,7 +20,9 @@ export default function UserInformation({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>User Information</CardTitle>
+        <CardTitle>
+          {profile.role == 0 ? "User Information" : "Organization Information"}
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex justify-center">

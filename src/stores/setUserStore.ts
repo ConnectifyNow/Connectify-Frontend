@@ -3,11 +3,14 @@ import { create } from "zustand";
 
 const initialState: User = {
   id: "",
-  username: "",
+  name: "",
   email: "",
   password: "",
   role: undefined,
   avatar: "",
+  bio: "blab lbabablbablalabla",
+  location: " kfar saba",
+  skills: ["java", "react"],
 };
 
 interface UserState {

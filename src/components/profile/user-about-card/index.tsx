@@ -25,7 +25,9 @@ export default function UserAboutCard({
   return (
     <Card className="md:col-span-2">
       <CardHeader>
-        <CardTitle>About Me</CardTitle>
+        <CardTitle>
+          {profile.role == 0 ? "About Me" : "About The Organization"}
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {isEditing ? (
@@ -53,7 +55,7 @@ export default function UserAboutCard({
             <div>
               <strong>Skills:</strong>
               <div className="flex flex-wrap gap-2 mt-2">
-                {profile.skills.map((skill) => (
+                {profile?.skills.map((skill) => (
                   <span
                     key={skill}
                     className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-sm"
