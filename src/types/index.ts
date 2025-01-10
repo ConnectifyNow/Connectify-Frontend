@@ -50,6 +50,23 @@ export interface Author {
   type: "user" | "organization";
 }
 
+export interface Tag {
+  text: FocusArea | Skill;
+  bgColor: string;
+  textColor: string;
+}
+
+export interface GeneralCardProps {
+  id: string;
+  name: string;
+  imageUrl: string;
+  description: string;
+  tags: Tag[];
+  linkText?: string;
+  linkUrl?: string;
+  additionalInfo?: string;
+}
+
 export interface Post {
   id: string;
   author: Author;
@@ -60,7 +77,7 @@ export interface Post {
 
 export enum Role {
   Volunteer = 0,
-  Organization = 1
+  Organization = 1,
 }
 
 export interface ProfileData {

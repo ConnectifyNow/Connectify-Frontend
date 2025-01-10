@@ -1,22 +1,34 @@
-import { useState } from 'react'
+import { useState } from "react";
+import { User, Building2 } from "lucide-react";
 
 interface DirectorySidebarProps {
-  onFilterChange: (filters: { mode: 'organizations' | 'volunteers'; searchTerm: string }) => void;
+  onFilterChange: (filters: {
+    mode: "organizations" | "volunteers";
+    searchTerm: string;
+  }) => void;
 }
 
-export default function DirectorySidebar({ onFilterChange }: DirectorySidebarProps) {
-  const [mode, setMode] = useState<'organizations' | 'volunteers'>('organizations')
-  const [searchTerm, setSearchTerm] = useState('')
+const filters = [
+  { id: 1, name: "organizations", icon: <Building2 /> },
+  { id: 2, name: "volunteers", icon: <User /> },
+];
+export default function DirectorySidebar({
+  onFilterChange,
+}: DirectorySidebarProps) {
+  const [mode, setMode] = useState<"organizations" | "volunteers">(
+    "organizations"
+  );
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleModeChange = (newMode: 'organizations' | 'volunteers') => {
-    setMode(newMode)
-    onFilterChange({ mode: newMode, searchTerm })
-  }
+  const handleModeChange = (newMode: "organizations" | "volunteers") => {
+    setMode(newMode);
+    onFilterChange({ mode: newMode, searchTerm });
+  };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value)
-    onFilterChange({ mode, searchTerm: event.target.value })
-  }
+    setSearchTerm(event.target.value);
+    onFilterChange({ mode, searchTerm: event.target.value });
+  };
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
@@ -24,17 +36,23 @@ export default function DirectorySidebar({ onFilterChange }: DirectorySidebarPro
       <div className="mb-4">
         <h3 className="font-semibold mb-2">View Mode</h3>
         <div className="space-y-2">
-          {['organizations', 'volunteers'].map((type) => (
-            <label key={type} className="flex items-center">
+          {filters.map((filter) => (
+            <label key={filter.id} className="flex items-center">
               <input
                 type="radio"
                 name="mode"
-                value={type}
-                checked={mode === type}
-                onChange={() => handleModeChange(type as 'organizations' | 'volunteers')}
+                value={filter.name}
+                checked={mode === filter.name}
+                onChange={() =>
+                  handleModeChange(
+                    filter.name as "organizations" | "volunteers"
+                  )
+                }
                 className="mr-2"
               />
-              {type.charAt(0).toUpperCase() + type.slice(1)}
+              {filter.icon}
+
+              {filter.name.charAt(0).toUpperCase() + filter.name.slice(1)}
             </label>
           ))}
         </div>
@@ -50,6 +68,5 @@ export default function DirectorySidebar({ onFilterChange }: DirectorySidebarPro
         />
       </div>
     </div>
-  )
+  );
 }
-
