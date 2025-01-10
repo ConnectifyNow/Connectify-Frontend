@@ -3,6 +3,8 @@ import Onboarding from "@/views/onboarding/page";
 import Filter from "@/views/filter/page";
 import Chat from "@/views/chat/page";
 import RootLayout from "@/RootLayout";
+import ProfilePage from "@/components/profile";
+import useUserStore from "@/stores/setUserStore";
 
 // const authLoader = async () => {
 //   const tokens = getTokens();
@@ -11,6 +13,7 @@ import RootLayout from "@/RootLayout";
 //   }
 //   return redirect("/login");
 // };
+const { user } = useUserStore();
 
 export const router = createBrowserRouter([
   {
@@ -19,16 +22,20 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Onboarding />
+        element: <Onboarding />,
       },
       {
         path: "/filter",
-        element: <Filter />
+        element: <Filter />,
       },
       {
         path: "/chat",
-        element: <Chat />
-      }
-    ]
-  }
+        element: <Chat />,
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage user={user} />,
+      },
+    ],
+  },
 ]);
