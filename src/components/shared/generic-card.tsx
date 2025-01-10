@@ -9,7 +9,6 @@ import { MessageSquareText } from "lucide-react";
 import { GeneralCardProps } from "@/types";
 
 export default function GeneralCard({
-  id,
   name,
   imageUrl,
   description,
@@ -53,7 +52,7 @@ export default function GeneralCard({
               ? tags[0].type.includes("focus-area")
                 ? "Focus Areas:"
                 : "Skills:"
-              : ""} 
+              : ""}
           </strong>
         </div>
         <div className="flex flex-wrap gap-2 mb-4">
