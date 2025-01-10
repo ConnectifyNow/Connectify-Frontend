@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import AboutCard from "./user-about-card";
 import UserInformation from "./user-information-card";
