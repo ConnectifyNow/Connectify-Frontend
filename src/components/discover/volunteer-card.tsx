@@ -1,14 +1,6 @@
-import { Link } from "react-router-dom";
-import { MessageSquareText } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Skill, Volunteer } from "@/types";
+import { Volunteer } from "@/types";
 import { randomAvatarUrl } from "@/utils/functions";
-import GeneralCard from './generic-card'
+import GeneralCard from '../shared/generic-card'
 
 export default function VolunteerCard({ volunteer }: { volunteer: Volunteer }) {
   const tags = volunteer.skills.map((skill) => ({

@@ -1,7 +1,7 @@
 import { Organization } from "@/types";
 import { randomAvatarUrl } from "@/utils/functions";
 
-import GeneralCard from './generic-card'
+import GeneralCard from '../shared/generic-card'
 
 export default function OrganizationCard({
   organization
