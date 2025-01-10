@@ -1,18 +1,39 @@
-import React from "react";
+import { MessageSquare, Search, UserCheck, Users } from "lucide-react";
+import { Route, Routes } from "react-router-dom";
+import ProfilePage from "./components/profile";
 import { Button } from "./components/ui/button";
 import {
   Card,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription
 } from "./components/ui/card";
 import { Input } from "./components/ui/input";
-import { Search, Users, MessageSquare, UserCheck } from "lucide-react";
 import RootLayout from "./RootLayout";
+import { User } from "./types/user";
+
+const initialProfile: User = {
+  _id: "1",
+  name: "Hila ohana",
+  email: "hila.ohana@example.com",
+  bio: "Passionate web developer with 5 years of experience. Always eager to learn and contribute to meaningful projects.",
+  skills: ["React", "Node.js", "TypeScript", "Python"],
+  location: "San Francisco, CA",
+  avatar: "HI",
+};
 
 export default function Home() {
   return (
     <RootLayout>
+      <Routes>
+        <Route path="/"> </Route>
+        <Route element={<Home />}> </Route>
+        <Route
+          path="/profile"
+          element={<ProfilePage user={initialProfile} />}
+        ></Route>
+      </Routes>
+
       <div className="flex flex-col items-center">
         {/* Hero Section */}
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-primary">
