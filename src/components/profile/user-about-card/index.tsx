@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "../../ui/textarea";
 import { Input } from "../../ui/input";
 import { Label } from "@/components/ui/label";
+import OccupationSelect from "@/components/shared/occupationSelect";
+// import profile from ".."; // Remove this incorrect import
 
 type UserAboutProps = {
   profile: User;
@@ -12,6 +14,16 @@ type UserAboutProps = {
   handleChange: (key: keyof User, value: string) => void;
   handleSkillsChange: (value: string) => void;
   saveProfile: () => void;
+};
+
+const occupations = [
+  { id: 1, name: "Software Developer" },
+  { id: 2, name: "Designer" },
+  { id: 3, name: "Project Manager" },
+];
+
+const handleSkillsChange = (value: string) => {
+  // handle occupation change logic here
 };
 
 export default function UserAboutCard({
@@ -41,11 +53,10 @@ export default function UserAboutCard({
               />
             </div>
             <div>
-              <Label htmlFor="skills">Skills (comma-separated)</Label>
-              <Input
-                id="skills"
-                value={profile.skills.join(", ")}
-                onChange={(e: any) => handleSkillsChange(e.target.value)}
+              <OccupationSelect
+                occupations={occupations}
+                selectedOccupations={profile.skills ?? []}
+                onChange={handleSkillsChange}
               />
             </div>
           </>
@@ -55,15 +66,19 @@ export default function UserAboutCard({
             <div>
               <strong>Skills:</strong>
               <div className="flex flex-wrap gap-2 mt-2">
-                {profile?.skills.map((skill) => (
+                {(profile.skills ?? []).map((skill) => (
                   <span
                     key={skill}
-                    className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-sm"
-                  >
+                    className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-sm">
                     {skill}
                   </span>
                 ))}
               </div>
+              {/* <OccupationSelect
+              occupations={occupations}
+              selectedOccupations={profile.skills ?? []}
+              onChange={handleOccupationChange} */}
+              {/* /> */}
             </div>
           </>
         )}
