@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { ProfileData, Role, User } from "../../types/index";
 import useUserStore from "@/stores/setUserStore";
-import UserInformation from "@/components/profile/user-information-card";
-import UserAboutCard from "@/components/profile/user-about-card";
+import UserInformation from "@/components/profile/userInformationCard/userInformationCard";
+import UserAboutCard from "@/components/profile/userAboutCard/userAboutCard";
 
 export default function ProfilePage() {
   const user = useUserStore();
