@@ -5,11 +5,11 @@ import Chat from "@/views/chat/page";
 
 import Home from "@/views/home/page";
 import ProfilePage from "@/components/profile";
-import SignUpModePage from "@/components/signup/mode/page";
-import UserSignUpPage from "@/components/signup/user/page";
-import OrganizationSignUpPage from "@/components/signup/organization/page";
-import SignInPage from "@/components/signIn/page";
-import SignUpPage from "@/components/signup/page";
+import SignUpModePage from "@/views/signup/mode/page";
+import UserSignUpPage from "@/views/signup/user/page";
+import OrganizationSignUpPage from "@/views/signup/organization/page";
+import SignInPage from "@/views/signIn/page";
+import SignUpPage from "@/views/signup/page";
 import Layout from "@/components/layout/layout";
 
 // const authLoader = async () => {
@@ -52,19 +52,6 @@ export const router = createBrowserRouter([
         path: "/signup/organization",
         element: <OrganizationSignUpPage />
       },
-      // {
-      //   path: "/signup",
-      //   element: <SignUpPage />,
-      //   children:[
-      //    {
-      //       path:'/signup/user',
-      //       element:<UserSignUpPage />
-      //     },{
-      //       path:'/signup/organization',
-      //       element:<OrganizationSignUpPage />
-      //     },
-      //   ]
-      // },
       {
         path: "/chat",
         element: <Chat />
