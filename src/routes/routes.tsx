@@ -4,7 +4,6 @@ import Filter from "@/views/filter/page";
 import Chat from "@/views/chat/page";
 
 import Home from "@/views/home/page";
-// import ProfilePage from "@/components/profile";
 import SignUpModePage from "@/views/signup/mode/page";
 import UserSignUpPage from "@/views/signup/user/page";
 import DiscoverPage from "@/views/discover/page";

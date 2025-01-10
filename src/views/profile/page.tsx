@@ -1,6 +1,4 @@
 import { useState } from "react";
-// import AboutCard from "../components/";
-// import UserInformation from "./components/user-information";
 import { User } from "../../types/index";
 import useUserStore from "@/stores/setUserStore";
 import UserInformation from "@/components/profile/user-information-card";
@@ -13,7 +11,6 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleChange = (key: keyof User, value: string) => {
-    // setProfile((prev) => ({ ...prev, [key]: value }));
     setProfile({
       id: "1",
       name: "hila",

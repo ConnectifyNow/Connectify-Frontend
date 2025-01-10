@@ -4,8 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "../../ui/textarea";
 import { Input } from "../../ui/input";
 import { Label } from "@/components/ui/label";
-import OccupationSelect from "@/components/shared/occupationSelect";
-// import profile from ".."; // Remove this incorrect import
+import CustomSelect from "@/components/shared/customSelect";
 
 type UserAboutProps = {
   profile: User;
@@ -23,7 +22,7 @@ const occupations = [
 ];
 
 const handleSkillsChange = (value: string) => {
-  // handle occupation change logic here
+  // TODO: Implement handleSkillsChange
 };
 
 export default function UserAboutCard({
@@ -53,9 +52,9 @@ export default function UserAboutCard({
               />
             </div>
             <div>
-              <OccupationSelect
-                occupations={occupations}
-                selectedOccupations={profile.skills ?? []}
+              <CustomSelect
+                options={occupations}
+                selectedOptions={profile.skills ?? []}
                 onChange={handleSkillsChange}
               />
             </div>
@@ -74,11 +73,6 @@ export default function UserAboutCard({
                   </span>
                 ))}
               </div>
-              {/* <OccupationSelect
-              occupations={occupations}
-              selectedOccupations={profile.skills ?? []}
-              onChange={handleOccupationChange} */}
-              {/* /> */}
             </div>
           </>
         )}

@@ -1,4 +1,3 @@
-// src/pages/UserSignUpPage.tsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import useUserStore from "@/stores/setUserStore";
-import OccupationSelect from "@/components/shared/occupationSelect"; // Import the new OccupationSelect component
+import CustomSelect from "@/components/shared/customSelect";
 
 const cities = [
   { id: 1, name: "New York" },
@@ -37,7 +36,7 @@ export default function UserSignUpPage() {
     lastName: "",
     city: "",
     age: "",
-    occupations: [] as string[], // Initially an empty array of selected occupations
+    occupations: [] as string[],
     imageUrl: "",
     about: "",
   });
@@ -65,7 +64,6 @@ export default function UserSignUpPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle occupation changes using the new component
   const handleOccupationChange = (value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -167,9 +165,9 @@ export default function UserSignUpPage() {
               />
             </div>
 
-            <OccupationSelect
-              occupations={occupations}
-              selectedOccupations={formData.occupations}
+            <CustomSelect
+              options={occupations}
+              selectedOptions={formData.occupations}
               onChange={handleOccupationChange}
             />
 

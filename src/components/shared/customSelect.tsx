@@ -1,16 +1,15 @@
-// src/components/OccupationSelect.tsx
 import React from "react";
 import { Button } from "@/components/ui/button";
 
-interface OccupationSelectProps {
-  occupations: { id: number; name: string }[];
-  selectedOccupations: string[];
+interface customSelectProps {
+  options: { id: number; name: string }[];
+  selectedOptions: string[];
   onChange: (value: string) => void;
 }
 
-const OccupationSelect: React.FC<OccupationSelectProps> = ({
-  occupations,
-  selectedOccupations,
+const customSelect: React.FC<customSelectProps> = ({
+  options,
+  selectedOptions,
   onChange,
 }) => {
   const handleOccupationChange = (value: string) => {
@@ -21,17 +20,17 @@ const OccupationSelect: React.FC<OccupationSelectProps> = ({
     <div className="space-y-2">
       <label>Occupations</label>
       <div className="flex flex-wrap gap-2">
-        {occupations.map((occupation) => (
+        {options.map((option: any) => (
           <Button
-            key={occupation.id}
+            key={option.id}
             type="button"
             variant={
-              selectedOccupations.includes(occupation.id.toString())
+              selectedOptions.includes(option.id.toString())
                 ? "default"
                 : "outline"
             }
-            onClick={() => handleOccupationChange(occupation.id.toString())}>
-            {occupation.name}
+            onClick={() => handleOccupationChange(option.id.toString())}>
+            {option.name}
           </Button>
         ))}
       </div>
@@ -39,4 +38,4 @@ const OccupationSelect: React.FC<OccupationSelectProps> = ({
   );
 };
 
-export default OccupationSelect;
+export default customSelect;
