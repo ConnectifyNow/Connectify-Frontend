@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import { Organization } from "../../data/directory";
 import { MessageSquareText } from "lucide-react";
-import Tooltip from "@mui/material/Tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function OrganizationCard({ org }: { org: Organization }) {
   return (
@@ -41,11 +46,16 @@ export default function OrganizationCard({ org }: { org: Organization }) {
         ))}
       </div>
       <Link to={`/chat`} className="self-end mt-4">
-        <Tooltip title='go to chat' arrow>
-          <button className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
-            <MessageSquareText></MessageSquareText>
-          </button>
-        </Tooltip>
+      <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
+                <MessageSquareText></MessageSquareText>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>Go to chat</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </Link>
     </div>
   );
