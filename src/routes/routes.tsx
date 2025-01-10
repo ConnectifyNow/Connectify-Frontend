@@ -26,48 +26,48 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Onboarding />,
+        element: <Onboarding />
       },
       {
         path: "/filter",
-        element: <Filter />,
+        element: <Filter />
       },
       {
         path: "/signin",
-        element: <SignInPage />,
+        element: <SignInPage />
       },
       {
         path: "/signup",
-        element: <SignUpPage />,
+        element: <SignUpPage />
       },
       {
         path: "/signup/mode",
-        element: <SignUpModePage />,
+        element: <SignUpModePage />
       },
       {
         path: "/signup/user",
-        element: <UserSignUpPage />,
+        element: <UserSignUpPage />
       },
       {
         path: "/signup/organization",
-        element: <OrganizationSignUpPage />,
-      },
-      {
-        path: "/chat",
-        element: <ChatPage />,
+        element: <OrganizationSignUpPage />
       },
       {
         path: "/home",
-        element: <Home />,
+        element: <Home />
       },
       {
         path: "/profile",
-        element: <ProfilePage />,
+        element: <ProfilePage />
       },
       {
         path: "/discover",
-        element: <DiscoverPage />,
-      },
-    ],
+        element: <DiscoverPage />
+      }
+    ]
   },
+  {
+    path: "/chat",
+    element: <ChatPage />
+  }
 ]);
