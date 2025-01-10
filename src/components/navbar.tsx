@@ -20,10 +20,10 @@ export function Navbar() {
             >
               Home
             </Link>
-            <Link to="/filter" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">
-              Find Help
+            <Link to="/discover" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">
+              Discover
             </Link>
-            <Link to="/chat" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">
+            <Link to="/chat" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font</svg>-medium">
               Chat
             </Link>
             <Link to="/profile" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">
