@@ -1,22 +1,13 @@
-import React from "react";
 import "./index.css";
 import { Navbar } from "./components/navbar";
 import { Footer } from "./components/footer";
+import { Outlet } from "react-router-dom";
 
-export const metadata = {
-  title: "Connectify",
-  description: "Connecting associations with skilled volunteers"
-};
-
-export default function RootLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <div className="flex-grow">{children}</div>
+      <Outlet />
       <Footer />
     </div>
   );
