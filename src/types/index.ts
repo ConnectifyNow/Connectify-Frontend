@@ -20,7 +20,7 @@ export interface Volunteer {
   lastName: string;
   city: string;
   age: number;
-  occupations: Occupation[];
+  skills: skill[];
   imageUrl: string;
   about: string;
 }
@@ -33,7 +33,7 @@ export interface Organization {
   imageUrl: string;
 }
 
-export interface Occupation {
+export interface skill {
   id: number;
   name: string;
 }
