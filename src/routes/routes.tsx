@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Onboarding from "@/views/onboarding/page";
 import Filter from "@/views/filter/page";
 import Chat from "@/views/chat/page";
+import Home from "@/views/home/page";
 import RootLayout from "@/RootLayout";
 
 // const authLoader = async () => {
@@ -28,7 +29,11 @@ export const router = createBrowserRouter([
       {
         path: "/chat",
         element: <Chat />
-      }
+      },
+      {
+        path: "/home",
+        element: <Home />
+      },
     ]
   }
 ]);

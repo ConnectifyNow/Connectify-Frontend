@@ -15,7 +15,7 @@ export function Navbar() {
           </div>
           <div className="flex items-center">
             <Link
-              to="/"
+              to="/home"
               className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
             >
               Home
