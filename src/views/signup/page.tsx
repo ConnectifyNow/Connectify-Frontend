@@ -1,45 +1,47 @@
-'use client'
-import {Link, useNavigate} from 'react-router-dom'
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+"use client";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function SignUpPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useNavigate()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useNavigate();
 
   const handleContinue = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setIsLoading(true)
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      console.log('Continuing with:', { email, password })
+      console.log("Continuing with:", { email, password });
 
-      localStorage.setItem('signupEmail', email)
-      localStorage.setItem('signupPassword', password)
+      localStorage.setItem("signupEmail", email);
+      localStorage.setItem("signupPassword", password);
 
-      router('/signup/mode')
-    } catch (err) {
-      setError('Failed to proceed. Please try again.')
+      router("/signup/mode");
+    } catch {
+      setError("Failed to proceed. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8 flex justify-center items-center min-h-screen">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl text-center">Sign Up for Connectify</CardTitle>
+          <CardTitle className="text-2xl text-center">
+            Sign Up for Connectify
+          </CardTitle>
         </CardHeader>
         <CardContent>
           {error && (
@@ -71,15 +73,19 @@ export default function SignUpPage() {
               />
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Processing...' : 'Continue'}
+              {isLoading ? "Processing..." : "Continue"}
             </Button>
           </form>
           <div className="mt-4 text-center">
-            <p>Already have an account? <Link to="/signin" className="text-primary hover:underline">Sign In</Link></p>
+            <p>
+              Already have an account?{" "}
+              <Link to="/signin" className="text-primary hover:underline">
+                Sign In
+              </Link>
+            </p>
           </div>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
-

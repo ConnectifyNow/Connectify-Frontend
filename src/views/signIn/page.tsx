@@ -17,8 +17,8 @@ export default function SignInPage() {
   const user = useUserStore();
   const router = useNavigate();
 
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSignIn = async (event: React.FormEvent) => {
+    event.preventDefault();
     setError("");
     setIsLoading(true);
 
@@ -28,15 +28,16 @@ export default function SignInPage() {
       console.log("Signing in with:", { email, password });
       user.setUser({
         id: "mock-id",
+        name: "mock-name",
         username: "mock-username",
         email: email,
         password: password,
         // Add a random role for the user
-        role: Math.floor(Math.random() * 1),
+        role: Math.floor(Math.random() * 1)
       });
 
       router("/");
-    } catch (err) {
+    } catch {
       setError(
         "Failed to sign in. Please check your credentials and try again."
       );

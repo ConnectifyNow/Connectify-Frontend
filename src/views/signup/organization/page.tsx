@@ -12,14 +12,14 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/components/ui/select";
 import useUserStore from "@/stores/setUserStore";
 
 const cities = [
   { id: 1, name: "New York" },
   { id: 2, name: "Los Angeles" },
-  { id: 3, name: "Chicago" },
+  { id: 3, name: "Chicago" }
 ];
 
 export default function OrganizationSignUpPage() {
@@ -29,7 +29,7 @@ export default function OrganizationSignUpPage() {
     name: "",
     city: "",
     description: "",
-    imageUrl: "",
+    imageUrl: ""
   });
   const router = useNavigate();
   const user = useUserStore();
@@ -58,10 +58,11 @@ export default function OrganizationSignUpPage() {
     console.log("Submitting organization data:", formData);
     user.setUser({
       id: "mock-id",
+      name: "mock-name",
       username: "mock-username",
       email: formData.email,
       password: formData.password,
-      role: 1,
+      role: 1
     });
     router("/");
   };
@@ -90,7 +91,8 @@ export default function OrganizationSignUpPage() {
               <Label htmlFor="city">City</Label>
               <Select
                 onValueChange={(value) => handleSelectChange("city", value)}
-                required>
+                required
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a city" />
                 </SelectTrigger>
