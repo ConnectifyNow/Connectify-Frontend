@@ -42,6 +42,19 @@ export default function OrganizationCard({
           </span>
         ))}
       </div>
+      <Link to={`/chat`} className="self-end mt-4">
+      <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
+                <MessageSquareText></MessageSquareText>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>Go to chat</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </Link>
     </div>
+  );
   );
 }

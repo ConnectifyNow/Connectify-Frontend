@@ -31,16 +31,19 @@ const initialState: User = {
   }
 };
 
-interface UserState {
-  user: User;
+type State = User;
+
+type Action = {
+  updateIsLoggedIn: (isLoggedIn: State["isLoggedIn"]) => void;
   setUser: (user: User) => void;
   resetUser: () => void;
-}
+};
 
-const useUserStore = create<UserState>((set) => ({
-  user: initialState,
-  setUser: (user: User) => set({ user }),
-  resetUser: () => set({ user: initialState })
+const useUserStore = create<State & Action>((set) => ({
+  ...initialState,
+  updateIsLoggedIn: (isLoggedIn) => set(() => ({ isLoggedIn })),
+  setUser: (user: User) => set(() => ({ ...user })),
+  resetUser: () => set(() => ({ ...initialState }))
 }));
 
 export default useUserStore;

@@ -6,6 +6,7 @@ export interface User {
   role?: Role;
   volunteer?: Volunteer;
   organization?: Organization;
+  isLoggedIn?: boolean;
 }
 
 export interface Volunteer {
