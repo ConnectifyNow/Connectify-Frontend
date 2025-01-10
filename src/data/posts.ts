@@ -2,7 +2,7 @@ export interface Author {
     id: string;
     name: string;
     avatar: string;
-    type: 'user' | 'association';
+    type: 'user' | 'organization';
   }
   
   export interface Post {
@@ -32,7 +32,7 @@ export interface Author {
         id: 'a1',
         name: 'Tech for Good',
         avatar: '/placeholder.svg?height=40&width=40',
-        type: 'association',
+        type: 'organization',
       },
       title: 'Volunteers Needed for Hackathon',
       content: 'We\'re organizing a hackathon to solve local community problems. Looking for developers and designers!',
