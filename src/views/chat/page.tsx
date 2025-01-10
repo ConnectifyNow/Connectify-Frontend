@@ -50,7 +50,7 @@ const mockUsers: User[] = [
 
 export default function ChatPage() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const { user } = useUserStore();
+  const user = useUserStore();
 
   return (
     <div className="flex h-screen bg-white">
