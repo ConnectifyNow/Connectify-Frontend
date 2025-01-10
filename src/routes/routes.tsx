@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Onboarding from "@/views/onboarding/page";
 import Filter from "@/views/filter/page";
 import Chat from "@/views/chat/page";
+import Home from "@/views/home/page";
 import RootLayout from "@/RootLayout";
 import SignUpModePage from "@/components/signup/mode/page";
 import UserSignUpPage from "@/components/signup/user/page";
@@ -66,7 +67,11 @@ export const router = createBrowserRouter([
       {
         path: "/chat",
         element: <Chat />
-      }
+      },
+      {
+        path: "/home",
+        element: <Home />
+      },
     ]
   }
 ]);

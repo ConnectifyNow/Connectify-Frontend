@@ -17,7 +17,10 @@ export function Navbar() {
             </Link>
           </div>
           <div className="flex items-center">
-            <Link to="/" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">
+            <Link
+              to="/home"
+              className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
+            >
               Home
             </Link>
             <Link to="/filter" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">
