@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label"; // Ensure this path is correct or update it to the correct path
+import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import useUserStore from "@/stores/setUserStore";
@@ -33,7 +33,7 @@ export default function SignInPage() {
         email: email,
         password: password,
         // Add a random role for the user
-        role: Math.floor(Math.random() * 1)
+        role: Math.floor(Math.random() * 1),
       });
 
       router("/");

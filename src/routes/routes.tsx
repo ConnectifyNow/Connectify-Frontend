@@ -4,7 +4,6 @@ import Filter from "@/views/filter/page";
 import Chat from "@/views/chat/page";
 
 import Home from "@/views/home/page";
-import ProfilePage from "@/components/profile";
 import SignUpModePage from "@/views/signup/mode/page";
 import UserSignUpPage from "@/views/signup/user/page";
 import DiscoverPage from "@/views/discover/page";
@@ -12,6 +11,7 @@ import OrganizationSignUpPage from "@/views/signup/organization/page";
 import SignInPage from "@/views/signIn/page";
 import SignUpPage from "@/views/signup/page";
 import Layout from "@/components/layout/layout";
+import ProfilePage from "@/views/profile/page";
 
 // const authLoader = async () => {
 //   const tokens = getTokens();
@@ -27,39 +27,39 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Onboarding />
+        element: <Onboarding />,
       },
       {
         path: "/filter",
-        element: <Filter />
+        element: <Filter />,
       },
       {
         path: "/signin",
-        element: <SignInPage />
+        element: <SignInPage />,
       },
       {
         path: "/signup",
-        element: <SignUpPage />
+        element: <SignUpPage />,
       },
       {
         path: "/signup/mode",
-        element: <SignUpModePage />
+        element: <SignUpModePage />,
       },
       {
         path: "/signup/user",
-        element: <UserSignUpPage />
+        element: <UserSignUpPage />,
       },
       {
         path: "/signup/organization",
-        element: <OrganizationSignUpPage />
+        element: <OrganizationSignUpPage />,
       },
       {
         path: "/chat",
-        element: <Chat />
+        element: <Chat />,
       },
       {
         path: "/home",
-        element: <Home />
+        element: <Home />,
       },
       {
         path: "/profile",
@@ -69,6 +69,6 @@ export const router = createBrowserRouter([
         path: "/discover",
         element: <DiscoverPage />,
       },
-    ]
-  }
+    ],
+  },
 ]);
