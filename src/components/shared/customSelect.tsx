@@ -12,13 +12,13 @@ const customSelect: React.FC<customSelectProps> = ({
   selectedOptions,
   onChange,
 }) => {
-  const handleOccupationChange = (value: string) => {
+  const handleSelectedChange = (value: string) => {
     onChange(value);
   };
 
   return (
     <div className="space-y-2">
-      <label>Occupations</label>
+      <label>skills</label>
       <div className="flex flex-wrap gap-2">
         {options.map((option: any) => (
           <Button
@@ -29,7 +29,7 @@ const customSelect: React.FC<customSelectProps> = ({
                 ? "default"
                 : "outline"
             }
-            onClick={() => handleOccupationChange(option.id.toString())}>
+            onClick={() => handleSelectedChange(option.id.toString())}>
             {option.name}
           </Button>
         ))}

@@ -22,7 +22,7 @@ const cities = [
   { id: 3, name: "Chicago" },
 ];
 
-const occupations = [
+const skills = [
   { id: 1, name: "Software Developer" },
   { id: 2, name: "Designer" },
   { id: 3, name: "Project Manager" },
@@ -36,7 +36,7 @@ export default function UserSignUpPage() {
     lastName: "",
     city: "",
     age: "",
-    occupations: [] as string[],
+    skills: [] as string[],
     imageUrl: "",
     about: "",
   });
@@ -64,12 +64,12 @@ export default function UserSignUpPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleOccupationChange = (value: string) => {
+  const handleskillChange = (value: string) => {
     setFormData((prev) => ({
       ...prev,
-      occupations: prev.occupations.includes(value)
-        ? prev.occupations.filter((o) => o !== value)
-        : [...prev.occupations, value],
+      skills: prev.skills.includes(value)
+        ? prev.skills.filter((o) => o !== value)
+        : [...prev.skills, value],
     }));
   };
 
@@ -166,9 +166,9 @@ export default function UserSignUpPage() {
             </div>
 
             <CustomSelect
-              options={occupations}
-              selectedOptions={formData.occupations}
-              onChange={handleOccupationChange}
+              options={skills}
+              selectedOptions={formData.skills}
+              onChange={handleskillChange}
             />
 
             <div className="space-y-2">

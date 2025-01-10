@@ -15,7 +15,7 @@ type UserAboutProps = {
   saveProfile: () => void;
 };
 
-const occupations = [
+const skills = [
   { id: 1, name: "Software Developer" },
   { id: 2, name: "Designer" },
   { id: 3, name: "Project Manager" },
@@ -53,7 +53,7 @@ export default function UserAboutCard({
             </div>
             <div>
               <CustomSelect
-                options={occupations}
+                options={skills}
                 selectedOptions={profile.skills ?? []}
                 onChange={handleSkillsChange}
               />
