@@ -5,7 +5,7 @@ import UserInformation from "@/components/profile/user-information-card";
 import UserAboutCard from "@/components/profile/user-about-card";
 
 export default function ProfilePage() {
-  const { user } = useUserStore();
+  const user = useUserStore();
 
   const [profile, setProfile] = useState<User>(user);
   const [isEditing, setIsEditing] = useState(false);
@@ -20,7 +20,7 @@ export default function ProfilePage() {
       skills: ["react", "java"],
       location: "kfar saba",
       avatar: "url",
-      password: "1",
+      password: "1"
     });
   };
 

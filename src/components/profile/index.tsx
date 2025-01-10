@@ -5,7 +5,7 @@ import { User } from "../../types/index";
 import useUserStore from "@/stores/setUserStore";
 
 export default function ProfilePage() {
-  const { user } = useUserStore();
+  const user = useUserStore((state) => state);
 
   const [profile, setProfile] = useState<User>(user);
   const [isEditing, setIsEditing] = useState(false);
@@ -15,13 +15,14 @@ export default function ProfilePage() {
     setProfile({
       id: "1",
       name: "hila",
+      username: "hila",
       email: "hila@gmail.com",
       username: "hila123",
       bio: "hila is bla bla bla",
       skills: ["react", "java"],
       location: "kfar saba",
       avatar: "url",
-      password: "1",
+      password: "1"
     });
   };
 

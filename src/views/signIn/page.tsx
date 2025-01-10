@@ -10,6 +10,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import useUserStore from "@/stores/setUserStore";
 
 export default function SignInPage() {
+  // TODO: Change this
+  const updateIsLoggedIn = useUserStore((state) => state.updateIsLoggedIn);
+  updateIsLoggedIn(true);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
