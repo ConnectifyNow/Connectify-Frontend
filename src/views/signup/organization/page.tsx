@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -58,7 +56,6 @@ export default function OrganizationSignUpPage() {
     console.log("Submitting organization data:", formData);
     user.setUser({
       id: "mock-id",
-      name: "mock-name",
       username: "mock-username",
       email: formData.email,
       password: formData.password,

@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -12,8 +10,6 @@ import useUserStore from "@/stores/setUserStore";
 export default function SignInPage() {
   // TODO: Change this
   const updateIsLoggedIn = useUserStore((state) => state.updateIsLoggedIn);
-  updateIsLoggedIn(true);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -25,19 +21,17 @@ export default function SignInPage() {
     event.preventDefault();
     setError("");
     setIsLoading(true);
+    updateIsLoggedIn(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
       console.log("Signing in with:", { email, password });
       user.setUser({
         id: "mock-id",
-        name: "mock-name",
         username: "mock-username",
-        email: email,
-        password: password,
+        email,
+        password,
         // Add a random role for the user
-        role: Math.floor(Math.random() * 1),
+        role: Math.floor(Math.random() * 1)
       });
 
       router("/");
@@ -72,7 +66,7 @@ export default function SignInPage() {
                 type="email"
                 placeholder="Enter your email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(event) => setEmail(event.target.value)}
                 required
               />
             </div>
@@ -83,7 +77,7 @@ export default function SignInPage() {
                 type="password"
                 placeholder="Enter your password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(event) => setPassword(event.target.value)}
                 required
               />
             </div>
