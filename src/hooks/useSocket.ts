@@ -18,7 +18,7 @@ export function useSocket(userId: string) {
       });
 
       socket.on("connect_error", (err: Error) => {
-        console.error("Socket.IO connection error:", err);
+        console.error("Socket.IO connection error:", { err });
       });
     };
 
