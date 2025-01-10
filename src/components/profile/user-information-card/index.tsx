@@ -1,13 +1,12 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { User } from "../../../types/user";
+import { Label } from "@/components/ui/label";
 
 type UserInformationProps = {
   profile: User;
   isEditing: Boolean;
-  changeIsEditing: (isEditing: Boolean) => void;
   changeProfile: (profile: User) => void;
   handleChange: (key: keyof User, value: string) => void;
 };
@@ -31,7 +30,7 @@ export default function UserInformation({
         {isEditing ? (
           <>
             <div>
-              <Label htmlFor="name">Name</Label>
+              {/* <Label htmlFor="name">Name</Label> */}
               <Input
                 id="name"
                 value={profile.name}

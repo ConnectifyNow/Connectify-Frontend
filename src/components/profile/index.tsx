@@ -46,13 +46,12 @@ export default function ProfilePage({ user }: UserProfileProps) {
           profile={profile}
           isEditing={isEditing}
           changeProfile={setProfile}
-          changeIsEditing={setIsEditing}
           handleChange={handleChange}
         />
         <AboutCard
           profile={profile}
           isEditing={isEditing}
-          changeIsEditing={setIsEditing}
+          setIsEditing={setIsEditing}
           handleChange={handleChange}
           handleSkillsChange={handleSkillsChange}
           saveProfile={saveProfile}
