@@ -3,26 +3,26 @@
 import { useState } from "react";
 import AboutCard from "./user-about-card";
 import UserInformation from "./user-information-card";
-import { User } from "../../types/user";
+import { User } from "../../types/index";
+import useUserStore from "@/stores/setUserStore";
 
-type UserProfileProps = {
-  user: User;
-};
+export default function ProfilePage() {
+  const { user } = useUserStore();
 
-export default function ProfilePage({ user }: UserProfileProps) {
   const [profile, setProfile] = useState<User>(user);
   const [isEditing, setIsEditing] = useState(false);
 
   const handleChange = (key: keyof User, value: string) => {
     // setProfile((prev) => ({ ...prev, [key]: value }));
     setProfile({
-      _id: "1",
+      id: "1",
       name: "hila",
       email: "hila@gmail.com",
       bio: "hila is bla bla bla",
       skills: ["react", "java"],
       location: "kfar saba",
       avatar: "url",
+      password: "1",
     });
   };
 

@@ -13,8 +13,6 @@ import useUserStore from "@/stores/setUserStore";
 //   }
 //   return redirect("/login");
 // };
-const { user } = useUserStore();
-
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -34,7 +32,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <ProfilePage user={user} />,
+        element: <ProfilePage />,
       },
     ],
   },

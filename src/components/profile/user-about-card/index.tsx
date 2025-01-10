@@ -1,4 +1,4 @@
-import { User } from "../../../types/user";
+import { User } from "../../../types/index";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "../../ui/textarea";

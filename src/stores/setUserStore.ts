@@ -6,7 +6,8 @@ const initialState: User = {
   username: "",
   email: "",
   password: "",
-  role: undefined
+  role: undefined,
+  avatar: "",
 };
 
 interface UserState {
@@ -18,7 +19,7 @@ interface UserState {
 const useUserStore = create<UserState>((set) => ({
   user: initialState,
   setUser: (user: User) => set({ user }),
-  resetUser: () => set({ user: initialState })
+  resetUser: () => set({ user: initialState }),
 }));
 
 export default useUserStore;

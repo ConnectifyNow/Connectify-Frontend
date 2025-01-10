@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { User } from "../../../types/user";
+import { User } from "../../../types/index";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
@@ -31,7 +31,7 @@ export default function UserInformation({
         {isEditing ? (
           <>
             <div>
-              {/* <Label htmlFor="name">Name</Label> */}
+              <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
                 value={profile.name}
