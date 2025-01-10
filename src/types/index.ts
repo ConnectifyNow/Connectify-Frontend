@@ -11,6 +11,7 @@ export interface User {
   role?: number;
   volunteer?: Volunteer;
   organization?: Organization;
+  isLoggedIn?: boolean;
 }
 
 export interface Volunteer {
@@ -41,7 +42,7 @@ export interface Author {
   id: string;
   name: string;
   avatar: string;
-  type: 'user' | 'organization';
+  type: "user" | "organization";
 }
 
 export interface Post {
