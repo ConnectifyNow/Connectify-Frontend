@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/button";
 import lightBulbIcon from "@/assets/light-bulb.svg";
 import "./navbar.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export function Navbar() {
-  const router = useNavigate();
-
   return (
     <nav className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -43,16 +41,14 @@ export function Navbar() {
             >
               Profile
             </Link>
-            <Button
-              variant="outline"
-              className="ml-4"
-              onClick={() => router("/signin")}
-            >
-              Sign In
-            </Button>
-            <Button className="ml-2" onClick={() => router("/signup")}>
-              Sign Up
-            </Button>
+            <Link to="/signin">
+              <Button variant="outline" className="ml-4">
+                Sign In
+              </Button>
+            </Link>
+            <Link to="/signup">
+              <Button className="ml-2">Sign Up</Button>
+            </Link>
           </div>
         </div>
       </div>
