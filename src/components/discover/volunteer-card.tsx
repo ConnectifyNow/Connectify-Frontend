@@ -1,4 +1,7 @@
-import { Volunteer } from '../../data/directory'
+import { Volunteer } from "../../data/directory";
+import { Link } from "react-router-dom";
+import { MessageSquareText } from "lucide-react";
+import Tooltip from "@mui/material/Tooltip";
 
 export default function VolunteerCard({ volunteer }: { volunteer: Volunteer }) {
   return (
@@ -20,14 +23,23 @@ export default function VolunteerCard({ volunteer }: { volunteer: Volunteer }) {
       <div className="mb-2">
         <strong className="text-gray-700">Skills:</strong>
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 mb-4">
         {volunteer.skills.map((skill) => (
-          <span key={skill} className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+          <span
+            key={skill}
+            className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
+          >
             {skill}
           </span>
         ))}
       </div>
+      <Link to={`/chat`} className="self-end mt-4">
+        <Tooltip title='go to chat' arrow>
+          <button className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
+            <MessageSquareText></MessageSquareText>
+          </button>
+        </Tooltip>
+      </Link>
     </div>
-  )
+  );
 }
-
