@@ -1,47 +1,22 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { User } from "../../../types/user";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { User } from "../../../types/user";
 
 type UserInformationProps = {
   profile: User;
+  isEditing: Boolean;
+  changeIsEditing: (isEditing: Boolean) => void;
   changeProfile: (profile: User) => void;
+  handleChange: (key: keyof User, value: string) => void;
 };
 
 export default function UserInformation({
   profile,
-  changeProfile,
+  isEditing,
+  handleChange,
 }: UserInformationProps) {
-  const [isEditing, setIsEditing] = useState(false);
-
-  const handleChange = (key: keyof User, value: string) => {
-    // changeProfile((prev) => ({ ...prev, [key]: value }));
-    changeProfile({
-      name: "hila",
-      email: "hila@gmail.com",
-      bio: "hila is bla bla bla",
-      skills: ["react", "java"],
-      location: "kfar saba",
-      avatar: "url",
-    });
-  };
-
-  const handleSkillsChange = (value: string) => {
-    changeProfile((prev) => ({
-      ...prev,
-      skills: value.split(",").map((skill) => skill.trim()),
-    }));
-  };
-
-  const saveProfile = () => {
-    console.log("Saving profile:", profile);
-    setIsEditing(false);
-  };
-
   return (
     <Card>
       <CardHeader>

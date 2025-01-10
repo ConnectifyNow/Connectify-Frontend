@@ -1,10 +1,23 @@
 import { User } from "../../../types/user";
+import { Button } from "@/components/ui/button";
+import { Card } from '@/components/ui/card'
+import { Textarea } from '@components/ui/card/textarea'
+import { CardHeader } from '@components/ui/card/cardHeader'
+import { CardTitle } from '@components/ui/card/cardTitle'
+import { CardContent } from '@components/ui/card/cardContent'
+import { Label } from '@components/ui/card/label'
+import { Input } from '@components/ui/card/input'
 
 type UserAboutProps = {
   profile: User;
+  isEditing: Boolean;
+  changeIsEditing: (isEditing: Boolean) => void;
+  handleChange: (key: keyof User, value: string) => void;
+  handleSkillsChange: (value: string) => void;
+  saveProfile: () => void; 
 };
 
-export default function UserAboutCard({ profile }: UserAboutProps) {
+export default function UserAboutCard({ profile, isEditing, changeIsEditing ,handleChange, handleSkillsChange, saveProfile}: UserAboutProps) {
 
 return (
 <Card className="md:col-span-2">
@@ -16,11 +29,11 @@ return (
               <>
                 <div>
                   <Label htmlFor="bio">Bio</Label>
-                  <Textarea id="bio" value={profile.bio} onChange={(e) => handleChange('bio', e.target.value)} />
+                  <Textarea id="bio" value={profile.bio} onChange={(e:any) => handleChange('bio', e.target.value)} />
                 </div>
                 <div>
                   <Label htmlFor="skills">Skills (comma-separated)</Label>
-                  <Input id="skills" value={profile.skills.join(', ')} onChange={(e) => handleSkillsChange(e.target.value)} />
+                  <Input id="skills" value={profile.skills.join(', ')} onChange={(e: any) => handleSkillsChange(e.target.value)} />
                 </div>
               </>
             ) : (
@@ -42,7 +55,7 @@ return (
               {isEditing ? (
                 <Button onClick={saveProfile}>Save Profile</Button>
               ) : (
-                <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
+                <Button onClick={() => changeIsEditing(true)}>Edit Profile</Button>
               )}
             </div>
           </CardContent>
