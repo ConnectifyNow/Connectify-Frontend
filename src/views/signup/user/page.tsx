@@ -1,5 +1,4 @@
-"use client";
-
+// src/pages/UserSignUpPage.tsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -12,21 +11,22 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import useUserStore from "@/stores/setUserStore";
+import OccupationSelect from "@/components/shared/occupationSelect"; // Import the new OccupationSelect component
 
 const cities = [
   { id: 1, name: "New York" },
   { id: 2, name: "Los Angeles" },
-  { id: 3, name: "Chicago" }
+  { id: 3, name: "Chicago" },
 ];
 
 const occupations = [
   { id: 1, name: "Software Developer" },
   { id: 2, name: "Designer" },
-  { id: 3, name: "Project Manager" }
+  { id: 3, name: "Project Manager" },
 ];
 
 export default function UserSignUpPage() {
@@ -37,9 +37,9 @@ export default function UserSignUpPage() {
     lastName: "",
     city: "",
     age: "",
-    occupations: [] as string[],
+    occupations: [] as string[], // Initially an empty array of selected occupations
     imageUrl: "",
-    about: ""
+    about: "",
   });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -65,12 +65,13 @@ export default function UserSignUpPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle occupation changes using the new component
   const handleOccupationChange = (value: string) => {
     setFormData((prev) => ({
       ...prev,
       occupations: prev.occupations.includes(value)
         ? prev.occupations.filter((o) => o !== value)
-        : [...prev.occupations, value]
+        : [...prev.occupations, value],
     }));
   };
 
@@ -89,7 +90,7 @@ export default function UserSignUpPage() {
         name: "mock-name",
         email: formData.email,
         password: formData.password,
-        role: 0
+        role: 0,
       });
 
       router("/");
@@ -141,8 +142,7 @@ export default function UserSignUpPage() {
               <Label htmlFor="city">City</Label>
               <Select
                 onValueChange={(value) => handleSelectChange("city", value)}
-                required
-              >
+                required>
                 <SelectTrigger>
                   <SelectValue placeholder="Select a city" />
                 </SelectTrigger>
@@ -166,27 +166,13 @@ export default function UserSignUpPage() {
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label>Occupations</Label>
-              <div className="flex flex-wrap gap-2">
-                {occupations.map((occupation) => (
-                  <Button
-                    key={occupation.id}
-                    type="button"
-                    variant={
-                      formData.occupations.includes(occupation.id.toString())
-                        ? "default"
-                        : "outline"
-                    }
-                    onClick={() =>
-                      handleOccupationChange(occupation.id.toString())
-                    }
-                  >
-                    {occupation.name}
-                  </Button>
-                ))}
-              </div>
-            </div>
+
+            <OccupationSelect
+              occupations={occupations}
+              selectedOccupations={formData.occupations}
+              onChange={handleOccupationChange}
+            />
+
             <div className="space-y-2">
               <Label htmlFor="imageUrl">Profile Image URL</Label>
               <Input
