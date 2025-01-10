@@ -33,7 +33,7 @@ export default function SignInPage() {
         email: email,
         password: password,
         // Add a random role for the user
-        role: Math.floor(Math.random() * 1),
+        role: Math.floor(Math.random() * 1)
       });
 
       router("/");
@@ -68,7 +68,7 @@ export default function SignInPage() {
                 type="email"
                 placeholder="Enter your email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(event) => setEmail(event.target.value)}
                 required
               />
             </div>
@@ -79,7 +79,7 @@ export default function SignInPage() {
                 type="password"
                 placeholder="Enter your password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(event) => setPassword(event.target.value)}
                 required
               />
             </div>

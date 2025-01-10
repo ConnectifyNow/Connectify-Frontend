@@ -1,14 +1,9 @@
 export interface User {
   id: string;
-  name: string;
+  username: string;
   email: string;
   password: string;
-  username: string;
-  bio?: string;
-  skills?: string[];
-  location?: string;
-  avatar?: string;
-  role?: number;
+  role?: Role;
   volunteer?: Volunteer;
   organization?: Organization;
 }
@@ -19,20 +14,30 @@ export interface Volunteer {
   lastName: string;
   city: string;
   age: number;
-  skills: skill[];
-  imageUrl: string;
+  skills: Skill[];
+  imageUrl?: string;
   about: string;
+  userId: string;
 }
 
 export interface Organization {
   id: string;
-  city: number;
+  city: string;
   name: string;
   description: string;
-  imageUrl: string;
+  imageUrl?: string;
+
+  // TODO: add to erd
+  focusAreas: FocusArea[];
+  websiteLink: string;
 }
 
-export interface skill {
+export interface Skill {
+  id: number;
+  name: string;
+}
+
+export interface FocusArea {
   id: number;
   name: string;
 }
@@ -40,8 +45,8 @@ export interface skill {
 export interface Author {
   id: string;
   name: string;
-  avatar: string;
-  type: 'user' | 'organization';
+  avatar?: string;
+  type: "user" | "organization";
 }
 
 export interface Post {
@@ -49,10 +54,20 @@ export interface Post {
   author: Author;
   title: string;
   content: string;
-  skills: string[];
+  skills: Skill[];
 }
 
 export enum Role {
   Volunteer = 0,
   Organization = 1
+}
+
+export interface ProfileData {
+  name: string;
+  email: string;
+  role: Role;
+  imageUrl?: string;
+  city: string;
+  skills?: Skill[];
+  about?: string;
 }
