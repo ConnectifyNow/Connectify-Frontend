@@ -1,16 +1,16 @@
-import { createBrowserRouter } from "react-router-dom";
-import Onboarding from "@/views/onboarding/page";
-import Filter from "@/views/filter/page";
-
-import Home from "@/views/home/page";
-import ProfilePage from "@/components/profile/profile";
-import SignUpModePage from "@/views/signup/mode/page";
-import UserSignUpPage from "@/views/signup/user/page";
-import OrganizationSignUpPage from "@/views/signup/organization/page";
-import SignInPage from "@/views/signIn/page";
-import SignUpPage from "@/views/signup/page";
+import ChatPage from "@/chat/page";
 import Layout from "@/components/layout/layout";
-import Chat from "@/components/chat/chat";
+import ProfilePage from "@/components/profile/profile";
+import DiscoverPage from "@/views/discover/page";
+import Filter from "@/views/filter/page";
+import Home from "@/views/home/page";
+import Onboarding from "@/views/onboarding/page";
+import SignInPage from "@/views/signIn/page";
+import SignUpModePage from "@/views/signup/mode/page";
+import OrganizationSignUpPage from "@/views/signup/organization/page";
+import SignUpPage from "@/views/signup/page";
+import UserSignUpPage from "@/views/signup/user/page";
+import { createBrowserRouter } from "react-router-dom";
 
 // const authLoader = async () => {
 //   const tokens = getTokens();
@@ -54,7 +54,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/chat",
-        element: <Chat />,
+        element: <ChatPage />,
       },
       {
         path: "/home",
@@ -63,6 +63,10 @@ export const router = createBrowserRouter([
       {
         path: "/profile",
         element: <ProfilePage />,
+      },
+      {
+        path: "/discover",
+        element: <DiscoverPage />,
       },
     ],
   },
