@@ -5,8 +5,7 @@ import {
   CardTitle,
   CardDescription
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Search, Users, MessageSquare, UserCheck } from "lucide-react";
+import { Users, MessageSquare, UserCheck } from "lucide-react";
 
 export default function OnBoarding() {
   return (
@@ -19,7 +18,7 @@ export default function OnBoarding() {
               Connect, Collaborate, and Make a Difference
             </h1>
             <p className="mx-auto max-w-[700px] text-gray-200 md:text-xl">
-              Connectify brings together associations in need and skilled
+              Connectify brings together organizations in need and skilled
               volunteers ready to help. Join our community and start making an
               impact today.
             </p>
@@ -42,18 +41,21 @@ export default function OnBoarding() {
         </div>
       </section>
 
-      {/* Search Section */}
-      <section className="w-full py-12 md:py-24 lg:py-32">
+      <section className="w-full py-2 md:py-24 lg:py-32 ">
         <div className="px-4 md:px-6">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">
-            Find Your Perfect Match
+            About The Platform
           </h2>
-          <div className="flex justify-center">
-            <div className="flex w-full max-w-sm items-center space-x-2">
-              <Input type="text" placeholder="Search for skills or causes" />
-              <Button type="submit">
-                <Search className="h-4 w-4" />
-              </Button>
+          <div className="px-4 md:px-6">
+            <div className="flex flex-col items-center space-y-4 text-center">
+              <p className="mx-auto max-w-[700px] md:text-xl">
+                Connectify bridges the gap between organizations in need and
+                volunteers eager to help. Our platform makes it easy to connect,
+                collaborate, and create meaningful impact. Whether you're
+                seeking support or offering it, Connectify is where compassion
+                meets action.
+              </p>
+              <div className="space-x-4"></div>
             </div>
           </div>
         </div>
