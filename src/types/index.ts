@@ -3,10 +3,11 @@ export interface User {
   name: string;
   email: string;
   password: string;
-  bio: string;
-  skills: string[];
-  location: string;
-  avatar: string;
+  username: string;
+  bio?: string;
+  skills?: string[];
+  location?: string;
+  avatar?: string;
   role?: number;
   volunteer?: Volunteer;
   organization?: Organization;
@@ -53,5 +54,5 @@ export interface Post {
 
 export enum Role {
   Volunteer = 0,
-  Organization = 1,
+  Organization = 1
 }

@@ -2,16 +2,16 @@ import { createBrowserRouter } from "react-router-dom";
 import Onboarding from "@/views/onboarding/page";
 import Filter from "@/views/filter/page";
 import Chat from "@/views/chat/page";
+
 import Home from "@/views/home/page";
-import RootLayout from "@/RootLayout";
 import ProfilePage from "@/components/profile";
+import SignUpModePage from "@/views/signup/mode/page";
+import UserSignUpPage from "@/views/signup/user/page";
 import DiscoverPage from "@/views/discover/page";
-import useUserStore from "@/stores/setUserStore";
-import SignUpModePage from "@/components/signup/mode/page";
-import UserSignUpPage from "@/components/signup/user/page";
-import OrganizationSignUpPage from "@/components/signup/organization/page";
-import SignInPage from "@/components/signIn/page";
-import SignUpPage from "@/components/signup/page";
+import OrganizationSignUpPage from "@/views/signup/organization/page";
+import SignInPage from "@/views/signIn/page";
+import SignUpPage from "@/views/signup/page";
+import Layout from "@/components/layout/layout";
 
 // const authLoader = async () => {
 //   const tokens = getTokens();
@@ -23,49 +23,36 @@ import SignUpPage from "@/components/signup/page";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />,
+    element: <Layout />,
     children: [
       {
         path: "/",
-        element: <Onboarding />,
+        element: <Onboarding />
       },
       {
         path: "/filter",
-        element: <Filter />,
+        element: <Filter />
       },
       {
         path: "/signin",
         element: <SignInPage />
       },
       {
-        path:'/signup',
-        element:<SignUpPage />
+        path: "/signup",
+        element: <SignUpPage />
       },
       {
-        path:'/signup/mode',
-        element:<SignUpModePage />
+        path: "/signup/mode",
+        element: <SignUpModePage />
       },
       {
-        path:'/signup/user',
-        element:<UserSignUpPage />
+        path: "/signup/user",
+        element: <UserSignUpPage />
       },
       {
-        path:'/signup/organization',
-        element:<OrganizationSignUpPage />
+        path: "/signup/organization",
+        element: <OrganizationSignUpPage />
       },
-      // {
-      //   path: "/signup",
-      //   element: <SignUpPage />,
-      //   children:[
-      //    {
-      //       path:'/signup/user',
-      //       element:<UserSignUpPage />
-      //     },{
-      //       path:'/signup/organization',
-      //       element:<OrganizationSignUpPage />
-      //     },
-      //   ]
-      // },
       {
         path: "/chat",
         element: <Chat />

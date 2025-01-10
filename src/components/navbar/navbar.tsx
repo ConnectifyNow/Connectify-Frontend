@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { RiCompassDiscoverLine } from "react-icons/ri";
-import { FaHome } from "react-icons/fa";
 import { IoChatboxEllipses } from "react-icons/io5";
 import { IoMdPerson } from "react-icons/io";
 import { FiHome } from "react-icons/fi";
