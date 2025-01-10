@@ -48,9 +48,10 @@ export interface Author {
   name: string;
   avatar?: string;
   type: "user" | "organization";
-}
+} 
 
 export interface Tag {
+  type: tagType;
   text: FocusArea | Skill;
   bgColor: string;
   textColor: string;
@@ -78,6 +79,11 @@ export interface Post {
 export enum Role {
   Volunteer = 0,
   Organization = 1,
+}
+
+export enum tagType {
+  skill = 'skill',
+  focusArea = 'focus-area',
 }
 
 export interface ProfileData {

@@ -1,18 +1,19 @@
 import { Organization } from "@/types";
 import { randomAvatarUrl } from "@/utils/functions";
-
-import GeneralCard from '../shared/generic-card'
+import { tagType } from "@/types";
+import GeneralCard from "../shared/generic-card";
 
 export default function OrganizationCard({
-  organization
+  organization,
 }: {
   organization: Organization;
 }) {
-  const tags = organization.focusAreas.map(area => ({
+  const tags = organization.focusAreas.map((area) => ({
+    type: tagType.focusArea,
     text: area,
-    bgColor: 'bg-green-100',
-    textColor: 'text-green-800'
-  }))
+    bgColor: "bg-green-100",
+    textColor: "text-green-800",
+  }));
 
   return (
     <GeneralCard
@@ -24,5 +25,5 @@ export default function OrganizationCard({
       linkText="Visit Website"
       linkUrl={organization.websiteLink}
     />
-  )
+  );
 }

@@ -50,10 +50,10 @@ export default function GeneralCard({
         <div className="mb-2">
           <strong className="text-gray-700">
             {tags.length > 0
-              ? tags[0].text.name.includes("Focus")
+              ? tags[0].type.includes("focus-area")
                 ? "Focus Areas:"
                 : "Skills:"
-              : ""}
+              : ""} 
           </strong>
         </div>
         <div className="flex flex-wrap gap-2 mb-4">
