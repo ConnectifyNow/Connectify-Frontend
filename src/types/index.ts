@@ -32,6 +32,21 @@ export interface Occupation {
   name: string;
 }
 
+export interface Author {
+  id: string;
+  name: string;
+  avatar: string;
+  type: 'user' | 'organization';
+}
+
+export interface Post {
+  id: string;
+  author: Author;
+  title: string;
+  content: string;
+  skills: string[];
+}
+
 export enum Role {
   Volunteer = 0,
   Organization = 1

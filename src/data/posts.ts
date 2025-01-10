@@ -1,19 +1,6 @@
-export interface Author {
-    id: string;
-    name: string;
-    avatar: string;
-    type: 'user' | 'organization';
-  }
-  
-  export interface Post {
-    id: string;
-    author: Author;
-    title: string;
-    content: string;
-    skills: string[];
-  }
-  
-  export const posts: Post[] = [
+import { Post } from '../types'
+
+export const posts: Post[] = [
     {
       id: '1',
       author: {

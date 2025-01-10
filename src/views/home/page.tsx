@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { posts, Post as PostType } from '../../data/posts'
+import { Post as PostType } from '../../types'
+import { posts } from '../../data/posts'
 import Post from '../../components/homePage/post'
 import Sidebar from '../../components/homePage/sidebar'
 
