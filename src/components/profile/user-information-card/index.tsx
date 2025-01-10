@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { User } from "../../../types/user";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 type UserInformationProps = {
   profile: User;
@@ -66,6 +67,8 @@ export default function UserInformation({
             <p>
               <strong>Location:</strong> {profile.location}
             </p>
+
+            <Button onClick={() => {}}>chat with me</Button>
           </>
         )}
       </CardContent>
