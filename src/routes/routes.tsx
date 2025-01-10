@@ -7,6 +7,7 @@ import Home from "@/views/home/page";
 import ProfilePage from "@/components/profile";
 import SignUpModePage from "@/views/signup/mode/page";
 import UserSignUpPage from "@/views/signup/user/page";
+import DiscoverPage from "@/views/discover/page";
 import OrganizationSignUpPage from "@/views/signup/organization/page";
 import SignInPage from "@/views/signIn/page";
 import SignUpPage from "@/views/signup/page";
@@ -62,8 +63,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <ProfilePage />
-      }
+        element: <ProfilePage />,
+      },
+      {
+        path: "/discover",
+        element: <DiscoverPage />,
+      },
     ]
   }
 ]);
