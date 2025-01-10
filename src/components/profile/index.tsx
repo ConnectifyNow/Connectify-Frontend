@@ -16,6 +16,7 @@ export default function ProfilePage() {
       id: "1",
       name: "hila",
       email: "hila@gmail.com",
+      username: "hila123",
       bio: "hila is bla bla bla",
       skills: ["react", "java"],
       location: "kfar saba",
