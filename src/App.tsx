@@ -9,12 +9,26 @@ import {
 import { Input } from "./components/ui/input";
 import { Search, Users, MessageSquare, UserCheck, Layout } from "lucide-react";
 import RootLayout from "./RootLayout";
-import { Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import SignUpPage from "./components/signup/page";
+import SignInPage from "./components/signIn/page";
+import SignUpModePage from "./components/signup/mode/page";
+import OrganizationSignUpPage from "./components/signup/organization/page";
+import UserSignUpPage from "./components/signup/user/page";
 
 export default function Home() {
   
   return (
     <RootLayout>
+      <Routes> 
+      <Route path="/" > </Route>
+      <Route element={<Home />}> </Route>
+      <Route path="/signup" element={<SignUpPage />} > </Route>
+      <Route path="/signup/mode" element={<SignUpModePage />} > </Route>
+      <Route path="/signup/user" element={<UserSignUpPage />} > </Route>
+      <Route path="/signup/organization" element={<OrganizationSignUpPage />} > </Route>
+      <Route path="/signin" element={<SignInPage />} > </Route>
+      </Routes> 
       <div className="flex flex-col items-center">
         {/* Hero Section */}
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-primary">
