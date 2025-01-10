@@ -1,6 +1,6 @@
-import ChatPage from "@/chat/page";
 import Layout from "@/components/layout/layout";
-import ProfilePage from "@/components/profile/profile";
+import ProfilePage from "@/views/profile/page";
+import Chat from "@/views/chat/page";
 import DiscoverPage from "@/views/discover/page";
 import Filter from "@/views/filter/page";
 import Home from "@/views/home/page";
@@ -68,6 +68,6 @@ export const router = createBrowserRouter([
   },
   {
     path: "/chat",
-    element: <ChatPage />
+    element: <Chat />
   }
 ]);

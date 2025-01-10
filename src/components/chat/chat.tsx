@@ -45,7 +45,7 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
     const messageData = {
       message: input,
       currentUser,
-      selectedUser,
+      selectedUser
     };
 
     socket.emit("send-message", messageData);
@@ -57,8 +57,8 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
         id: Date.now().toString(),
         content: input,
         sender: currentUser,
-        timestamp: new Date(),
-      },
+        timestamp: new Date()
+      }
     ]);
 
     setInput("");
