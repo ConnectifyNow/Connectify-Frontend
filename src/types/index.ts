@@ -1,8 +1,12 @@
 export interface User {
   id: string;
-  username: string;
+  name: string;
   email: string;
   password: string;
+  bio: string;
+  skills: string[];
+  location: string;
+  avatar: string;
   role?: number;
   volunteer?: Volunteer;
   organization?: Organization;
@@ -34,5 +38,5 @@ export interface Occupation {
 
 export enum Role {
   Volunteer = 0,
-  Organization = 1
+  Organization = 1,
 }
