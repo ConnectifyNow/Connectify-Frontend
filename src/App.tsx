@@ -7,10 +7,12 @@ import {
   CardDescription
 } from "./components/ui/card";
 import { Input } from "./components/ui/input";
-import { Search, Users, MessageSquare, UserCheck } from "lucide-react";
+import { Search, Users, MessageSquare, UserCheck, Layout } from "lucide-react";
 import RootLayout from "./RootLayout";
+import { Route } from "react-router-dom";
 
 export default function Home() {
+  
   return (
     <RootLayout>
       <div className="flex flex-col items-center">
