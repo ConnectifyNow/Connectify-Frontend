@@ -1,29 +1,16 @@
 import { useState } from "react";
-import AboutCard from "@/components/profile/userAboutCard/userAboutCard";
-import UserInformation from "@/components/profile/userInformationCard/userInformationCard";
-import { User } from "../../types/index";
+import { ProfileData, Role, User } from "../../types/index";
 import useUserStore from "@/stores/setUserStore";
+import UserInformation from "@/components/profile/user-information-card";
+import UserAboutCard from "@/components/profile/user-about-card";
 
 export default function ProfilePage() {
-  const { user } = useUserStore();
+  const user = useUserStore();
 
   const [profile, setProfile] = useState<User>(user);
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleChange = (key: keyof User, value: string) => {
-    // setProfile((prev) => ({ ...prev, [key]: value }));
-    setProfile({
-      id: "1",
-      name: "hila",
-      email: "hila@gmail.com",
-      bio: "hila is bla bla bla",
-      skills: ["react", "java"],
-      location: "kfar saba",
-      avatar: "url",
-      password: "1",
-      username: "hila.ohana"
-    });
-  };
+  const handleChange = (key: keyof ProfileData, value: string) => {};
 
   const handleSkillsChange = (value: string) => {
     // setProfile((prev) => ({
@@ -37,18 +24,36 @@ export default function ProfilePage() {
     setIsEditing(false);
   };
 
+  let profileData = {} as ProfileData;
+
+  if (user?.role === Role.Volunteer && user.volunteer) {
+    profileData = {
+      ...user.volunteer,
+      name: `${user.volunteer?.firstName} ${user.volunteer?.lastName}`,
+      role: Role.Volunteer,
+      email: user.email
+    };
+  } else if (user?.role === Role.Organization && user.organization) {
+    profileData = {
+      ...user.organization,
+      role: Role.Organization,
+      email: user.email,
+      about: user.organization.description
+    };
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Profile</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <UserInformation
-          profile={profile}
+          profileData={profileData}
           isEditing={isEditing}
           changeProfile={setProfile}
           handleChange={handleChange}
         />
-        <AboutCard
-          profile={profile}
+        <UserAboutCard
+          profileData={profileData}
           isEditing={isEditing}
           setIsEditing={setIsEditing}
           handleChange={handleChange}

@@ -1,30 +1,49 @@
-import { User } from "@/types";
+import { Role, User } from "@/types";
 import { create } from "zustand";
 
 const initialState: User = {
   id: "",
-  name: "hila ohana",
   username: "hilaohana",
   email: "hila.ohana@example.com",
   password: "1234",
-  //0 means organization, 1 means user
-  role: undefined,
-  avatar: "HI",
-  bio: "Passionate web developer with 5 years of experience. Always eager to learn and contribute to meaningful projects.",
-  skills: ["React", "Node.js", "TypeScript", "Python"],
-  location: "kfar saba"
+  role: Role.Volunteer,
+  volunteer: {
+    phone: "1234567890",
+    firstName: "Hila",
+    lastName: "Ohana",
+    city: "Tel Aviv",
+    age: 30,
+    skills: [
+      { id: 1, name: "React" },
+      { id: 2, name: "Node.js" },
+      { id: 3, name: "TypeScript" }
+    ],
+    userId: "",
+    about: "I am a software developer"
+  },
+  organization: {
+    id: "123",
+    city: "Tel Aviv",
+    name: "Hila Ohana",
+    description: "Software Developer",
+    focusAreas: [],
+    websiteLink: ""
+  }
 };
 
-interface UserState {
-  user: User;
+type State = User;
+
+type Action = {
+  updateIsLoggedIn: (isLoggedIn: State["isLoggedIn"]) => void;
   setUser: (user: User) => void;
   resetUser: () => void;
-}
+};
 
-const useUserStore = create<UserState>((set) => ({
-  user: initialState,
-  setUser: (user: User) => set({ user }),
-  resetUser: () => set({ user: initialState })
+const useUserStore = create<State & Action>((set) => ({
+  ...initialState,
+  updateIsLoggedIn: (isLoggedIn) => set(() => ({ isLoggedIn })),
+  setUser: (user: User) => set(() => ({ ...user })),
+  resetUser: () => set(() => ({ ...initialState }))
 }));
 
 export default useUserStore;
