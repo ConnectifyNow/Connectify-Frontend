@@ -3,7 +3,7 @@ export interface User {
   username: string;
   email: string;
   password: string;
-  role: number;
+  role?: number;
   volunteer?: Volunteer;
   organization?: Organization;
 }
@@ -34,6 +34,5 @@ export interface Occupation {
 
 export enum Role {
   Volunteer = 0,
-  Organization = 1,
-  Admin = 2
+  Organization = 1
 }

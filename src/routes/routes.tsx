@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Onboarding from "@/views/onboarding/page";
 import Filter from "@/views/filter/page";
 import Chat from "@/views/chat/page";
@@ -32,9 +32,3 @@ export const router = createBrowserRouter([
     ]
   }
 ]);
-
-const App = () => {
-  return <RouterProvider router={router} />;
-};
-
-export default App;

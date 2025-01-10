@@ -6,7 +6,7 @@ const initialState: User = {
   username: "",
   email: "",
   password: "",
-  role: 0
+  role: undefined
 };
 
 interface UserState {
