@@ -14,7 +14,7 @@ export default function PostCard({ post }: { post: Post }) {
         <div>
           <h3 className="font-semibold text-lg">{post.author.name}</h3>
           <h4 className="text-gray-600">{post.title}</h4>
-          <span className="text-sm text-gray-500">{post.author.type === 'user' ? 'Volunteer' : 'Association'}</span>
+          <span className="text-sm text-gray-500">{post.author.type === 'user' ? 'Volunteer' : 'Organization'}</span>
         </div>
       </div>
       <p className="text-gray-800 mb-4">{post.content}</p>
