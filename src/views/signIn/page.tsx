@@ -6,9 +6,18 @@ import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import useUserStore from "@/stores/setUserStore";
+import { useMutation } from "react-query";
+import { useToast } from "../../hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
+import {
+  signin as signinRequest,
+  saveTokens,
+} from "../../services/authService";
 
 export default function SignInPage() {
+  const { toast } = useToast();
   // TODO: Change this
+
   const updateIsLoggedIn = useUserStore((state) => state.updateIsLoggedIn);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,6 +25,11 @@ export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
   const user = useUserStore();
   const router = useNavigate();
+
+  const signinMutation = useMutation(
+    ({ email, password }: { email: string; password: string }) =>
+      signinRequest(email, password)
+  );
 
   const handleSignIn = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -25,21 +39,26 @@ export default function SignInPage() {
 
     try {
       console.log("Signing in with:", { email, password });
-      user.setUser({
-        id: "mock-id",
-        username: "mock-username",
+      const { data: signinRes } = await signinMutation.mutateAsync({
         email,
         password,
-        // Add a random role for the user
-        role: Math.floor(Math.random() * 1),
-        name: "dsadsa",
+      });
+      saveTokens({
+        accessToken: signinRes.accessToken,
+        refreshToken: signinRes.refreshToken,
+      });
+      user.setUser(signinRes.user);
+
+      toast({
+        title: "Logged in successfully",
+        action: (
+          <ToastAction altText="Logged in successfully">login</ToastAction>
+        ),
       });
 
       router("/");
     } catch {
-      setError(
-        "Failed to sign in. Please check your credentials and try again."
-      );
+      setError("Failed to sign in.");
     } finally {
       setIsLoading(false);
     }
