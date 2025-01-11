@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import useUserStore from "@/stores/setUserStore";
 import { useMutation } from "react-query";
-import { useToast } from "@/components/hooks/use-toast";
+import { useToast } from "../../hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import {
   signin as signinRequest,
