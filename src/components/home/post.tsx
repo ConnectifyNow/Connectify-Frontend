@@ -1,14 +1,11 @@
-import { randomAvatarUrl } from "@/utils/functions";
-import { useState } from "react";
-import { Heart, MessageCircle } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Post, Comment, Role } from "../../types";
-import useUserStore from "@/stores/setUserStore";
-import { Trash2 } from "lucide-react";
-import { Edit } from "lucide-react";
-import { EditPostModal } from "@/components/shared/Posts/edit-post-modal";
 import { ConfirmDialog } from "@/components/shared/Posts/confirm-dialog";
+import { EditPostModal } from "@/components/shared/Posts/edit-post-modal";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import useUserStore from "@/stores/setUserStore";
+import { Edit, Heart, MessageCircle, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Comment, Post, Role } from "../../types";
 
 interface PostProps {
   post: Post;
@@ -93,11 +90,19 @@ export default function PostCard({
         </div>
         {showEditDelete && isCurrentUserPost && (
           <div className="flex space-x-2">
-            <Button variant="ghost" size="sm" onClick={() => setIsEditModalOpen(true)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsEditModalOpen(true)}
+            >
               <Edit className="w-4 h-4 mr-2" />
               Edit
             </Button>
-            <Button variant="ghost" size="sm" onClick={() => setIsDeleteDialogOpen(true)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsDeleteDialogOpen(true)}
+            >
               <Trash2 className="w-4 h-4 mr-2" />
               Delete
             </Button>
@@ -107,17 +112,34 @@ export default function PostCard({
       <p className="text-gray-800 mb-4">{post.content}</p>
       <div className="flex flex-wrap gap-2 mb-4">
         {post.skills.map((skill) => (
-          <span key={skill.id} className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+          <span
+            key={skill.id}
+            className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
+          >
             {skill.name}
           </span>
         ))}
       </div>
       <div className="flex items-center space-x-4">
-        <Button variant="ghost" size="sm" onClick={handleLike} className="flex items-center space-x-1">
-          <Heart className={`w-5 h-5 ${post.likes > 0 ? 'fill-red-500 text-red-500' : ''}`} />
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleLike}
+          className="flex items-center space-x-1"
+        >
+          <Heart
+            className={`w-5 h-5 ${
+              post.likes > 0 ? "fill-red-500 text-red-500" : ""
+            }`}
+          />
           <span>{post.likes}</span>
         </Button>
-        <Button variant="ghost" size="sm" onClick={() => setShowComments(!showComments)} className="flex items-center space-x-1">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowComments(!showComments)}
+          className="flex items-center space-x-1"
+        >
           <MessageCircle className="w-5 h-5" />
           <span>{post.comments.length}</span>
         </Button>
@@ -135,7 +157,9 @@ export default function PostCard({
                     height={24}
                     className="rounded-full mr-2"
                   />
-                  <span className="font-semibold text-sm">{comment.author.name}</span>
+                  <span className="font-semibold text-sm">
+                    {comment.author.name}
+                  </span>
                 </div>
                 <span className="text-xs text-gray-500">
                   {new Date(comment.createdAt).toLocaleString()}
@@ -148,7 +172,11 @@ export default function PostCard({
                 onClick={() => handleCommentLike(comment.id)}
                 className="flex items-center space-x-1"
               >
-                <Heart className={`w-4 h-4 ${comment.likes > 0 ? 'fill-red-500 text-red-500' : ''}`} />
+                <Heart
+                  className={`w-4 h-4 ${
+                    comment.likes > 0 ? "fill-red-500 text-red-500" : ""
+                  }`}
+                />
                 <span className="text-xs">{comment.likes}</span>
               </Button>
             </div>
@@ -160,7 +188,9 @@ export default function PostCard({
               placeholder="Add a comment..."
               className="mb-2"
             />
-            <Button type="submit" size="sm">Add Comment</Button>
+            <Button type="submit" size="sm">
+              Add Comment
+            </Button>
           </form>
         </div>
       )}
@@ -182,5 +212,5 @@ export default function PostCard({
         </>
       )}
     </div>
-  )
+  );
 }

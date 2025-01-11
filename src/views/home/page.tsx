@@ -41,10 +41,12 @@ export default function Home() {
   });
 
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
-  const paginatedPosts = filteredPosts.slice(
-    (currentPage - 1) * POSTS_PER_PAGE,
-    currentPage * POSTS_PER_PAGE
-  );
+  // const paginatedPosts = filteredPosts.slice(
+  //   (currentPage - 1) * POSTS_PER_PAGE,
+  //   currentPage * POSTS_PER_PAGE
+  // );
+
+  const paginatedPosts: any = [];
 
   return (
     <main className="min-h-screen bg-gray-100 py-12">
@@ -105,7 +107,7 @@ export default function Home() {
                 </Pagination>
               </div>
             ) : (
-              <NoPostsScreen />
+              <NoPostsScreen role={""} />
             )}
           </div>
         </div>

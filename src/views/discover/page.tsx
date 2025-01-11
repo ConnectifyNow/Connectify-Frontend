@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { organizations, volunteers } from "../../data/directory";
 import OrganizationCard from "../../components/discover/organization-card";
@@ -7,6 +5,7 @@ import VolunteerCard from "../../components/discover/volunteer-card";
 import Sidebar from "../../components/discover/sidebar";
 import { Pagination } from "@/components/ui/pagination";
 import { Organization, Volunteer } from "@/types";
+import { NoPostsScreen } from "@/components/noPosts/noPosts";
 
 const ITEMS_PER_PAGE = 3;
 
@@ -49,7 +48,7 @@ export default function Directory() {
           </div>
           <div className="w-3/4">
             <div className="space-y-6">
-              {paginatedItems.map((item) =>
+              {paginatedItems.map((item: any) =>
                 filters.mode === "organizations" ? (
                   <OrganizationCard
                     key={(item as Organization).id}
@@ -63,37 +62,46 @@ export default function Directory() {
                 )
               )}
             </div>
-            <div className="mt-8 flex justify-center">
-              <Pagination>
-                <Pagination.Content>
-                  <Pagination.Item>
-                    <Pagination.Previous
-                      onClick={() =>
-                        setCurrentPage((prev) => Math.max(prev - 1, 1))
-                      }
-                      className={currentPage === 1 ? "disabled" : ""}
-                    />
-                  </Pagination.Item>
-                  {[...Array(totalPages)].map((_, index) => (
-                    <Pagination.Item key={index}>
-                      <Pagination.Link
-                        isActive={currentPage === index + 1}
-                        onClick={() => setCurrentPage(index + 1)}>
-                        {index + 1}
-                      </Pagination.Link>
+            {paginatedItems.length > 0 ? (
+              <div className="mt-8 flex justify-center">
+                <Pagination>
+                  <Pagination.Content>
+                    <Pagination.Item>
+                      <Pagination.Previous
+                        onClick={() =>
+                          setCurrentPage((prev) => Math.max(prev - 1, 1))
+                        }
+                        className={currentPage === 1 ? "disabled" : ""}
+                      />
                     </Pagination.Item>
-                  ))}
-                  <Pagination.Item>
-                    <Pagination.Next
-                      onClick={() =>
-                        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                      }
-                      className={currentPage === totalPages ? "disabled" : ""}
-                    />
-                  </Pagination.Item>
-                </Pagination.Content>
-              </Pagination>
-            </div>
+                    {[...Array(totalPages)].map((_, index) => (
+                      <Pagination.Item key={index}>
+                        <Pagination.Link
+                          isActive={currentPage === index + 1}
+                          onClick={() => setCurrentPage(index + 1)}
+                        >
+                          {index + 1}
+                        </Pagination.Link>
+                      </Pagination.Item>
+                    ))}
+                    <Pagination.Item>
+                      <Pagination.Next
+                        onClick={() =>
+                          setCurrentPage((prev) =>
+                            Math.min(prev + 1, totalPages)
+                          )
+                        }
+                        className={currentPage === totalPages ? "disabled" : ""}
+                      />
+                    </Pagination.Item>
+                  </Pagination.Content>
+                </Pagination>
+              </div>
+            ) : filters.mode === "organizations" ? (
+              <NoPostsScreen role={"organizations"} />
+            ) : (
+              <NoPostsScreen role={"volunteers"} />
+            )}
           </div>
         </div>
       </div>
