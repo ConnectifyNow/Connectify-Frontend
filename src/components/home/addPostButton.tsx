@@ -29,7 +29,11 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
   const currentUser = useUserStore();
 
   const handleSkillsChange = (value: number) => {
-    setSelectedSkills([...selectedSkills, value]);
+    setSelectedSkills((prev) =>
+      prev.includes(value)
+        ? prev.filter((skill) => skill !== value)
+        : [...prev, value]
+    );
   };
 
   const handleSubmit = (event: React.FormEvent) => {
