@@ -16,6 +16,8 @@ import useUserStore from "@/stores/setUserStore";
 import { Post, Role } from "@/types";
 import { skills } from "@/data/posts";
 import { Plus } from "lucide-react";
+import { Card, CardContent } from "../ui/card";
+import { ImageUpload } from "./imageUpload";
 
 interface AddPostButtonProps {
   onAddPost: (post: Post) => void;
@@ -119,6 +121,12 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
               />
             </ScrollArea>
           </div>
+          <Card>
+            <CardContent className="pt-6">
+              <ImageUpload />
+            </CardContent>
+          </Card>
+
           <Button type="submit">Create Post</Button>
         </form>
       </DialogContent>
