@@ -66,4 +66,60 @@ export const posts: Post[] = [
     comments: [],
     likes: 0,
   },
+  {
+    id: "4",
+    author: {
+      id: "u2",
+      name: "Jaגדשגשדne Smith",
+      type: "user",
+    },
+    title: "Offering Mentorship in Data Science",
+    content:
+      "I have 5 years of experience in Data Science and Machine Learning. Happy to mentor beginners!",
+    skills: getRandomItems(skills, 3),
+    comments: [],
+    likes: 0,
+  },
+  {
+    id: "5",
+    author: {
+      id: "u2",
+      name: "Jane Smith",
+      type: "user",
+    },
+    title: "Offering Mentorship in Data Science",
+    content:
+      "I have 5 years of experience in Data Science and Machine Learning. Happy to mentor beginners!",
+    skills: getRandomItems(skills, 3),
+    comments: [],
+    likes: 0,
+  },
+  {
+    id: "6",
+    author: {
+      id: "u2",
+      name: "Jane Smith",
+      type: "user",
+    },
+    title: "Offering Mentorship in Data Science",
+    content:
+      "I have 5 years of experience in Data Science and Machine Learning. Happy to mentor beginners!",
+    skills: getRandomItems(skills, 3),
+    comments: [],
+    likes: 0,
+  },
+  {
+    id: "7",
+    author: {
+      id: "u2",
+      name: "Jane Smith",
+      type: "user",
+    },
+    title: "Offering Mentorship in Data Science",
+    content:
+      "I have 5 years of experience in Data Science and Machine Learning. Happy to mentor beginners!",
+    skills: getRandomItems(skills, 3),
+    comments: [],
+    likes: 0,
+  },
 ];
