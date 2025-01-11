@@ -53,7 +53,7 @@ export function EditPostModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent aria-describedby="edit-post" className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Post</DialogTitle>
         </DialogHeader>
