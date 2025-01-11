@@ -1,16 +1,12 @@
 export interface User {
   id: string;
-  name: string;
+  username: string;
   email: string;
   password: string;
-  username: string;
-  bio?: string;
-  skills?: string[];
-  location?: string;
-  avatar?: string;
-  role?: number;
+  role?: Role;
   volunteer?: Volunteer;
   organization?: Organization;
+  isLoggedIn?: boolean;
 }
 
 export interface Volunteer {
@@ -19,20 +15,29 @@ export interface Volunteer {
   lastName: string;
   city: string;
   age: number;
-  occupations: Occupation[];
-  imageUrl: string;
+  skills: Skill[];
+  imageUrl?: string;
   about: string;
+  userId: string;
 }
 
 export interface Organization {
   id: string;
-  city: number;
+  city: string;
   name: string;
   description: string;
-  imageUrl: string;
+  imageUrl?: string;
+
+  focusAreas: FocusArea[];
+  websiteLink: string;
 }
 
-export interface Occupation {
+export interface Skill {
+  id: number;
+  name: string;
+}
+
+export interface FocusArea {
   id: number;
   name: string;
 }
@@ -40,8 +45,26 @@ export interface Occupation {
 export interface Author {
   id: string;
   name: string;
-  avatar: string;
-  type: 'user' | 'organization';
+  avatar?: string;
+  type: "user" | "organization";
+}
+
+export interface Tag {
+  type: tagType;
+  text: FocusArea | Skill;
+  bgColor: string;
+  textColor: string;
+}
+
+export interface GeneralCardProps {
+  id: string;
+  name: string;
+  imageUrl: string;
+  description: string;
+  tags: Tag[];
+  linkText?: string;
+  linkUrl?: string;
+  additionalInfo?: string;
 }
 
 export interface Post {
@@ -49,10 +72,35 @@ export interface Post {
   author: Author;
   title: string;
   content: string;
-  skills: string[];
+  skills: Skill[] | FocusArea[];
+  comments: Comment[];
 }
+
+export interface Comment {
+  id: string;
+  author: Author;
+  content: string;
+  createdAt: string;
+}
+
 
 export enum Role {
   Volunteer = 0,
-  Organization = 1
+  Organization = 1,
+}
+
+export enum tagType {
+  skill = "skill",
+  focusArea = "focus-area",
+}
+
+export interface ProfileData {
+  name: string;
+  email: string;
+  role: Role;
+  imageUrl?: string;
+  city: string;
+  skills?: Skill[];
+  username: string;
+  about?: string;
 }

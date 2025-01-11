@@ -1,7 +1,7 @@
 import useUserStore from "@/stores/setUserStore";
 
 export default function FilterPage() {
-  const { user } = useUserStore();
+  const user = useUserStore();
 
   return (
     <div className="container mx-auto px-4 py-8">

@@ -1,11 +1,12 @@
-import { Post } from '../../types'
+import { randomAvatarUrl } from "@/utils/functions";
+import { Post } from "../../types";
 
 export default function PostCard({ post }: { post: Post }) {
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
       <div className="flex items-center mb-4">
         <img
-          src={post.author.avatar}
+          src={post.author.avatar ?? randomAvatarUrl()}
           alt={post.author.name}
           width={40}
           height={40}
@@ -14,18 +15,22 @@ export default function PostCard({ post }: { post: Post }) {
         <div>
           <h3 className="font-semibold text-lg">{post.author.name}</h3>
           <h4 className="text-gray-600">{post.title}</h4>
-          <span className="text-sm text-gray-500">{post.author.type === 'user' ? 'Volunteer' : 'Organization'}</span>
+          <span className="text-sm text-gray-500">
+            {post.author.type === "user" ? "Volunteer" : "Organization"}
+          </span>
         </div>
       </div>
       <p className="text-gray-800 mb-4">{post.content}</p>
       <div className="flex flex-wrap gap-2">
         {post.skills.map((skill) => (
-          <span key={skill} className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-            {skill}
+          <span
+            key={skill.id}
+            className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
+          >
+            {skill.name}
           </span>
         ))}
       </div>
     </div>
-  )
+  );
 }
-

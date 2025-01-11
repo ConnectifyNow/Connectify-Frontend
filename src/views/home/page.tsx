@@ -1,17 +1,33 @@
-import { useState } from 'react'
-import { Post as PostType } from '../../types'
-import { posts } from '../../data/posts'
-import Post from '../../components/homePage/post'
-import Sidebar from '../../components/homePage/sidebar'
+import { useState } from "react";
+import { posts } from "../../data/posts";
+import { posts as initialPosts } from "../../data/posts";
+import { Post as PostType } from "../../types";
+import { AddPostButton } from "@/components/home/addPostButton";
+import Post from "../../components/home/post";
+import Sidebar from "../../components/home/sidebar";
 
 export default function Home() {
-  const [filters, setFilters] = useState({ postType: 'all', skills: [] as string[] })
+  const [filters, setFilters] = useState({
+    postType: "all",
+    skillsIds: [] as number[],
+  });
+
+  const [posts, setPosts] = useState<PostType[]>(initialPosts);
+
+  const handleAddPost = (newPost: PostType) => {
+    setPosts([newPost, ...posts]);
+  };
 
   const filteredPosts = posts.filter((post) => {
-    const typeMatch = filters.postType === 'all' || post.author.type === filters.postType
-    const skillsMatch = filters.skills.length === 0 || filters.skills.some(skill => post.skills.includes(skill))
-    return typeMatch && skillsMatch
-  })
+    const typeMatch =
+      filters.postType === "all" || post.author.type === filters.postType;
+    const skillsMatch =
+      filters.skillsIds.length === 0 ||
+      filters.skillsIds.some((skillId) =>
+        post.skills.map((skill) => skill.id).includes(skillId)
+      );
+    return typeMatch && skillsMatch;
+  });
 
   return (
     <main className="min-h-screen bg-gray-100 py-12">
@@ -30,6 +46,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <AddPostButton onAddPost={handleAddPost} />
     </main>
-  )
+  );
 }

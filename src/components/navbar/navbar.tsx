@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import lightBulbIcon from "@/assets/light-bulb.svg";
 import "./navbar.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { MessageSquareText, Compass, House, UserPen } from "lucide-react";
+import useUserStore from "@/stores/setUserStore";
 
 export function Navbar() {
-  const router = useNavigate();
+  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
 
   return (
     <nav className="bg-white shadow-sm">
@@ -19,40 +21,49 @@ export function Navbar() {
             </Link>
           </div>
           <div className="flex items-center">
-            <Link
-              to="/"
-              className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Home
-            </Link>
-            <Link
-              to="/filter"
-              className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Find Help
-            </Link>
-            <Link
-              to="/chat"
-              className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Chat
-            </Link>
-            <Link
-              to="/profile"
-              className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Profile
-            </Link>
-            <Button
-              variant="outline"
-              className="ml-4"
-              onClick={() => router("/signin")}
-            >
-              Sign In
-            </Button>
-            <Button className="ml-2" onClick={() => router("/signup")}>
-              Sign Up
-            </Button>
+            {isLoggedIn ? (
+              <>
+                <Link
+                  to="/home"
+                  className="flex items-center gap-2 text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  <House />
+                  Home
+                </Link>
+                <Link
+                  to="/discover"
+                  className="flex items-center gap-2 text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  <Compass />
+                  Discover
+                </Link>
+                <Link
+                  to="/chat"
+                  className="flex items-center gap-2 text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  <MessageSquareText />
+                  Chat
+                </Link>
+                <Link
+                  to="/profile"
+                  className="flex items-center gap-2 text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  <UserPen />
+                  Profile
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/signin">
+                  <Button variant="outline" className="ml-4">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button className="ml-2">Sign Up</Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

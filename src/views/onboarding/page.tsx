@@ -6,8 +6,19 @@ import {
   CardDescription
 } from "@/components/ui/card";
 import { Users, MessageSquare, UserCheck } from "lucide-react";
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function OnBoarding() {
+  const aboutRef = useRef<HTMLElement | null>(null);
+  const router = useNavigate();
+
+  const handleLearnMoreClick = () => {
+    if (aboutRef.current) {
+      aboutRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="flex flex-col items-center">
       {}
@@ -26,6 +37,7 @@ export default function OnBoarding() {
               <Button
                 size="lg"
                 className="bg-white text-primary hover:bg-gray-100"
+                onClick={() => router("/signin")}
               >
                 Get Started
               </Button>
@@ -33,6 +45,7 @@ export default function OnBoarding() {
                 size="lg"
                 variant="outline"
                 className="bg-primary text-white border-white hover:bg-primary-foreground"
+                onClick={handleLearnMoreClick}
               >
                 Learn More
               </Button>
@@ -41,7 +54,11 @@ export default function OnBoarding() {
         </div>
       </section>
 
-      <section className="w-full py-2 md:py-24 lg:py-32 ">
+      <section
+        className="w-full py-2 md:py-24 lg:py-32"
+        id="about"
+        ref={aboutRef}
+      >
         <div className="px-4 md:px-6">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">
             About The Platform
@@ -113,7 +130,11 @@ export default function OnBoarding() {
               Join Connectify today and start your journey of meaningful
               collaboration and impact.
             </p>
-            <Button size="lg" className="mt-4">
+            <Button
+              size="lg"
+              className="mt-4"
+              onClick={() => router("/signup")}
+            >
               Sign Up Now
             </Button>
           </div>
