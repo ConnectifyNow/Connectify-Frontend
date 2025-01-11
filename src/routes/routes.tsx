@@ -1,5 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
-<<<<<<< Updated upstream
+import { createBrowserRouter, redirect } from "react-router-dom";
 import Onboarding from "@/views/onboarding/page";
 import Filter from "@/views/filter/page";
 import Chat from "@/views/chat/page";
@@ -12,22 +11,21 @@ import OrganizationSignUpPage from "@/views/signup/organization/page";
 import SignInPage from "@/views/signIn/page";
 import SignUpPage from "@/views/signup/page";
 import Layout from "@/components/layout/layout";
-=======
 import { getTokens } from "@/services/authService";
->>>>>>> Stashed changes
 
-// const authLoader = async () => {
-//   const tokens = getTokens();
-//   if (tokens.accessToken && tokens.refreshToken) {
-//     return null;
-//   }
-//   return redirect("/login");
-// };
+const authLoader = async () => {
+  const tokens = getTokens();
+  if (tokens.accessToken && tokens.refreshToken) {
+    return null;
+  }
+  return redirect("/signin");
+};
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    loader: authLoader,
     children: [
       {
         path: "/",
