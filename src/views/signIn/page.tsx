@@ -79,9 +79,9 @@ export default function SignInPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 flex justify-center items-center min-h-screen">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md" onChange={() => signin}>
         <CardHeader>
-          <CardTitle className="text-2xl text-center" onClick={signin}>
+          <CardTitle className="text-2xl text-center">
             Sign In to Connectify
           </CardTitle>
         </CardHeader>
