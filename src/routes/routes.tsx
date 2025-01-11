@@ -71,10 +71,10 @@ export const router = createBrowserRouter([
         path: "/discover",
         element: <DiscoverPage />,
       },
+      {
+        path: "/chat",
+        element: <Chat />,
+      },
     ],
-  },
-  {
-    path: "/chat",
-    element: <Chat />,
   },
 ]);
