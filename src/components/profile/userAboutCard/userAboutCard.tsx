@@ -3,7 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "../../ui/textarea";
 import { Label } from "@/components/ui/label";
+import axios from "axios";
 import CustomSelect from "@/components/shared/customSelect";
+import OpenAI from "openai";
+import { useEffect, useState } from "react";
+import { getAiDescription } from "@/services/aiService";
 
 type UserAboutProps = {
   profileData: ProfileData;
@@ -17,16 +21,12 @@ type UserAboutProps = {
 const skills = [
   { id: 1, name: "Software Developer" },
   { id: 2, name: "Designer" },
-  { id: 3, name: "Project Manager" }
+  { id: 3, name: "Project Manager" },
 ];
 
-const generateDescription = (organizationName: string) => {
-  console.log({ generateDescription: organizationName });
+const handleSkillsChange = (value: string) => {
+  // TODO: Implement handleSkillsChange
 };
-
-// const handleSkillsChange = (value: string) => {
-//   // TODO: Implement handleSkillsChange
-// };
 
 export default function UserAboutCard({
   profileData,
@@ -34,8 +34,36 @@ export default function UserAboutCard({
   setIsEditing,
   handleChange,
   handleSkillsChange,
-  saveProfile
+  saveProfile,
 }: UserAboutProps) {
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [cooldownTime, setCooldownTime] = useState(0);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isDisabled && cooldownTime > 0) {
+      timer = setInterval(() => {
+        setCooldownTime((prevTime) => prevTime - 1);
+      }, 1000);
+    }
+
+    if (cooldownTime === 0) {
+      setIsDisabled(false);
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [isDisabled, cooldownTime]);
+
+  const handleGenerateClick = async (profileData: ProfileData) => {
+    // profileData.about = await generateDescription(profileData.username);
+    const response = await getAiDescription(profileData.username);
+    profileData.about = response.data.description;
+    setIsDisabled(true);
+    setCooldownTime(20);
+  };
+
   return (
     <Card className="md:col-span-2">
       <CardHeader>
@@ -58,12 +86,15 @@ export default function UserAboutCard({
             </div>
             {profileData.role === Role.Organization && (
               <Button
-                size="sm"
-                onClick={() => generateDescription(profileData.username)}
-              >
-                Generate Description
+                onClick={() => handleGenerateClick(profileData)}
+                disabled={isDisabled}
+                className="w-55">
+                {isDisabled
+                  ? `Wait ${cooldownTime}s`
+                  : "Generate Description using AI"}
               </Button>
             )}
+
             <div>
               <CustomSelect
                 options={skills}
@@ -82,8 +113,7 @@ export default function UserAboutCard({
                 {(profileData.skills ?? []).map((skill) => (
                   <span
                     key={skill.id}
-                    className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-sm"
-                  >
+                    className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-sm">
                     {skill.name}
                   </span>
                 ))}

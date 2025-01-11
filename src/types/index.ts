@@ -104,3 +104,7 @@ export interface ProfileData {
   username: string;
   about?: string;
 }
+
+export interface AiDescription {
+  description: string;
+}
