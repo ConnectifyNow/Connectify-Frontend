@@ -49,16 +49,16 @@ export const resetTokens = () => {
   localStorage.removeItem(REFRESH_TOKEN_KEY);
 };
 
-type LoginResponse = {
+type SigninResponse = {
   user: User;
   accessToken: string;
   refreshToken: string;
 };
-export const login = async (
+export const signin = async (
   email: string,
   password: string
-): Promise<AxiosResponse<LoginResponse>> => {
-  return await apiClient.post("/auth/login", { email, password });
+): Promise<AxiosResponse<SigninResponse>> => {
+  return await apiClient.post("/auth/signin", { email, password });
 };
 
 export const logout = async () => {
@@ -69,20 +69,20 @@ export const logout = async () => {
   );
 };
 
-type RegistrationResponse = {
+type SignupResponse = {
   user: User;
   accessToken: string;
   refreshToken: string;
 };
 
-export const register = async (
+export const signup = async (
   name: string,
   email: string,
   password: string,
   type: string,
   bio: string
-): Promise<AxiosResponse<RegistrationResponse>> => {
-  return await apiClient.post("/auth/register", {
+): Promise<AxiosResponse<SignupResponse>> => {
+  return await apiClient.post("/auth/signup", {
     name,
     email,
     password,

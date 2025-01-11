@@ -2,7 +2,6 @@ import { createBrowserRouter, redirect } from "react-router-dom";
 import Onboarding from "@/views/onboarding/page";
 import Filter from "@/views/filter/page";
 import Chat from "@/views/chat/page";
-
 import Home from "@/views/home/page";
 import ProfilePage from "@/components/profile";
 import SignUpModePage from "@/views/signup/mode/page";
@@ -65,23 +64,16 @@ export const router = createBrowserRouter([
       },
       {
         path: "/profile",
-<<<<<<< Updated upstream
-        element: <ProfilePage />
-      }
-    ]
-  }
-=======
         element: <ProfilePage />,
       },
-      {
-        path: "/discover",
-        element: <DiscoverPage />,
-      },
+      // {
+      //   path: "/discover",
+      //   element: <DiscoverPage />,
+      // },
     ],
   },
   {
     path: "/chat",
     element: <Chat />,
   },
->>>>>>> Stashed changes
 ]);
