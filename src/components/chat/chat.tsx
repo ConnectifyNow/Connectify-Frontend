@@ -82,7 +82,7 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
         )}
         <span className="font-semibold">{selectedUser.name}</span>
       </div>
-      <ScrollArea className="h-[700px] rounded-md border p-4 ">
+      <ScrollArea className="h-[700px] rounded-md p-4 ">
         <div className=" p-4 space-y-4">
           {messages.map((message) => (
             <div

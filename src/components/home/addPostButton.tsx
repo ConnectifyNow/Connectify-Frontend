@@ -1,19 +1,22 @@
 import { useState } from "react";
-import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogTrigger,
   DialogContent,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger
+  DialogTitle
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Post } from "@/types";
+import CustomSelect from "@/components/shared/customSelect";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import useUserStore from "@/stores/setUserStore";
-import { Role } from "@/types";
+import { Post, Role } from "@/types";
+import { skills } from "@/data/posts";
+import { Plus } from "lucide-react";
+
 interface AddPostButtonProps {
   onAddPost: (post: Post) => void;
 }
@@ -22,11 +25,21 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [skills, setSkills] = useState("");
+  const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
   const currentUser = useUserStore();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSkillsChange = (value: number) => {
+    setSelectedSkills([...selectedSkills, value]);
+  };
+
+  const handleSubmit = (event: React.FormEvent) => {
+    const selectedSkillsObjects =
+      selectedSkills.map((id) => skills.find((skill) => skill.id === id)) ?? [];
+    const filteredSelectedSkills = selectedSkillsObjects.filter(
+      (selectedSkill) => selectedSkill !== undefined
+    );
+
+    event.preventDefault();
     const newPost: Post = {
       id: Date.now().toString(),
       author: {
@@ -40,9 +53,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
       },
       title,
       content,
-      skills: skills
-        .split(",")
-        .map((skill, index) => ({ id: index + 1, name: skill.trim() })),
+      skills: filteredSelectedSkills,
       comments: [],
       likes: 0
     };
@@ -54,7 +65,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
   const resetForm = () => {
     setTitle("");
     setContent("");
-    setSkills("");
+    setSelectedSkills([]);
   };
 
   return (
@@ -92,14 +103,17 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
           </div>
           <div className="space-y-2">
             <Label htmlFor="skills">
-              Skills/Requirements (comma-separated)
+              {currentUser.role === Role.Organization
+                ? "Requirements"
+                : "Skills"}
             </Label>
-            <Input
-              id="skills"
-              value={skills}
-              onChange={(e) => setSkills(e.target.value)}
-              required
-            />
+            <ScrollArea className="h-32 rounded-md ">
+              <CustomSelect
+                options={skills}
+                selectedOptions={selectedSkills}
+                onChange={handleSkillsChange}
+              />
+            </ScrollArea>
           </div>
           <Button type="submit">Create Post</Button>
         </form>

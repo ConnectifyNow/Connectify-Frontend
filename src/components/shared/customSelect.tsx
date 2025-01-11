@@ -3,33 +3,31 @@ import { Button } from "@/components/ui/button";
 
 interface customSelectProps {
   options: { id: number; name: string }[];
-  selectedOptions: string[];
-  onChange: (value: string) => void;
+  selectedOptions: number[];
+  onChange: (value: number) => void;
 }
 
 const customSelect: React.FC<customSelectProps> = ({
   options,
   selectedOptions,
-  onChange,
+  onChange
 }) => {
-  const handleSelectedChange = (value: string) => {
+  const handleSelectedChange = (value: number) => {
     onChange(value);
   };
 
   return (
     <div className="space-y-2">
-      <label>skills</label>
       <div className="flex flex-wrap gap-2">
         {options.map((option: any) => (
           <Button
             key={option.id}
             type="button"
             variant={
-              selectedOptions.includes(option.id.toString())
-                ? "default"
-                : "outline"
+              selectedOptions.includes(option.id) ? "default" : "outline"
             }
-            onClick={() => handleSelectedChange(option.id.toString())}>
+            onClick={() => handleSelectedChange(option.id)}
+          >
             {option.name}
           </Button>
         ))}
