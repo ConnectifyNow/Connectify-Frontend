@@ -33,7 +33,7 @@ export default function UserAboutCard({
   isEditing,
   setIsEditing,
   handleChange,
-  handleSkillsChange,
+  ,
   saveProfile,
 }: UserAboutProps) {
   const [isDisabled, setIsDisabled] = useState(false);
