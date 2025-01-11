@@ -12,7 +12,7 @@ const mockUsers: User[] = [
     email: "",
     password: "1",
     username: "hila.ohana",
-    role: 0
+    role: 0,
   },
   {
     id: "2",
@@ -20,7 +20,7 @@ const mockUsers: User[] = [
     email: "",
     password: "1",
     username: "hila.ohana",
-    role: 0
+    role: 0,
   },
   {
     id: "3",
@@ -28,7 +28,7 @@ const mockUsers: User[] = [
     email: "",
     password: "1",
     username: "hila.ohana",
-    role: 1
+    role: 1,
   },
   {
     id: "4",
@@ -36,7 +36,7 @@ const mockUsers: User[] = [
     email: "",
     password: "1",
     username: "hila.ohana",
-    role: 1
+    role: 1,
   },
   {
     id: "5",
@@ -44,8 +44,8 @@ const mockUsers: User[] = [
     email: "",
     password: "1",
     username: "hila.ohana",
-    role: 0
-  }
+    role: 0,
+  },
 ];
 
 export default function ChatPage() {
