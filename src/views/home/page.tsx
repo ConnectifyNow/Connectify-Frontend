@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { usePostsStore } from '../../stores/PostsStore'
-import { Post as PostType, Comment } from "../../types";
+import { usePostsStore } from '../../stores/postsStore'
 import { AddPostButton } from "@/components/home/addPostButton";
 import Post from "../../components/home/post";
 import Sidebar from "../../components/home/sidebar";

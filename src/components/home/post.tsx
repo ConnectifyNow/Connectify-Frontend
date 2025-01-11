@@ -1,4 +1,3 @@
-import { randomAvatarUrl } from "@/utils/functions";
 import { useState } from "react";
 import { Heart, MessageCircle } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
