@@ -1,5 +1,4 @@
 export interface User {
-  name: string;
   id: string;
   username: string;
   email: string;
@@ -83,7 +82,6 @@ export interface Comment {
   content: string;
   createdAt: string;
 }
-
 
 export enum Role {
   Volunteer = 0,
