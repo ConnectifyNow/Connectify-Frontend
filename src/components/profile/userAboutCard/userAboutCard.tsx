@@ -24,16 +24,12 @@ const skills = [
   { id: 3, name: "Project Manager" },
 ];
 
-const handleSkillsChange = (value: string) => {
-  // TODO: Implement handleSkillsChange
-};
-
 export default function UserAboutCard({
   profileData,
   isEditing,
   setIsEditing,
   handleChange,
-  ,
+  handleSkillsChange,
   saveProfile,
 }: UserAboutProps) {
   const [isDisabled, setIsDisabled] = useState(false);
@@ -56,7 +52,7 @@ export default function UserAboutCard({
     };
   }, [isDisabled, cooldownTime]);
 
-  const handleGenerateClick = async (profileData: ProfileData) => {
+  const handleClick = async (profileData: ProfileData) => {
     // profileData.about = await generateDescription(profileData.username);
     const response = await getAiDescription(profileData.username);
     profileData.about = response.data.description;
@@ -86,7 +82,7 @@ export default function UserAboutCard({
             </div>
             {profileData.role === Role.Organization && (
               <Button
-                onClick={() => handleGenerateClick(profileData)}
+                onClick={() => handleClick(profileData)}
                 disabled={isDisabled}
                 className="w-55">
                 {isDisabled
