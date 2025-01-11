@@ -104,6 +104,7 @@ export default function SignInPage() {
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Signing In..." : "Sign In"}
             </Button>
+            <Button className="w-full">Sign in with Google</Button>
           </form>
           <div className="mt-4 text-center">
             <p>
