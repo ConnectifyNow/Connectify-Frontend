@@ -83,6 +83,7 @@ export default function OrganizationSignUpPage() {
       email: formData.email,
       password: formData.password,
       role: 1,
+      name: "mock-name",
     });
     router("/");
   };

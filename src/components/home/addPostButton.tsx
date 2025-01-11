@@ -43,7 +43,8 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
       skills: skills
         .split(",")
         .map((skill, index) => ({ id: index + 1, name: skill.trim() })),
-      comments: []
+      comments: [],
+      likes: 0
     };
     onAddPost(newPost);
     setIsOpen(false);

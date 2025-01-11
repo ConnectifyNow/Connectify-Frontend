@@ -10,12 +10,22 @@ import SignUpModePage from "@/views/signup/mode/page";
 import OrganizationSignUpPage from "@/views/signup/organization/page";
 import SignUpPage from "@/views/signup/page";
 import UserSignUpPage from "@/views/signup/user/page";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
+import { getTokens } from "@/services/authService";
+
+// const authLoader = async () => {
+//   const tokens = getTokens();
+//   if (tokens.accessToken && tokens.refreshToken) {
+//     return null;
+//   }
+//   return redirect("/signin");
+// };
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    // loader: authLoader,
     children: [
       {
         path: "/",
@@ -46,6 +56,10 @@ export const router = createBrowserRouter([
         element: <OrganizationSignUpPage />,
       },
       {
+        path: "/chat",
+        element: <Chat />,
+      },
+      {
         path: "/home",
         element: <Home />,
       },
@@ -57,10 +71,10 @@ export const router = createBrowserRouter([
         path: "/discover",
         element: <DiscoverPage />,
       },
+      {
+        path: "/chat",
+        element: <Chat />,
+      },
     ],
-  },
-  {
-    path: "/chat",
-    element: <Chat />,
   },
 ]);
