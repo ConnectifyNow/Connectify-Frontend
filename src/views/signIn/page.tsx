@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,7 +12,9 @@ import { ToastAction } from "@/components/ui/toast";
 import {
   signin as signinRequest,
   saveTokens,
+  googleSignIn,
 } from "../../services/authService";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 
 export default function SignInPage() {
   const { toast } = useToast();
@@ -25,6 +27,36 @@ export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
   const user = useUserStore();
   const router = useNavigate();
+
+  const onGoogleLoginSuccess = async (
+    credentialResponse: CredentialResponse
+  ) => {
+    try {
+      const response = await googleSignIn(credentialResponse);
+      const { data: loginGoogleRes } = response;
+
+      saveTokens({
+        accessToken: loginGoogleRes.accessToken,
+        refreshToken: loginGoogleRes.refreshToken,
+      });
+      user.setUser(loginGoogleRes.user);
+
+      router("/logInGoogle", { replace: true });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onGoogleLoginFailure = () => {
+    toast({
+      title: "Sorry, we have an issue logging in via Google",
+      action: (
+        <ToastAction altText="Sorry, we have an issue logging in via Google">
+          login error
+        </ToastAction>
+      ),
+    });
+  };
 
   const signinMutation = useMutation(
     ({ email, password }: { email: string; password: string }) =>
@@ -104,7 +136,10 @@ export default function SignInPage() {
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Signing In..." : "Sign In"}
             </Button>
-            <Button className="w-full">Sign in with Google</Button>
+            <GoogleLogin
+              onSuccess={onGoogleLoginSuccess}
+              onError={onGoogleLoginFailure}
+            />
           </form>
           <div className="mt-4 text-center">
             <p>
