@@ -1,15 +1,24 @@
 import { useState } from "react";
-import { usePostsStore } from '../../stores/PostsStore'
+import { usePostsStore } from "../../stores/PostsStore";
 import { Post as PostType, Comment } from "../../types";
 import { AddPostButton } from "@/components/home/addPostButton";
 import Post from "../../components/home/post";
 import Sidebar from "../../components/home/sidebar";
 import { Pagination } from "@/components/ui/pagination";
+import NoPostsScreen from "@/components/noPosts/noPosts";
 
 const POSTS_PER_PAGE = 3;
 
 export default function Home() {
-  const { posts, likePost, addComment, addPost, updatePost, deletePost, likeComment } = usePostsStore()
+  const {
+    posts,
+    likePost,
+    addComment,
+    addPost,
+    updatePost,
+    deletePost,
+    likeComment,
+  } = usePostsStore();
 
   const [filters, setFilters] = useState({
     postType: "all",
@@ -26,17 +35,18 @@ export default function Home() {
     const skillsMatch: boolean =
       filters.skillsIds.length === 0 ||
       filters.skillsIds.some((skillId: number) =>
-      post.skills.map((skill: { id: number }) => skill.id).includes(skillId)
+        post.skills.map((skill: { id: number }) => skill.id).includes(skillId)
       );
     return typeMatch && skillsMatch;
   });
 
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
-  const paginatedPosts = filteredPosts.slice(
-    (currentPage - 1) * POSTS_PER_PAGE,
-    currentPage * POSTS_PER_PAGE
-  );
+  // const paginatedPosts = filteredPosts.slice(
+  //   (currentPage - 1) * POSTS_PER_PAGE,
+  //   currentPage * POSTS_PER_PAGE
+  // );
 
+  const paginatedPosts: any = [];
   return (
     <main className="min-h-screen bg-gray-100 py-12">
       <div className="max-w-6xl mx-auto px-4">
@@ -56,41 +66,48 @@ export default function Home() {
                   onEdit={updatePost}
                   onDelete={deletePost}
                   onCommentLike={likeComment}
-                  showEditDelete={true} 
+                  showEditDelete={true}
                 />
               ))}
             </div>
-            <div className="mt-8 flex justify-center">
-              <Pagination>
-                <Pagination.Content>
-                  <Pagination.Item>
-                    <Pagination.Previous
-                      onClick={() =>
-                        setCurrentPage((prev) => Math.max(prev - 1, 1))
-                      }
-                      className={currentPage === 1 ? "disabled" : ""}
-                    />
-                  </Pagination.Item>
-                  {[...Array(totalPages)].map((_, index) => (
-                    <Pagination.Item key={index}>
-                      <Pagination.Link
-                        isActive={currentPage === index + 1}
-                        onClick={() => setCurrentPage(index + 1)}>
-                        {index + 1}
-                      </Pagination.Link>
+            {paginatedPosts.length > 0 ? (
+              <div className="mt-8 flex justify-center">
+                <Pagination>
+                  <Pagination.Content>
+                    <Pagination.Item>
+                      <Pagination.Previous
+                        onClick={() =>
+                          setCurrentPage((prev) => Math.max(prev - 1, 1))
+                        }
+                        className={currentPage === 1 ? "disabled" : ""}
+                      />
                     </Pagination.Item>
-                  ))}
-                  <Pagination.Item>
-                    <Pagination.Next
-                      onClick={() =>
-                        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                      }
-                      className={currentPage === totalPages ? "disabled" : ""}
-                    />
-                  </Pagination.Item>
-                </Pagination.Content>
-              </Pagination>
-            </div>
+                    {[...Array(totalPages)].map((_, index) => (
+                      <Pagination.Item key={index}>
+                        <Pagination.Link
+                          isActive={currentPage === index + 1}
+                          onClick={() => setCurrentPage(index + 1)}
+                        >
+                          {index + 1}
+                        </Pagination.Link>
+                      </Pagination.Item>
+                    ))}
+                    <Pagination.Item>
+                      <Pagination.Next
+                        onClick={() =>
+                          setCurrentPage((prev) =>
+                            Math.min(prev + 1, totalPages)
+                          )
+                        }
+                        className={currentPage === totalPages ? "disabled" : ""}
+                      />
+                    </Pagination.Item>
+                  </Pagination.Content>
+                </Pagination>
+              </div>
+            ) : (
+              <NoPostsScreen />
+            )}
           </div>
         </div>
       </div>
