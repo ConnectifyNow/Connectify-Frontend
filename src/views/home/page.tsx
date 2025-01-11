@@ -1,14 +1,24 @@
-import { useState } from "react";
-import { usePostsStore } from '../../stores/postsStore'
 import { AddPostButton } from "@/components/home/addPostButton";
-import Post from "../../components/shared/Posts/post";
-import Sidebar from "../../components/home/sidebar";
+import { NoPostsScreen } from "@/components/noPosts/noPosts";
 import { Pagination } from "@/components/ui/pagination";
+import { useState } from "react";
+import Sidebar from "../../components/home/sidebar";
+import { usePostsStore } from "../../stores/postsStore";
+import { Post as PostType } from "../../types";
+import PostCard from "@/components/shared/Posts/post";
 
 const POSTS_PER_PAGE = 3;
 
 export default function Home() {
-  const { posts, likePost, addComment, addPost, updatePost, deletePost, likeComment } = usePostsStore()
+  const {
+    posts,
+    likePost,
+    addComment,
+    addPost,
+    updatePost,
+    deletePost,
+    likeComment,
+  } = usePostsStore();
 
   const [filters, setFilters] = useState({
     postType: "all",
@@ -25,7 +35,7 @@ export default function Home() {
     const skillsMatch: boolean =
       filters.skillsIds.length === 0 ||
       filters.skillsIds.some((skillId: number) =>
-      post.skills.map((skill: { id: number }) => skill.id).includes(skillId)
+        post.skills.map((skill: { id: number }) => skill.id).includes(skillId)
       );
     return typeMatch && skillsMatch;
   });
@@ -46,8 +56,8 @@ export default function Home() {
           </div>
           <div className="w-3/4">
             <div className="space-y-6">
-              {paginatedPosts.map((post) => (
-                <Post
+              {paginatedPosts.map((post: PostType) => (
+                <PostCard
                   key={post.id}
                   post={post}
                   onLike={likePost}
@@ -55,41 +65,51 @@ export default function Home() {
                   onEdit={updatePost}
                   onDelete={deletePost}
                   onCommentLike={likeComment}
-                  showEditDelete={true} 
+                  showEditDelete={true}
                 />
               ))}
             </div>
-            <div className="mt-8 flex justify-center">
-              <Pagination>
-                <Pagination.Content>
-                  <Pagination.Item>
-                    <Pagination.Previous
-                      onClick={() =>
-                        setCurrentPage((prev) => Math.max(prev - 1, 1))
-                      }
-                      className={currentPage === 1 ? "disabled" : ""}
-                    />
-                  </Pagination.Item>
-                  {[...Array(totalPages)].map((_, index) => (
-                    <Pagination.Item key={index}>
-                      <Pagination.Link
-                        isActive={currentPage === index + 1}
-                        onClick={() => setCurrentPage(index + 1)}>
-                        {index + 1}
-                      </Pagination.Link>
+            {paginatedPosts.length > 0 ? (
+              <div
+                className="mt-8 flex justify-center"
+                style={{ cursor: "pointer" }}
+              >
+                <Pagination>
+                  <Pagination.Content>
+                    <Pagination.Item>
+                      <Pagination.Previous
+                        onClick={() =>
+                          setCurrentPage((prev) => Math.max(prev - 1, 1))
+                        }
+                        className={currentPage === 1 ? "disabled" : ""}
+                      />
                     </Pagination.Item>
-                  ))}
-                  <Pagination.Item>
-                    <Pagination.Next
-                      onClick={() =>
-                        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                      }
-                      className={currentPage === totalPages ? "disabled" : ""}
-                    />
-                  </Pagination.Item>
-                </Pagination.Content>
-              </Pagination>
-            </div>
+                    {[...Array(totalPages)].map((_, index) => (
+                      <Pagination.Item key={index}>
+                        <Pagination.Link
+                          isActive={currentPage === index + 1}
+                          onClick={() => setCurrentPage(index + 1)}
+                        >
+                          {index + 1}
+                        </Pagination.Link>
+                      </Pagination.Item>
+                    ))}
+                    <Pagination.Item>
+                      <Pagination.Next
+                        onClick={() =>
+                          setCurrentPage((prev) =>
+                            Math.min(prev + 1, totalPages)
+                          )
+                        }
+                        className={currentPage === totalPages ? "disabled" : ""}
+                      />
+                    </Pagination.Item>
+                  </Pagination.Content>
+                </Pagination>
+              </div>
+            ) : (
+              <NoPostsScreen role={""} />
+            )}
           </div>
         </div>
       </div>
