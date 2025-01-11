@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { usePostsStore } from "../../stores/PostsStore";
-import { Post as PostType, Comment } from "../../types";
 import { AddPostButton } from "@/components/home/addPostButton";
+import { NoPostsScreen } from "@/components/noPosts/noPosts";
+import { Pagination } from "@/components/ui/pagination";
+import { useState } from "react";
 import Post from "../../components/home/post";
 import Sidebar from "../../components/home/sidebar";
-import { Pagination } from "@/components/ui/pagination";
-import NoPostsScreen from "@/components/noPosts/noPosts";
+import { usePostsStore } from "../../stores/postsStore";
+import { Post as PostType } from "../../types";
 
 const POSTS_PER_PAGE = 3;
 
@@ -41,12 +41,11 @@ export default function Home() {
   });
 
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
-  // const paginatedPosts = filteredPosts.slice(
-  //   (currentPage - 1) * POSTS_PER_PAGE,
-  //   currentPage * POSTS_PER_PAGE
-  // );
+  const paginatedPosts = filteredPosts.slice(
+    (currentPage - 1) * POSTS_PER_PAGE,
+    currentPage * POSTS_PER_PAGE
+  );
 
-  const paginatedPosts: any = [];
   return (
     <main className="min-h-screen bg-gray-100 py-12">
       <div className="max-w-6xl mx-auto px-4">
@@ -106,7 +105,7 @@ export default function Home() {
                 </Pagination>
               </div>
             ) : (
-              <NoPostsScreen onAddPost={addPost} />
+              <NoPostsScreen />
             )}
           </div>
         </div>
