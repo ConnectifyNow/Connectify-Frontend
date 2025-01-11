@@ -82,6 +82,7 @@ export interface Comment {
   author: Author;
   content: string;
   createdAt: string;
+  likes: number;
 }
 
 export enum Role {
