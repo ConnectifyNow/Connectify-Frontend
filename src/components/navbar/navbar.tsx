@@ -7,13 +7,12 @@ import {
   Compass,
   House,
   UserPen,
-  LucideIcon,
+  LucideIcon
 } from "lucide-react";
 import useUserStore from "@/stores/setUserStore";
 
 export function Navbar() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
-  const location = useLocation();
 
   return (
     <nav className="bg-white shadow-sm">
@@ -65,7 +64,7 @@ export function Navbar() {
 function NavLink({
   to,
   icon: Icon,
-  children,
+  children
 }: {
   to: string;
   icon: LucideIcon;
@@ -81,7 +80,8 @@ function NavLink({
         isActive
           ? "text-primary bg-primary/10"
           : "text-gray-700 hover:text-primary"
-      }`}>
+      }`}
+    >
       <Icon />
       {children}
     </Link>

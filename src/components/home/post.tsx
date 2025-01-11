@@ -32,12 +32,12 @@ export default function PostCard({ post, onLike, onComment }: PostProps) {
           name: currentUser.username,
           avatar:
             currentUser.role === Role.Volunteer
-              ? currentUser.volunteer?.imageUrl
-              : currentUser.organization?.imageUrl,
-          type: currentUser.role === Role.Volunteer ? "user" : "organization",
+              ? currentUser.volunteer?.imageUrl ?? randomAvatarUrl()
+              : currentUser.organization?.imageUrl ?? randomAvatarUrl(),
+          type: currentUser.role === Role.Volunteer ? "user" : "organization"
         },
         content: newComment.trim(),
-        createdAt: new Date().toISOString(),
+        createdAt: new Date().toISOString()
       };
       onComment(post.id, comment);
       setNewComment("");
@@ -47,7 +47,7 @@ export default function PostCard({ post, onLike, onComment }: PostProps) {
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
       <div className="flex items-center mb-4">
         <img
-          src={post.author.avatar}
+          src={post.author.avatar ?? randomAvatarUrl()}
           alt={post.author.name}
           width={40}
           height={40}

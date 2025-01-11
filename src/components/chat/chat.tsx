@@ -4,6 +4,7 @@ import { User } from "@/types";
 import { Building2, UserCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSocket } from "../../hooks/useSocket";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface Message {
   id: string;
@@ -45,7 +46,7 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
     const messageData = {
       message: input,
       currentUser,
-      selectedUser,
+      selectedUser
     };
 
     socket.emit("send-message", messageData);
@@ -56,8 +57,8 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
         id: Date.now().toString(),
         content: input,
         sender: currentUser,
-        timestamp: new Date(),
-      },
+        timestamp: new Date()
+      }
     ]);
 
     setInput("");
@@ -72,8 +73,8 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="bg-gray-100 p-4 flex items-center space-x-2">
+    <div className="w-full h-full">
+      <div className="bg-gray-200 p-4 flex items-center space-x-2">
         {selectedUser?.role == 0 ? (
           <Building2 className="h-6 w-6" />
         ) : (
@@ -81,30 +82,35 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
         )}
         <span className="font-semibold">{selectedUser.name}</span>
       </div>
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex ${
-              message.sender.id === currentUser.id
-                ? "justify-end"
-                : "justify-start"
-            }`}>
+      <ScrollArea className="h-[700px] rounded-md border p-4 ">
+        <div className=" p-4 space-y-4">
+          {messages.map((message) => (
             <div
-              className={`rounded-lg p-2 max-w-sm ${
+              key={message.id}
+              className={`flex ${
                 message.sender.id === currentUser.id
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200"
-              }`}>
-              <div>{message.content}</div>
-              <div className="text-xs mt-1 opacity-70">
-                {new Date(message.timestamp).toLocaleTimeString()}
+                  ? "justify-end"
+                  : "justify-start"
+              }`}
+            >
+              <div
+                className={`rounded-lg p-2 max-w-sm ${
+                  message.sender.id === currentUser.id
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200"
+                }`}
+              >
+                <div>{message.content}</div>
+                <div className="text-xs mt-1 opacity-70">
+                  {new Date(message.timestamp).toLocaleTimeString()}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-      <form onSubmit={handleSubmit} className="p-4 flex space-x-2">
+          ))}
+        </div>
+      </ScrollArea>
+
+      <form onSubmit={handleSubmit} className="p-4 flex space-x-2 ">
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
