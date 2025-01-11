@@ -10,15 +10,16 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
 import useUserStore from "@/stores/setUserStore";
 import CustomSelect from "../../../components/shared/customSelect";
+import { getAiDescription } from "@/services/aiService";
 
 const cities = [
   { id: 1, name: "New York" },
   { id: 2, name: "Los Angeles" },
-  { id: 3, name: "Chicago" }
+  { id: 3, name: "Chicago" },
 ];
 
 const areas = [
@@ -27,7 +28,7 @@ const areas = [
   { id: 3, name: "Environment" },
   { id: 4, name: "Social Services" },
   { id: 5, name: "Arts and Culture" },
-  { id: 6, name: "Community Development" }
+  { id: 6, name: "Community Development" },
 ];
 
 export default function OrganizationSignUpPage() {
@@ -39,7 +40,7 @@ export default function OrganizationSignUpPage() {
     description: "",
     imageUrl: "",
     organizationUrl: "",
-    areas: [] as number[]
+    areas: [] as number[],
   });
   const router = useNavigate();
   const user = useUserStore();
@@ -85,9 +86,37 @@ export default function OrganizationSignUpPage() {
       username: "mock-username",
       email: formData.email,
       password: formData.password,
-      role: 1
+      role: 1,
     });
     router("/");
+  };
+
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [cooldownTime, setCooldownTime] = useState(0);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isDisabled && cooldownTime > 0) {
+      timer = setInterval(() => {
+        setCooldownTime((prevTime) => prevTime - 1);
+      }, 1000);
+    }
+
+    if (cooldownTime === 0) {
+      setIsDisabled(false);
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [isDisabled, cooldownTime]);
+
+  const handleGenerateClick = async () => {
+    // profileData.about = await generateDescription(profileData.username);
+    const response = await getAiDescription(formData.name);
+    formData.description = response.data.description;
+    setIsDisabled(true);
+    setCooldownTime(20);
   };
 
   return (
@@ -126,8 +155,7 @@ export default function OrganizationSignUpPage() {
               <Label htmlFor="city">City</Label>
               <Select
                 onValueChange={(value) => handleSelectChange("city", value)}
-                required
-              >
+                required>
                 <SelectTrigger>
                   <SelectValue placeholder="Select a city" />
                 </SelectTrigger>
@@ -157,10 +185,12 @@ export default function OrganizationSignUpPage() {
               />
             </div>
             <Button
-              size="sm"
-              onClick={() => generateDescription("hilas company")}
-            >
-              Generate Description
+              onClick={() => handleGenerateClick()}
+              disabled={isDisabled}
+              className="w-55">
+              {isDisabled
+                ? `Wait ${cooldownTime}s`
+                : "Generate Description using AI"}
             </Button>
             <div className="space-y-2">
               <Label htmlFor="imageUrl">Organization Logo URL</Label>
