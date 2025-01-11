@@ -18,10 +18,7 @@ export default function ProfilePage() {
   };
 
   const handleSkillsChange = (value: string) => {
-    // setProfile((prev) => ({
-    //   ...prev,
-    //   skills: value.split(",").map((skill) => skill.trim()),
-    // }));
+    //  TODO: Implement this function
   };
 
   const saveProfile = () => {
