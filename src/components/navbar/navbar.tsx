@@ -1,12 +1,19 @@
 import { Button } from "@/components/ui/button";
 import lightBulbIcon from "@/assets/light-bulb.svg";
 import "./navbar.css";
-import { Link } from "react-router-dom";
-import { MessageSquareText, Compass, House, UserPen } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  MessageSquareText,
+  Compass,
+  House,
+  UserPen,
+  LucideIcon,
+} from "lucide-react";
 import useUserStore from "@/stores/setUserStore";
 
 export function Navbar() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+  const location = useLocation();
 
   return (
     <nav className="bg-white shadow-sm">
@@ -23,34 +30,18 @@ export function Navbar() {
           <div className="flex items-center">
             {isLoggedIn ? (
               <>
-                <Link
-                  to="/home"
-                  className="flex items-center gap-2 text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  <House />
+                <NavLink to="/home" icon={House}>
                   Home
-                </Link>
-                <Link
-                  to="/discover"
-                  className="flex items-center gap-2 text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  <Compass />
+                </NavLink>
+                <NavLink to="/discover" icon={Compass}>
                   Discover
-                </Link>
-                <Link
-                  to="/chat"
-                  className="flex items-center gap-2 text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  <MessageSquareText />
+                </NavLink>
+                <NavLink to="/chat" icon={MessageSquareText}>
                   Chat
-                </Link>
-                <Link
-                  to="/profile"
-                  className="flex items-center gap-2 text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  <UserPen />
+                </NavLink>
+                <NavLink to="/profile" icon={UserPen}>
                   Profile
-                </Link>
+                </NavLink>
               </>
             ) : (
               <>
@@ -68,5 +59,31 @@ export function Navbar() {
         </div>
       </div>
     </nav>
+  );
+}
+
+function NavLink({
+  to,
+  icon: Icon,
+  children,
+}: {
+  to: string;
+  icon: LucideIcon;
+  children: React.ReactNode;
+}) {
+  const location = useLocation();
+  const isActive = location.pathname === to;
+
+  return (
+    <Link
+      to={to}
+      className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium ${
+        isActive
+          ? "text-primary bg-primary/10"
+          : "text-gray-700 hover:text-primary"
+      }`}>
+      <Icon />
+      {children}
+    </Link>
   );
 }

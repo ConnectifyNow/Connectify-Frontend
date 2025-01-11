@@ -83,7 +83,6 @@ export interface Comment {
   createdAt: string;
 }
 
-
 export enum Role {
   Volunteer = 0,
   Organization = 1,

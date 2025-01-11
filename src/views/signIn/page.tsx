@@ -31,7 +31,8 @@ export default function SignInPage() {
         email,
         password,
         // Add a random role for the user
-        role: Math.floor(Math.random() * 1)
+        role: Math.floor(Math.random() * 1),
+        name: "dsadsa",
       });
 
       router("/");
