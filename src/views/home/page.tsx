@@ -1,54 +1,31 @@
 import { useState } from "react";
-import { posts } from "../../data/posts";
-import { posts as initialPosts } from "../../data/posts";
-import { Post as PostType, Comment } from "../../types";
+import { usePostsStore } from '../../stores/postsStore'
 import { AddPostButton } from "@/components/home/addPostButton";
-import Post from "../../components/home/post";
+import Post from "../../components/shared/Posts/post";
 import Sidebar from "../../components/home/sidebar";
 import { Pagination } from "@/components/ui/pagination";
 
 const POSTS_PER_PAGE = 3;
 
 export default function Home() {
+  const { posts, likePost, addComment, addPost, updatePost, deletePost, likeComment } = usePostsStore()
+
   const [filters, setFilters] = useState({
     postType: "all",
     skillsIds: [] as number[],
   });
 
-  const [posts, setPosts] = useState<PostType[]>(initialPosts);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const handleAddPost = (newPost: PostType) => {
-    setPosts([newPost, ...posts]);
-  };
-
-  const handleLike = (postId: string) => {
-    setPosts(
-      posts.map((post) =>
-        post.id === postId ? { ...post, likes: post.likes + 1 } : post
-      )
-    );
-  };
-
-  const handleComment = (postId: string, comment: Comment) => {
-    setPosts(
-      posts.map((post) =>
-        post.id === postId
-          ? { ...post, comments: [...post.comments, comment] }
-          : post
-      )
-    );
-  };
 
   const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
 
   const filteredPosts = sortedPosts.filter((post) => {
     const typeMatch =
       filters.postType === "all" || post.author.type === filters.postType;
-    const skillsMatch =
+    const skillsMatch: boolean =
       filters.skillsIds.length === 0 ||
-      filters.skillsIds.some((skillId) =>
-        post.skills.map((skill) => skill.id).includes(skillId)
+      filters.skillsIds.some((skillId: number) =>
+      post.skills.map((skill: { id: number }) => skill.id).includes(skillId)
       );
     return typeMatch && skillsMatch;
   });
@@ -73,8 +50,12 @@ export default function Home() {
                 <Post
                   key={post.id}
                   post={post}
-                  onLike={handleLike}
-                  onComment={handleComment}
+                  onLike={likePost}
+                  onComment={addComment}
+                  onEdit={updatePost}
+                  onDelete={deletePost}
+                  onCommentLike={likeComment}
+                  showEditDelete={true} 
                 />
               ))}
             </div>
@@ -112,7 +93,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <AddPostButton onAddPost={handleAddPost} />
+      <AddPostButton onAddPost={addPost} />
     </main>
   );
 }
