@@ -6,7 +6,7 @@ const initialState: User = {
   username: "hilaohana",
   email: "hila.ohana@example.com",
   password: "1234",
-  role: Role.Volunteer,
+  role: Role.Organization,
   volunteer: {
     phone: "1234567890",
     firstName: "Hila",
@@ -16,10 +16,10 @@ const initialState: User = {
     skills: [
       { id: 1, name: "React" },
       { id: 2, name: "Node.js" },
-      { id: 3, name: "TypeScript" }
+      { id: 3, name: "TypeScript" },
     ],
     userId: "",
-    about: "I am a software developer"
+    about: "I am a software developer",
   },
   organization: {
     id: "123",
@@ -27,8 +27,8 @@ const initialState: User = {
     name: "Hila Ohana",
     description: "Software Developer",
     focusAreas: [],
-    websiteLink: ""
-  }
+    websiteLink: "",
+  },
 };
 
 type State = User;
@@ -43,7 +43,7 @@ const useUserStore = create<State & Action>((set) => ({
   ...initialState,
   updateIsLoggedIn: (isLoggedIn) => set(() => ({ isLoggedIn })),
   setUser: (user: User) => set(() => ({ ...user })),
-  resetUser: () => set(() => ({ ...initialState }))
+  resetUser: () => set(() => ({ ...initialState })),
 }));
 
 export default useUserStore;
