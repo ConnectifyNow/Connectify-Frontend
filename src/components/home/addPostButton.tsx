@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,14 +34,16 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
         name: currentUser.username,
         avatar:
           currentUser.role === Role.Volunteer
-            ? currentUser.volunteer?.imageUrl ?? ""
-            : currentUser.organization?.imageUrl ?? "",
-        type: currentUser.role === Role.Volunteer ? "user" : "organization",
+            ? currentUser.volunteer?.imageUrl
+            : currentUser.organization?.imageUrl,
+        type: currentUser.role === Role.Volunteer ? "user" : "organization"
       },
       title,
       content,
-      skills: skills.split(",").map((skill, index) => ({ id: index + 1, name: skill.trim() })),
-      comments: [],
+      skills: skills
+        .split(",")
+        .map((skill, index) => ({ id: index + 1, name: skill.trim() })),
+      comments: []
     };
     onAddPost(newPost);
     setIsOpen(false);
