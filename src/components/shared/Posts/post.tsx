@@ -6,7 +6,7 @@ import useUserStore from "@/stores/setUserStore";
 import { Edit, Heart, MessageCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Comment, Post, Role } from "../../../types";
-
+import { randomAvatarUrl } from "@/utils/functions";
 interface PostProps {
   post: Post;
   onLike: (postId: string) => void;
@@ -24,7 +24,7 @@ export default function PostCard({
   onEdit,
   onDelete,
   onCommentLike,
-  showEditDelete = false,
+  showEditDelete = false
 }: PostProps) {
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -47,13 +47,13 @@ export default function PostCard({
           name: currentUser.username,
           avatar:
             currentUser.role === Role.Volunteer
-              ? currentUser.volunteer?.imageUrl
-              : currentUser.organization?.imageUrl,
-          type: currentUser.role === Role.Volunteer ? "user" : "organization",
+              ? currentUser.volunteer?.imageUrl ?? randomAvatarUrl()
+              : currentUser.organization?.imageUrl ?? randomAvatarUrl(),
+          type: currentUser.role === Role.Volunteer ? "user" : "organization"
         },
         content: newComment.trim(),
         createdAt: new Date().toISOString(),
-        likes: 0,
+        likes: 0
       };
       onComment(post.id, comment);
       setNewComment("");
@@ -76,7 +76,7 @@ export default function PostCard({
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center">
           <img
-            src={post.author.avatar}
+            src={post.author.avatar ?? randomAvatarUrl()}
             alt={post.author.name}
             width={40}
             height={40}

@@ -10,7 +10,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import useUserStore from "@/stores/setUserStore";
@@ -19,13 +19,13 @@ import CustomSelect from "@/components/shared/customSelect";
 const cities = [
   { id: 1, name: "New York" },
   { id: 2, name: "Los Angeles" },
-  { id: 3, name: "Chicago" },
+  { id: 3, name: "Chicago" }
 ];
 
 const skills = [
   { id: 1, name: "Software Developer" },
   { id: 2, name: "Designer" },
-  { id: 3, name: "Project Manager" },
+  { id: 3, name: "Project Manager" }
 ];
 
 export default function UserSignUpPage() {
@@ -36,9 +36,9 @@ export default function UserSignUpPage() {
     lastName: "",
     city: "",
     age: "",
-    skills: [] as string[],
+    skills: [] as number[],
     imageUrl: "",
-    about: "",
+    about: ""
   });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -64,12 +64,12 @@ export default function UserSignUpPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleskillChange = (value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      skills: prev.skills.includes(value)
-        ? prev.skills.filter((o) => o !== value)
-        : [...prev.skills, value],
+  const handleSkillChange = (value: number) => {
+    setFormData((previous) => ({
+      ...previous,
+      skills: previous.skills.includes(value)
+        ? previous.skills.filter((o) => o !== value)
+        : [...previous.skills, value]
     }));
   };
 
@@ -88,7 +88,7 @@ export default function UserSignUpPage() {
         name: "mock-name",
         email: formData.email,
         password: formData.password,
-        role: 0,
+        role: 0
       });
 
       router("/");
@@ -140,7 +140,8 @@ export default function UserSignUpPage() {
               <Label htmlFor="city">City</Label>
               <Select
                 onValueChange={(value) => handleSelectChange("city", value)}
-                required>
+                required
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a city" />
                 </SelectTrigger>
@@ -168,7 +169,7 @@ export default function UserSignUpPage() {
             <CustomSelect
               options={skills}
               selectedOptions={formData.skills}
-              onChange={handleskillChange}
+              onChange={handleSkillChange}
             />
 
             <div className="space-y-2">

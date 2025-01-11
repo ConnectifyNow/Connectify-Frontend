@@ -10,7 +10,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/components/ui/select";
 import useUserStore from "@/stores/setUserStore";
 import CustomSelect from "../../../components/shared/customSelect";
@@ -18,7 +18,7 @@ import CustomSelect from "../../../components/shared/customSelect";
 const cities = [
   { id: 1, name: "New York" },
   { id: 2, name: "Los Angeles" },
-  { id: 3, name: "Chicago" },
+  { id: 3, name: "Chicago" }
 ];
 
 const areas = [
@@ -27,7 +27,7 @@ const areas = [
   { id: 3, name: "Environment" },
   { id: 4, name: "Social Services" },
   { id: 5, name: "Arts and Culture" },
-  { id: 6, name: "Community Development" },
+  { id: 6, name: "Community Development" }
 ];
 
 export default function OrganizationSignUpPage() {
@@ -39,7 +39,7 @@ export default function OrganizationSignUpPage() {
     description: "",
     imageUrl: "",
     organizationUrl: "",
-    areas: [] as string[],
+    areas: [] as number[]
   });
   const router = useNavigate();
   const user = useUserStore();
@@ -67,8 +67,9 @@ export default function OrganizationSignUpPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAreaChange = (value: string) => {
+  const handleAreaChange = (value: number) => {
     setFormData((prev) => {
+      console.log({ prev });
       const updatedAreas = prev.areas.includes(value)
         ? prev.areas.filter((area) => area !== value)
         : [...prev.areas, value];
@@ -84,7 +85,7 @@ export default function OrganizationSignUpPage() {
       username: "mock-username",
       email: formData.email,
       password: formData.password,
-      role: 1,
+      role: 1
     });
     router("/");
   };

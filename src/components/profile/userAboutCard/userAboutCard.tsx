@@ -1,4 +1,4 @@
-import { ProfileData } from "../../../types/index";
+import { ProfileData, Role } from "../../../types/index";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "../../ui/textarea";
@@ -10,14 +10,14 @@ type UserAboutProps = {
   isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
   handleChange: (key: keyof ProfileData, value: string) => void;
-  handleSkillsChange: (value: string) => void;
+  handleSkillsChange: (value: number) => void;
   saveProfile: () => void;
 };
 
 const skills = [
   { id: 1, name: "Software Developer" },
   { id: 2, name: "Designer" },
-  { id: 3, name: "Project Manager" },
+  { id: 3, name: "Project Manager" }
 ];
 
 const generateDescription = (organizationName: string) => {
@@ -34,13 +34,15 @@ export default function UserAboutCard({
   setIsEditing,
   handleChange,
   handleSkillsChange,
-  saveProfile,
+  saveProfile
 }: UserAboutProps) {
   return (
     <Card className="md:col-span-2">
       <CardHeader>
         <CardTitle>
-          {profileData.role == 0 ? "About Me" : "About The Organization"}
+          {profileData.role === Role.Volunteer
+            ? "About Me"
+            : "About The Organization"}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -54,7 +56,7 @@ export default function UserAboutCard({
                 onChange={(event) => handleChange("about", event.target.value)}
               />
             </div>
-            {profileData.role == 1 && (
+            {profileData.role === Role.Organization && (
               <Button
                 size="sm"
                 onClick={() => generateDescription(profileData.username)}
@@ -66,7 +68,7 @@ export default function UserAboutCard({
               <CustomSelect
                 options={skills}
                 selectedOptions={
-                  profileData.skills?.map((skill) => skill.name) ?? []
+                  profileData.skills?.map((skill) => skill.id) ?? []
                 }
                 onChange={handleSkillsChange}
               />
@@ -76,7 +78,6 @@ export default function UserAboutCard({
           <>
             <p>{profileData.about}</p>
             <div>
-              <strong>Skills:</strong>
               <div className="flex flex-wrap gap-2 mt-2">
                 {(profileData.skills ?? []).map((skill) => (
                   <span

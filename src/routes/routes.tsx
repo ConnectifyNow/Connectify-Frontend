@@ -10,8 +10,8 @@ import SignUpModePage from "@/views/signup/mode/page";
 import OrganizationSignUpPage from "@/views/signup/organization/page";
 import SignUpPage from "@/views/signup/page";
 import UserSignUpPage from "@/views/signup/user/page";
-import { createBrowserRouter, redirect } from "react-router-dom";
-import { getTokens } from "@/services/authService";
+import { createBrowserRouter } from "react-router-dom";
+// import { getTokens } from "@/services/authService";
 
 // const authLoader = async () => {
 //   const tokens = getTokens();
@@ -29,52 +29,52 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Onboarding />,
+        element: <Onboarding />
       },
       {
         path: "/filter",
-        element: <Filter />,
+        element: <Filter />
       },
       {
         path: "/signin",
-        element: <SignInPage />,
+        element: <SignInPage />
       },
       {
         path: "/signup",
-        element: <SignUpPage />,
+        element: <SignUpPage />
       },
       {
         path: "/signup/mode",
-        element: <SignUpModePage />,
+        element: <SignUpModePage />
       },
       {
         path: "/signup/user",
-        element: <UserSignUpPage />,
+        element: <UserSignUpPage />
       },
       {
         path: "/signup/organization",
-        element: <OrganizationSignUpPage />,
+        element: <OrganizationSignUpPage />
       },
       {
         path: "/chat",
-        element: <Chat />,
+        element: <Chat />
       },
       {
         path: "/home",
-        element: <Home />,
+        element: <Home />
       },
       {
         path: "/profile",
-        element: <ProfilePage />,
+        element: <ProfilePage />
       },
       {
         path: "/discover",
-        element: <DiscoverPage />,
+        element: <DiscoverPage />
       },
       {
         path: "/chat",
-        element: <Chat />,
-      },
-    ],
-  },
+        element: <Chat />
+      }
+    ]
+  }
 ]);
