@@ -7,14 +7,17 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import useUserStore from "@/stores/setUserStore";
 import { useMutation } from "react-query";
-import toast from "react-hot-toast";
+import { useToast } from "@/components/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 import {
   signin as signinRequest,
   saveTokens,
 } from "../../services/authService";
 
 export default function SignInPage() {
+  const { toast } = useToast();
   // TODO: Change this
+
   const updateIsLoggedIn = useUserStore((state) => state.updateIsLoggedIn);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,7 +48,13 @@ export default function SignInPage() {
         refreshToken: signinRes.refreshToken,
       });
       user.setUser(signinRes.user);
-      toast.success("Logged in successfully");
+
+      toast({
+        title: "Logged in successfully",
+        action: (
+          <ToastAction altText="Logged in successfully">login</ToastAction>
+        ),
+      });
 
       router("/");
     } catch {
