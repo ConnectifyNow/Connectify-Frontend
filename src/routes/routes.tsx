@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+<<<<<<< Updated upstream
 import Onboarding from "@/views/onboarding/page";
 import Filter from "@/views/filter/page";
 import Chat from "@/views/chat/page";
@@ -11,6 +12,9 @@ import OrganizationSignUpPage from "@/views/signup/organization/page";
 import SignInPage from "@/views/signIn/page";
 import SignUpPage from "@/views/signup/page";
 import Layout from "@/components/layout/layout";
+=======
+import { getTokens } from "@/services/authService";
+>>>>>>> Stashed changes
 
 // const authLoader = async () => {
 //   const tokens = getTokens();
@@ -19,6 +23,7 @@ import Layout from "@/components/layout/layout";
 //   }
 //   return redirect("/login");
 // };
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -26,31 +31,31 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Onboarding />
+        element: <Onboarding />,
       },
       {
         path: "/filter",
-        element: <Filter />
+        element: <Filter />,
       },
       {
         path: "/signin",
-        element: <SignInPage />
+        element: <SignInPage />,
       },
       {
         path: "/signup",
-        element: <SignUpPage />
+        element: <SignUpPage />,
       },
       {
         path: "/signup/mode",
-        element: <SignUpModePage />
+        element: <SignUpModePage />,
       },
       {
         path: "/signup/user",
-        element: <UserSignUpPage />
+        element: <UserSignUpPage />,
       },
       {
         path: "/signup/organization",
-        element: <OrganizationSignUpPage />
+        element: <OrganizationSignUpPage />,
       },
       {
         path: "/chat",
@@ -58,12 +63,27 @@ export const router = createBrowserRouter([
       },
       {
         path: "/home",
-        element: <Home />
+        element: <Home />,
       },
       {
         path: "/profile",
+<<<<<<< Updated upstream
         element: <ProfilePage />
       }
     ]
   }
+=======
+        element: <ProfilePage />,
+      },
+      {
+        path: "/discover",
+        element: <DiscoverPage />,
+      },
+    ],
+  },
+  {
+    path: "/chat",
+    element: <Chat />,
+  },
+>>>>>>> Stashed changes
 ]);
