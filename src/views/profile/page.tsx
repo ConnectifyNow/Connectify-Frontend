@@ -34,7 +34,7 @@ export default function ProfilePage() {
       name: `${user.volunteer?.firstName} ${user.volunteer?.lastName}`,
       role: Role.Volunteer,
       email: user.email,
-      username: user.username, // Add this line
+      username: user.username,
     };
   } else if (user?.role === Role.Organization && user.organization) {
     profileData = {
@@ -42,7 +42,7 @@ export default function ProfilePage() {
       role: Role.Organization,
       email: user.email,
       about: user.organization.description,
-      username: user.username, // Add this line
+      username: user.username,
     };
   }
 
