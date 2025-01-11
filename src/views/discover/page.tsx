@@ -63,7 +63,10 @@ export default function Directory() {
               )}
             </div>
             {paginatedItems.length > 0 ? (
-              <div className="mt-8 flex justify-center">
+              <div
+                className="mt-8 flex justify-center"
+                style={{ cursor: "pointer" }}
+              >
                 <Pagination>
                   <Pagination.Content>
                     <Pagination.Item>

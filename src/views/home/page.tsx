@@ -70,7 +70,10 @@ export default function Home() {
               ))}
             </div>
             {paginatedPosts.length > 0 ? (
-              <div className="mt-8 flex justify-center">
+              <div
+                className="mt-8 flex justify-center"
+                style={{ cursor: "pointer" }}
+              >
                 <Pagination>
                   <Pagination.Content>
                     <Pagination.Item>
