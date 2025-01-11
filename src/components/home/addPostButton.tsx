@@ -40,11 +40,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
       },
       title,
       content,
-      skills:
-        currentUser.role === Role.Volunteer
-          ? currentUser.volunteer?.skills ?? []
-          : currentUser.organization?.focusAreas ?? [],
-      likes: 0,
+      skills: skills.split(",").map((skill, index) => ({ id: index + 1, name: skill.trim() })),
       comments: [],
     };
     onAddPost(newPost);

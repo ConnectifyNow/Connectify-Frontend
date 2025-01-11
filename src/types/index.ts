@@ -74,7 +74,6 @@ export interface Post {
   content: string;
   skills: Skill[] | FocusArea[];
   comments: Comment[];
-  likes: number;
 }
 
 export interface Comment {
