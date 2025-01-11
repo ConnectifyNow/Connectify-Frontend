@@ -1,15 +1,12 @@
-import { useState } from "react";
-import { Heart, MessageCircle } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Post, Comment, Role } from "../../../types";
-import useUserStore from "@/stores/setUserStore";
-import { Trash2 } from "lucide-react";
-import { Edit } from "lucide-react";
-import { EditPostModal } from "@/components/shared/Posts/edit-post-modal";
 import { ConfirmDialog } from "@/components/shared/Posts/confirm-dialog";
+import { EditPostModal } from "@/components/shared/Posts/edit-post-modal";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import useUserStore from "@/stores/setUserStore";
+import { Edit, Heart, MessageCircle, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Comment, Post, Role } from "../../../types";
 import { randomAvatarUrl } from "@/utils/functions";
-
 interface PostProps {
   post: Post;
   onLike: (postId: string) => void;
