@@ -27,12 +27,14 @@ export function EditPostModal({
 }: EditPostModalProps) {
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
-  const [skills, setSkills] = useState(post.skills.join(", "));
+  const [skills, setSkills] = useState(
+    post.skills.map((skill) => skill.name).join(", ")
+  );
 
   useEffect(() => {
     setTitle(post.title);
     setContent(post.content);
-    setSkills(post.skills.join(", "));
+    setSkills(post.skills.map((skill) => skill.name).join(", "));
   }, [post]);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -43,7 +45,7 @@ export function EditPostModal({
       content,
       skills: skills
         .split(",")
-        .map((skill) => ({ name: skill.trim() } as Skill)),
+        .map((name, index) => ({ id: index + 1, name: name.trim() })),
     };
     onSave(updatedPost);
     onClose();

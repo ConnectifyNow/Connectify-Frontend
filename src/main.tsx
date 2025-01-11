@@ -19,7 +19,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <GoogleOAuthProvider clientId={googleClientId}>
       <QueryClientProvider client={queryClient}>
-        <App />
+          <App />
       </QueryClientProvider>
     </GoogleOAuthProvider>
   </StrictMode>
