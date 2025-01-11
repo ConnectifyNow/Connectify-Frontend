@@ -28,7 +28,7 @@ export default function SignInPage() {
   const user = useUserStore();
   const router = useNavigate();
 
-  const onGoogleLoginSuccess = async (
+  const onGoogleSigninSuccess = async (
     credentialResponse: CredentialResponse
   ) => {
     try {
@@ -47,7 +47,7 @@ export default function SignInPage() {
     }
   };
 
-  const onGoogleLoginFailure = () => {
+  const onGoogleSigninFailure = () => {
     toast({
       title: "Sorry, we have an issue logging in via Google",
       action: (
@@ -137,8 +137,8 @@ export default function SignInPage() {
               {isLoading ? "Signing In..." : "Sign In"}
             </Button>
             <GoogleLogin
-              onSuccess={onGoogleLoginSuccess}
-              onError={onGoogleLoginFailure}
+              onSuccess={onGoogleSigninSuccess}
+              onError={onGoogleSigninFailure}
             />
           </form>
           <div className="mt-4 text-center">
