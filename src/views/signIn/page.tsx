@@ -9,11 +9,10 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import useUserStore from "@/stores/setUserStore";
 import { useMutation } from "react-query";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import {
   signin as signinRequest,
   saveTokens,
-  signin,
 } from "../../services/authService";
 
 export default function SignInPage() {
@@ -24,6 +23,11 @@ export default function SignInPage() {
   const user = useUserStore();
   const router = useNavigate();
 
+  const signinMutation = useMutation(
+    ({ email, password }: { email: string; password: string }) =>
+      signinRequest(email, password)
+  );
+
   const handleSignIn = async (event: React.FormEvent) => {
     event.preventDefault();
     setError("");
@@ -33,45 +37,20 @@ export default function SignInPage() {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       console.log("Signing in with:", { email, password });
-      // user.setUser({
-      //   id: "mock-id",
-      //   name: "mock-name",
-      //   username: "mock-username",
-      //   email: email,
-      //   password: password,
-      //   // Add a random role for the user
-      //   role: Math.floor(Math.random() * 1)
-      // });
-
-      const signinMutation = useMutation(
-        ({ email, password }: { email: string; password: string }) =>
-          signinRequest(email, password)
-      );
-
-      const signin = async () => {
-        try {
-          const { data: signinRes } = await signinMutation.mutateAsync({
-            email,
-            password,
-          });
-          saveTokens({
-            accessToken: signinRes.accessToken,
-            refreshToken: signinRes.refreshToken,
-          });
-          user.setUser(signinRes.user);
-          toast.success("Logged in successfully");
-
-          // Navigate("/profile");
-        } catch (err) {
-          toast.error("Incorrect email or password.\nPlease try again");
-        }
-      };
+      const { data: signinRes } = await signinMutation.mutateAsync({
+        email,
+        password,
+      });
+      saveTokens({
+        accessToken: signinRes.accessToken,
+        refreshToken: signinRes.refreshToken,
+      });
+      user.setUser(signinRes.user);
+      toast.success("Logged in successfully");
 
       router("/");
     } catch {
-      setError(
-        "Failed to sign in. Please check your credentials and try again."
-      );
+      setError("Failed to sign in.");
     } finally {
       setIsLoading(false);
     }
@@ -79,7 +58,7 @@ export default function SignInPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 flex justify-center items-center min-h-screen">
-      <Card className="w-full max-w-md" onChange={() => signin}>
+      <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl text-center">
             Sign In to Connectify
