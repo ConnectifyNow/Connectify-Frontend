@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { posts } from "@/data/posts";
 import { posts as initialPosts } from "@/data/posts";
 import { Post as PostType } from "@/types";
 import { AddPostButton } from "@/components/home/addPostButton";
