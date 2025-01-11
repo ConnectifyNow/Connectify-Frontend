@@ -36,6 +36,7 @@ export const posts: Post[] = [
       "I'm working on an open-source project and looking for a coding buddy. Anyone interested?",
     skills: getRandomItems(skills, 3),
     comments: [],
+    likes: 0,
   },
   {
     id: "2",
@@ -49,6 +50,7 @@ export const posts: Post[] = [
       "We're organizing a hackathon to solve local community problems. Looking for developers and designers!",
     skills: getRandomItems(skills, 3),
     comments: [],
+    likes: 0,
   },
   {
     id: "3",
@@ -62,5 +64,6 @@ export const posts: Post[] = [
       "I have 5 years of experience in Data Science and Machine Learning. Happy to mentor beginners!",
     skills: getRandomItems(skills, 3),
     comments: [],
+    likes: 0,
   },
 ];
