@@ -1,13 +1,22 @@
 import { useState } from "react";
 import { posts } from "../../data/posts";
+import { posts as initialPosts } from "../../data/posts";
+import { Post as PostType } from "../../types";
+import { AddPostButton } from "@/components/home/addPostButton";
 import Post from "../../components/home/post";
 import Sidebar from "../../components/home/sidebar";
 
 export default function Home() {
   const [filters, setFilters] = useState({
     postType: "all",
-    skillsIds: [] as number[]
+    skillsIds: [] as number[],
   });
+
+  const [posts, setPosts] = useState<PostType[]>(initialPosts);
+
+  const handleAddPost = (newPost: PostType) => {
+    setPosts([newPost, ...posts]);
+  };
 
   const filteredPosts = posts.filter((post) => {
     const typeMatch =
@@ -37,6 +46,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <AddPostButton onAddPost={handleAddPost} />
     </main>
   );
 }

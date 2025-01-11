@@ -15,7 +15,7 @@ export const skills: Skill[] = [
   { id: 12, name: "Fundraising" },
   { id: 13, name: "Event Planning" },
   { id: 14, name: "Web Development" },
-  { id: 15, name: "Cybersecurity" }
+  { id: 15, name: "Cybersecurity" },
 ];
 
 function getRandomItems<T>(items: T[], count: number): T[] {
@@ -29,35 +29,38 @@ export const posts: Post[] = [
     author: {
       id: "u1",
       name: "John Doe",
-      type: "user"
+      type: "user",
     },
     title: "Looking for a Coding Buddy",
     content:
       "I'm working on an open-source project and looking for a coding buddy. Anyone interested?",
-    skills: getRandomItems(skills, 3)
+    skills: getRandomItems(skills, 3),
+    comments: [],
   },
   {
     id: "2",
     author: {
       id: "a1",
       name: "Tech for Good",
-      type: "organization"
+      type: "organization",
     },
     title: "Volunteers Needed for Hackathon",
     content:
       "We're organizing a hackathon to solve local community problems. Looking for developers and designers!",
-    skills: getRandomItems(skills, 3)
+    skills: getRandomItems(skills, 3),
+    comments: [],
   },
   {
     id: "3",
     author: {
       id: "u2",
       name: "Jane Smith",
-      type: "user"
+      type: "user",
     },
     title: "Offering Mentorship in Data Science",
     content:
       "I have 5 years of experience in Data Science and Machine Learning. Happy to mentor beginners!",
-    skills: getRandomItems(skills, 3)
-  }
+    skills: getRandomItems(skills, 3),
+    comments: [],
+  },
 ];

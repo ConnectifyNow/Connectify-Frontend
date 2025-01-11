@@ -73,8 +73,17 @@ export interface Post {
   author: Author;
   title: string;
   content: string;
-  skills: Skill[];
+  skills: Skill[] | FocusArea[];
+  comments: Comment[];
 }
+
+export interface Comment {
+  id: string;
+  author: Author;
+  content: string;
+  createdAt: string;
+}
+
 
 export enum Role {
   Volunteer = 0,
