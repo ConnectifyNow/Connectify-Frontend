@@ -13,19 +13,19 @@ import UserSignUpPage from "@/views/signup/user/page";
 import { createBrowserRouter, redirect } from "react-router-dom";
 import { getTokens } from "@/services/authService";
 
-const authLoader = async () => {
-  const tokens = getTokens();
-  if (tokens.accessToken && tokens.refreshToken) {
-    return null;
-  }
-  return redirect("/signin");
-};
+// const authLoader = async () => {
+//   const tokens = getTokens();
+//   if (tokens.accessToken && tokens.refreshToken) {
+//     return null;
+//   }
+//   return redirect("/signin");
+// };
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    loader: authLoader,
+    // loader: authLoader,
     children: [
       {
         path: "/",
