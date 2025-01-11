@@ -29,6 +29,7 @@ export default function Directory() {
     filters.mode === "organizations"
       ? filteredOrganizations
       : filteredVolunteers;
+
   const totalPages = Math.ceil(currentItems.length / ITEMS_PER_PAGE);
   const paginatedItems = currentItems.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
@@ -39,7 +40,7 @@ export default function Directory() {
     <main className="min-h-screen bg-gray-100 py-12">
       <div className="max-w-6xl mx-auto px-4">
         <h1 className="text-3xl font-bold text-center mb-8">
-          Find{" "}
+          Find
           {filters.mode === "organizations" ? "Organizations" : "Volunteers"}
         </h1>
         <div className="flex gap-8">
