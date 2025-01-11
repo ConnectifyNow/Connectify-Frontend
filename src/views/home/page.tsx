@@ -2,10 +2,10 @@ import { AddPostButton } from "@/components/home/addPostButton";
 import { NoPostsScreen } from "@/components/noPosts/noPosts";
 import { Pagination } from "@/components/ui/pagination";
 import { useState } from "react";
-import Post from "../../components/home/post";
 import Sidebar from "../../components/home/sidebar";
 import { usePostsStore } from "../../stores/postsStore";
 import { Post as PostType } from "../../types";
+import PostCard from "@/components/shared/Posts/post";
 
 const POSTS_PER_PAGE = 3;
 
@@ -57,7 +57,7 @@ export default function Home() {
           <div className="w-3/4">
             <div className="space-y-6">
               {paginatedPosts.map((post: PostType) => (
-                <Post
+                <PostCard
                   key={post.id}
                   post={post}
                   onLike={likePost}

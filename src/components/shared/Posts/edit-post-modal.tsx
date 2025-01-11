@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Post } from "@/types/index";
-import { Skill } from "@/types/index";
 
 interface EditPostModalProps {
   post: Post;

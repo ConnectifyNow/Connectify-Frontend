@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import useUserStore from "@/stores/setUserStore";
 import { Edit, Heart, MessageCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { Comment, Post, Role } from "../../types";
+import { Comment, Post, Role } from "../../../types";
 
 interface PostProps {
   post: Post;

@@ -3,6 +3,7 @@ import { ProfileData, Role, User } from "../../types/index";
 import useUserStore from "@/stores/setUserStore";
 import UserInformation from "@/components/profile/userInformationCard/userInformationCard";
 import UserAboutCard from "@/components/profile/userAboutCard/userAboutCard";
+import PostsList from "@/components/profile/userPostsLists/user-posts-list";
 
 export default function ProfilePage() {
   const user = useUserStore();
@@ -47,7 +48,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto bg-gray-100 px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Profile</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <UserInformation
@@ -64,6 +65,9 @@ export default function ProfilePage() {
           handleSkillsChange={handleSkillsChange}
           saveProfile={saveProfile}
         />
+      </div>
+      <div className="grid grid-cols-3 md:grid-cols-1 gap-8">
+        <PostsList />
       </div>
     </div>
   );
