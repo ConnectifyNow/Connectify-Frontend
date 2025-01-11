@@ -1,11 +1,10 @@
-"use client";
-
 import { useState } from "react";
-import { posts as initialPosts } from "@/data/posts";
-import { Post as PostType } from "@/types";
+import { posts } from "../../data/posts";
+import { posts as initialPosts } from "../../data/posts";
+import { Post as PostType, Comment } from "../../types";
 import { AddPostButton } from "@/components/home/addPostButton";
-import Post from "@/components/home/post";
-import Sidebar from "@/components/home/sidebar";
+import Post from "../../components/home/post";
+import Sidebar from "../../components/home/sidebar";
 import { Pagination } from "@/components/ui/pagination";
 
 const POSTS_PER_PAGE = 3;
@@ -23,7 +22,27 @@ export default function Home() {
     setPosts([newPost, ...posts]);
   };
 
-  const filteredPosts = posts.filter((post) => {
+  const handleLike = (postId: string) => {
+    setPosts(
+      posts.map((post) =>
+        post.id === postId ? { ...post, likes: post.likes + 1 } : post
+      )
+    );
+  };
+
+  const handleComment = (postId: string, comment: Comment) => {
+    setPosts(
+      posts.map((post) =>
+        post.id === postId
+          ? { ...post, comments: [...post.comments, comment] }
+          : post
+      )
+    );
+  };
+
+  const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
+
+  const filteredPosts = sortedPosts.filter((post) => {
     const typeMatch =
       filters.postType === "all" || post.author.type === filters.postType;
     const skillsMatch =
@@ -54,12 +73,8 @@ export default function Home() {
                 <Post
                   key={post.id}
                   post={post}
-                  onLike={() => {
-                    /* handle like */
-                  }}
-                  onComment={() => {
-                    /* handle comment */
-                  }}
+                  onLike={handleLike}
+                  onComment={handleComment}
                 />
               ))}
             </div>
