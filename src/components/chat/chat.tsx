@@ -45,20 +45,19 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
     const messageData = {
       message: input,
       currentUser,
-      selectedUser
+      selectedUser,
     };
 
     socket.emit("send-message", messageData);
 
-    // Add message to local state
     setMessages((prev) => [
       ...prev,
       {
         id: Date.now().toString(),
         content: input,
         sender: currentUser,
-        timestamp: new Date()
-      }
+        timestamp: new Date(),
+      },
     ]);
 
     setInput("");
@@ -90,15 +89,13 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
               message.sender.id === currentUser.id
                 ? "justify-end"
                 : "justify-start"
-            }`}
-          >
+            }`}>
             <div
               className={`rounded-lg p-2 max-w-sm ${
                 message.sender.id === currentUser.id
                   ? "bg-blue-500 text-white"
                   : "bg-gray-200"
-              }`}
-            >
+              }`}>
               <div>{message.content}</div>
               <div className="text-xs mt-1 opacity-70">
                 {new Date(message.timestamp).toLocaleTimeString()}

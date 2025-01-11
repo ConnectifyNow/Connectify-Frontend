@@ -28,7 +28,6 @@ export interface Organization {
   description: string;
   imageUrl?: string;
 
-  // TODO: add to erd
   focusAreas: FocusArea[];
   websiteLink: string;
 }
