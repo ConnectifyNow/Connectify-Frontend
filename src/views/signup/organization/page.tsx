@@ -54,6 +54,10 @@ export default function OrganizationSignUpPage() {
     }
   }, []);
 
+  const generateDescription = (organizationName: string) => {
+    console.log({ generateDescription: organizationName });
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -124,7 +128,8 @@ export default function OrganizationSignUpPage() {
               <Label htmlFor="city">City</Label>
               <Select
                 onValueChange={(value) => handleSelectChange("city", value)}
-                required>
+                required
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a city" />
                 </SelectTrigger>
@@ -153,6 +158,12 @@ export default function OrganizationSignUpPage() {
                 required
               />
             </div>
+            <Button
+              size="sm"
+              onClick={() => generateDescription("hilas company")}
+            >
+              Generate Description
+            </Button>
             <div className="space-y-2">
               <Label htmlFor="imageUrl">Organization Logo URL</Label>
               <Input
