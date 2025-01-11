@@ -54,10 +54,10 @@ export default function UserAboutCard({
                 onChange={(event) => handleChange("about", event.target.value)}
               />
             </div>
-            {profileData.role && (
+            {profileData.role == 1 && (
               <Button
                 size="sm"
-                onClick={() => generateDescription("hilas company")}
+                onClick={() => generateDescription(profileData.username)}
               >
                 Generate Description
               </Button>
