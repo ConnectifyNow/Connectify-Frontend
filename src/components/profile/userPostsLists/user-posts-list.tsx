@@ -2,12 +2,14 @@ import { usePostsStore } from '../../../stores/postsStore'
 import useUserStore from '../../../stores/setUserStore'
 import Post from '../../shared/Posts/post'
 
-export default function Profile() {
+export default function PostsList() {
   const { posts, likePost, addComment, updatePost, deletePost, likeComment } = usePostsStore()
     const currentUser = useUserStore()
 
   const userPosts = posts.filter(post => post.author.id === currentUser.id)
-
+  //TODO: get posts by user id
+  console.log(userPosts)
+  
   return (
     <main className="min-h-screen bg-gray-100 py-12">
       <div className="max-w-2xl mx-auto px-4">
