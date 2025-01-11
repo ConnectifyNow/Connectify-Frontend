@@ -17,7 +17,7 @@ type UserInformationProps = {
 export default function UserInformation({
   profileData,
   isEditing,
-  handleChange
+  handleChange,
 }: UserInformationProps) {
   const router = useNavigate();
 
@@ -47,6 +47,16 @@ export default function UserInformation({
               />
             </div>
             <div>
+              <Label htmlFor="username">Username</Label>
+              <Input
+                id="username"
+                value={profileData.username}
+                onChange={(event) =>
+                  handleChange("username", event.target.value)
+                }
+              />
+            </div>
+            <div>
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
@@ -68,6 +78,9 @@ export default function UserInformation({
           <>
             <p>
               <strong>Name:</strong> {profileData.name}
+            </p>
+            <p>
+              <strong>Username:</strong> {profileData.username}
             </p>
             <p>
               <strong>Email:</strong> {profileData.email}

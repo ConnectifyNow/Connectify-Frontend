@@ -28,7 +28,6 @@ export interface Organization {
   description: string;
   imageUrl?: string;
 
-  // TODO: add to erd
   focusAreas: FocusArea[];
   websiteLink: string;
 }
@@ -48,7 +47,7 @@ export interface Author {
   name: string;
   avatar?: string;
   type: "user" | "organization";
-} 
+}
 
 export interface Tag {
   type: tagType;
@@ -82,8 +81,8 @@ export enum Role {
 }
 
 export enum tagType {
-  skill = 'skill',
-  focusArea = 'focus-area',
+  skill = "skill",
+  focusArea = "focus-area",
 }
 
 export interface ProfileData {
@@ -93,5 +92,6 @@ export interface ProfileData {
   imageUrl?: string;
   city: string;
   skills?: Skill[];
+  username: string;
   about?: string;
 }

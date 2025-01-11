@@ -10,13 +10,15 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<User>(user);
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleChange = (key: keyof ProfileData, value: string) => {};
+  const handleChange = (key: keyof ProfileData, value: string) => {
+    setProfile((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
 
   const handleSkillsChange = (value: string) => {
-    // setProfile((prev) => ({
-    //   ...prev,
-    //   skills: value.split(",").map((skill) => skill.trim()),
-    // }));
+    //  TODO: Implement this function
   };
 
   const saveProfile = () => {
@@ -31,14 +33,16 @@ export default function ProfilePage() {
       ...user.volunteer,
       name: `${user.volunteer?.firstName} ${user.volunteer?.lastName}`,
       role: Role.Volunteer,
-      email: user.email
+      email: user.email,
+      username: user.username,
     };
   } else if (user?.role === Role.Organization && user.organization) {
     profileData = {
       ...user.organization,
       role: Role.Organization,
       email: user.email,
-      about: user.organization.description
+      about: user.organization.description,
+      username: user.username,
     };
   }
 
