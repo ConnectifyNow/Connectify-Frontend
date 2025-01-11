@@ -17,8 +17,12 @@ type UserAboutProps = {
 const skills = [
   { id: 1, name: "Software Developer" },
   { id: 2, name: "Designer" },
-  { id: 3, name: "Project Manager" }
+  { id: 3, name: "Project Manager" },
 ];
+
+const generateDescription = (organizationName: string) => {
+  console.log({ generateDescription: organizationName });
+};
 
 // const handleSkillsChange = (value: string) => {
 //   // TODO: Implement handleSkillsChange
@@ -30,7 +34,7 @@ export default function UserAboutCard({
   setIsEditing,
   handleChange,
   handleSkillsChange,
-  saveProfile
+  saveProfile,
 }: UserAboutProps) {
   return (
     <Card className="md:col-span-2">
@@ -43,13 +47,21 @@ export default function UserAboutCard({
         {isEditing ? (
           <>
             <div>
-              <Label htmlFor="about">Bio</Label>
+              <Label htmlFor="about">Description</Label>
               <Textarea
                 id="about"
                 value={profileData.about}
                 onChange={(event) => handleChange("about", event.target.value)}
               />
             </div>
+            {profileData.role && (
+              <Button
+                size="sm"
+                onClick={() => generateDescription("hilas company")}
+              >
+                Generate Description
+              </Button>
+            )}
             <div>
               <CustomSelect
                 options={skills}
