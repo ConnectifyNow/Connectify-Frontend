@@ -57,7 +57,7 @@ export default function Home() {
           </div>
           <div className="w-3/4">
             <div className="space-y-6">
-              {paginatedPosts.map((post) => (
+              {paginatedPosts.map((post: PostType) => (
                 <Post
                   key={post.id}
                   post={post}
@@ -106,7 +106,7 @@ export default function Home() {
                 </Pagination>
               </div>
             ) : (
-              <NoPostsScreen />
+              <NoPostsScreen onAddPost={addPost} />
             )}
           </div>
         </div>

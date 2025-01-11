@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { PenLine } from "lucide-react";
 
-export default function NoPostsScreen() {
+export function NoPostsScreen() {
   return (
     <div className="flex items-center justify-center">
       <Card className="w-full max-w-md">
@@ -24,9 +24,6 @@ export default function NoPostsScreen() {
             sharing your thoughts with the world!
           </p>
         </CardContent>
-        <CardFooter className="flex justify-center">
-          <Button>Create Your First Post</Button>
-        </CardFooter>
       </Card>
     </div>
   );
