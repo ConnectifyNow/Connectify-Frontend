@@ -6,7 +6,7 @@ import { AxiosResponse } from "axios";
 export const getVolunteerByUserId = async (
   userId: User["id"]
 ): Promise<AxiosResponse<Volunteer>> => {
-  return await apiClient.get(`/volunteer/users/${userId}`, {
+  return await apiClient.get(`/volunteer/user/${userId}`, {
     headers: headers(),
   });
 };

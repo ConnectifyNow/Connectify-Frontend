@@ -6,7 +6,7 @@ import { AxiosResponse } from "axios";
 export const getOrganizationByUserId = async (
   userId: User["id"]
 ): Promise<AxiosResponse<Organization>> => {
-  return await apiClient.get(`/organization/users/${userId}`, {
+  return await apiClient.get(`/organization/user/${userId}`, {
     headers: headers(),
   });
 };

@@ -3,9 +3,9 @@ import { Role, User } from "@/types";
 import { create } from "zustand";
 
 const initialState: User = {
-  id: "",
+  id: "6784162109ecc3c0bec051d1",
   username: "hilaohana",
-  email: "hila.ohana@example.com",
+  email: "hila.ohana@gamil.com",
   password: "1234",
   role: Role.Volunteer,
   volunteer: {
@@ -17,10 +17,10 @@ const initialState: User = {
     skills: [
       { id: 1, name: "React" },
       { id: 2, name: "Node.js" },
-      { id: 3, name: "TypeScript" }
+      { id: 3, name: "TypeScript" },
     ],
     userId: "",
-    about: "I am a software developer"
+    about: "I am a software developer",
   },
   organization: {
     id: "123",
@@ -28,9 +28,9 @@ const initialState: User = {
     name: "Hila Ohana",
     description: "Software Developer",
     focusAreas: [],
-    websiteLink: ""
+    websiteLink: "",
   },
-  isLoggedIn: false
+  isLoggedIn: false,
 };
 
 type State = User;
@@ -48,7 +48,7 @@ const useUserStore = create<State & Action>((set) => ({
   resetUser: () => {
     set(() => ({ ...initialState }));
     set(() => ({ isLoggedIn: isAuthenticated() }));
-  }
+  },
 }));
 
 export default useUserStore;
