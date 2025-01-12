@@ -7,9 +7,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const queryClient = new QueryClient();
 
-// const googleClientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID;
-
-const googleClientId = "1";
+const googleClientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID;
 
 if (!googleClientId) {
   throw new Error("Google Client ID is not defined in environment variables");
@@ -19,7 +17,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <GoogleOAuthProvider clientId={googleClientId}>
       <QueryClientProvider client={queryClient}>
-          <App />
+        <App />
       </QueryClientProvider>
     </GoogleOAuthProvider>
   </StrictMode>

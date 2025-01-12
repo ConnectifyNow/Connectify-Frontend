@@ -3,16 +3,23 @@ import { organizations, volunteers } from "../../data/directory";
 import OrganizationCard from "../../components/discover/organization-card";
 import VolunteerCard from "../../components/discover/volunteer-card";
 import Sidebar from "../../components/discover/sidebar";
-import { Pagination } from "@/components/ui/pagination";
 import { Organization, Volunteer } from "@/types";
 import { NoPostsScreen } from "@/components/noPosts/noPosts";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious
+} from "@/components/ui/pagination";
 
 const ITEMS_PER_PAGE = 3;
 
 export default function Directory() {
   const [filters, setFilters] = useState({
     mode: "organizations" as "organizations" | "volunteers",
-    searchTerm: "",
+    searchTerm: ""
   });
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -49,7 +56,7 @@ export default function Directory() {
           </div>
           <div className="w-3/4">
             <div className="space-y-6">
-              {paginatedItems.map((item: any) =>
+              {paginatedItems.map((item: Volunteer | Organization) =>
                 filters.mode === "organizations" ? (
                   <OrganizationCard
                     key={(item as Organization).id}
@@ -69,27 +76,27 @@ export default function Directory() {
                 style={{ cursor: "pointer" }}
               >
                 <Pagination>
-                  <Pagination.Content>
-                    <Pagination.Item>
-                      <Pagination.Previous
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
                         onClick={() =>
                           setCurrentPage((prev) => Math.max(prev - 1, 1))
                         }
                         className={currentPage === 1 ? "disabled" : ""}
                       />
-                    </Pagination.Item>
+                    </PaginationItem>
                     {[...Array(totalPages)].map((_, index) => (
-                      <Pagination.Item key={index}>
-                        <Pagination.Link
+                      <PaginationItem key={index}>
+                        <PaginationLink
                           isActive={currentPage === index + 1}
                           onClick={() => setCurrentPage(index + 1)}
                         >
                           {index + 1}
-                        </Pagination.Link>
-                      </Pagination.Item>
+                        </PaginationLink>
+                      </PaginationItem>
                     ))}
-                    <Pagination.Item>
-                      <Pagination.Next
+                    <PaginationItem>
+                      <PaginationNext
                         onClick={() =>
                           setCurrentPage((prev) =>
                             Math.min(prev + 1, totalPages)
@@ -97,8 +104,8 @@ export default function Directory() {
                         }
                         className={currentPage === totalPages ? "disabled" : ""}
                       />
-                    </Pagination.Item>
-                  </Pagination.Content>
+                    </PaginationItem>
+                  </PaginationContent>
                 </Pagination>
               </div>
             ) : filters.mode === "organizations" ? (

@@ -4,9 +4,12 @@ import useUserStore from "@/stores/setUserStore";
 import UserInformation from "@/components/profile/userInformationCard/userInformationCard";
 import UserAboutCard from "@/components/profile/userAboutCard/userAboutCard";
 import PostsList from "@/components/profile/userPostsLists/user-posts-list";
+import { resetTokens } from "@/services/authService";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfilePage() {
   const user = useUserStore();
+  const navigate = useNavigate();
 
   const [profile, setProfile] = useState<User>(user);
   const [isEditing, setIsEditing] = useState(false);
@@ -14,12 +17,19 @@ export default function ProfilePage() {
   const handleChange = (key: keyof ProfileData, value: string) => {
     setProfile((prev) => ({
       ...prev,
-      [key]: value,
+      [key]: value
     }));
   };
 
-  const handleSkillsChange = (value: string) => {
+  const handleSkillsChange = (value: number) => {
     //  TODO: Implement this function
+    console.log("Selected skill:", value);
+  };
+
+  const handleLogout = () => {
+    resetTokens();
+    user.resetUser();
+    navigate("/");
   };
 
   const saveProfile = () => {
@@ -35,7 +45,7 @@ export default function ProfilePage() {
       name: `${user.volunteer?.firstName} ${user.volunteer?.lastName}`,
       role: Role.Volunteer,
       email: user.email,
-      username: user.username,
+      username: user.username
     };
   } else if (user?.role === Role.Organization && user.organization) {
     profileData = {
@@ -43,7 +53,7 @@ export default function ProfilePage() {
       role: Role.Organization,
       email: user.email,
       about: user.organization.description,
-      username: user.username,
+      username: user.username
     };
   }
 
@@ -63,6 +73,7 @@ export default function ProfilePage() {
           setIsEditing={setIsEditing}
           handleChange={handleChange}
           handleSkillsChange={handleSkillsChange}
+          handleLogout={handleLogout}
           saveProfile={saveProfile}
         />
       </div>

@@ -1,3 +1,4 @@
+import { isAuthenticated } from "@/services/authService";
 import { Role, User } from "@/types";
 import { create } from "zustand";
 
@@ -6,7 +7,7 @@ const initialState: User = {
   username: "hilaohana",
   email: "hila.ohana@example.com",
   password: "1234",
-  role: Role.Organization,
+  role: Role.Volunteer,
   volunteer: {
     phone: "1234567890",
     firstName: "Hila",
@@ -16,10 +17,10 @@ const initialState: User = {
     skills: [
       { id: 1, name: "React" },
       { id: 2, name: "Node.js" },
-      { id: 3, name: "TypeScript" },
+      { id: 3, name: "TypeScript" }
     ],
     userId: "",
-    about: "I am a software developer",
+    about: "I am a software developer"
   },
   organization: {
     id: "123",
@@ -27,8 +28,9 @@ const initialState: User = {
     name: "Hila Ohana",
     description: "Software Developer",
     focusAreas: [],
-    websiteLink: "",
+    websiteLink: ""
   },
+  isLoggedIn: false
 };
 
 type State = User;
@@ -43,7 +45,10 @@ const useUserStore = create<State & Action>((set) => ({
   ...initialState,
   updateIsLoggedIn: (isLoggedIn) => set(() => ({ isLoggedIn })),
   setUser: (user: User) => set(() => ({ ...user })),
-  resetUser: () => set(() => ({ ...initialState })),
+  resetUser: () => {
+    set(() => ({ ...initialState }));
+    set(() => ({ isLoggedIn: isAuthenticated() }));
+  }
 }));
 
 export default useUserStore;

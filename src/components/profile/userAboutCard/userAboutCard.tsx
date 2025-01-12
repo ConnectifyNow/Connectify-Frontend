@@ -3,9 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "../../ui/textarea";
 import { Label } from "@/components/ui/label";
-import axios from "axios";
 import CustomSelect from "@/components/shared/customSelect";
-import OpenAI from "openai";
 import { useEffect, useState } from "react";
 import { getAiDescription } from "@/services/aiService";
 
@@ -16,12 +14,13 @@ type UserAboutProps = {
   handleChange: (key: keyof ProfileData, value: string) => void;
   handleSkillsChange: (value: number) => void;
   saveProfile: () => void;
+  handleLogout: () => void;
 };
 
 const skills = [
   { id: 1, name: "Software Developer" },
   { id: 2, name: "Designer" },
-  { id: 3, name: "Project Manager" },
+  { id: 3, name: "Project Manager" }
 ];
 
 export default function UserAboutCard({
@@ -31,33 +30,33 @@ export default function UserAboutCard({
   handleChange,
   handleSkillsChange,
   saveProfile,
+  handleLogout
 }: UserAboutProps) {
   const [isDisabled, setIsDisabled] = useState(false);
-  const [cooldownTime, setCooldownTime] = useState(0);
+  const [coolDownTime, setCoolDownTime] = useState(0);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (isDisabled && cooldownTime > 0) {
+    if (isDisabled && coolDownTime > 0) {
       timer = setInterval(() => {
-        setCooldownTime((prevTime) => prevTime - 1);
+        setCoolDownTime((prevTime) => prevTime - 1);
       }, 1000);
     }
 
-    if (cooldownTime === 0) {
+    if (coolDownTime === 0) {
       setIsDisabled(false);
     }
 
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [isDisabled, cooldownTime]);
+  }, [isDisabled, coolDownTime]);
 
   const handleClick = async (profileData: ProfileData) => {
-    // profileData.about = await generateDescription(profileData.username);
     const response = await getAiDescription(profileData.username);
     profileData.about = response.data.description;
     setIsDisabled(true);
-    setCooldownTime(20);
+    setCoolDownTime(20);
   };
 
   return (
@@ -84,22 +83,25 @@ export default function UserAboutCard({
               <Button
                 onClick={() => handleClick(profileData)}
                 disabled={isDisabled}
-                className="w-55">
+                className="w-55"
+              >
                 {isDisabled
-                  ? `Wait ${cooldownTime}s`
+                  ? `Wait ${coolDownTime}s`
                   : "Generate Description using AI"}
               </Button>
             )}
 
-            <div>
-              <CustomSelect
-                options={skills}
-                selectedOptions={
-                  profileData.skills?.map((skill) => skill.id) ?? []
-                }
-                onChange={handleSkillsChange}
-              />
-            </div>
+            {profileData.role === Role.Volunteer && (
+              <div>
+                <CustomSelect
+                  options={skills}
+                  selectedOptions={
+                    profileData.skills?.map((skill) => skill.id) ?? []
+                  }
+                  onChange={handleSkillsChange}
+                />
+              </div>
+            )}
           </>
         ) : (
           <>
@@ -109,7 +111,8 @@ export default function UserAboutCard({
                 {(profileData.skills ?? []).map((skill) => (
                   <span
                     key={skill.id}
-                    className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-sm">
+                    className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-sm"
+                  >
                     {skill.name}
                   </span>
                 ))}
@@ -117,12 +120,15 @@ export default function UserAboutCard({
             </div>
           </>
         )}
-        <div className="flex justify-end">
+        <div className="flex justify-end space-x-2">
           {isEditing ? (
             <Button onClick={saveProfile}>Save Profile</Button>
           ) : (
             <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
           )}
+          <Button variant="destructive" onClick={handleLogout}>
+            Logout
+          </Button>
         </div>
       </CardContent>
     </Card>
