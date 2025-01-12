@@ -10,50 +10,41 @@ import SignUpModePage from "@/views/signup/mode/page";
 import OrganizationSignUpPage from "@/views/signup/organization/page";
 import SignUpPage from "@/views/signup/page";
 import UserSignUpPage from "@/views/signup/user/page";
-import { createBrowserRouter } from "react-router-dom";
-// import { getTokens } from "@/services/authService";
+import { createBrowserRouter, redirect } from "react-router-dom";
+import { getTokens } from "@/services/authService";
 
-// const authLoader = async () => {
-//   const tokens = getTokens();
-//   if (tokens.accessToken && tokens.refreshToken) {
-//     return null;
-//   }
-//   return redirect("/signin");
-// };
+const authLoader = async () => {
+  const tokens = getTokens();
+
+  if (tokens.accessToken && tokens.refreshToken) {
+    return null;
+  }
+  return redirect("/signin");
+};
+
+const redirectIfAuthenticated = async () => {
+  const tokens = getTokens();
+
+  if (tokens.accessToken && tokens.refreshToken) {
+    return redirect("/home");
+  }
+  return null;
+};
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    // loader: authLoader,
+    loader: authLoader,
     children: [
       {
         path: "/",
-        element: <Onboarding />
+        element: <Onboarding />,
+        loader: redirectIfAuthenticated
       },
       {
         path: "/filter",
         element: <Filter />
-      },
-      {
-        path: "/signin",
-        element: <SignInPage />
-      },
-      {
-        path: "/signup",
-        element: <SignUpPage />
-      },
-      {
-        path: "/signup/mode",
-        element: <SignUpModePage />
-      },
-      {
-        path: "/signup/user",
-        element: <UserSignUpPage />
-      },
-      {
-        path: "/signup/organization",
-        element: <OrganizationSignUpPage />
       },
       {
         path: "/chat",
@@ -74,6 +65,38 @@ export const router = createBrowserRouter([
       {
         path: "/chat",
         element: <Chat />
+      }
+    ]
+  },
+  {
+    path: "/signin",
+    element: <Layout />,
+    children: [
+      {
+        path: "/signin/",
+        element: <SignInPage />
+      }
+    ]
+  },
+  {
+    path: "/signup",
+    element: <Layout />,
+    children: [
+      {
+        path: "/signup/",
+        element: <SignUpPage />
+      },
+      {
+        path: "/signup/mode",
+        element: <SignUpModePage />
+      },
+      {
+        path: "/signup/user",
+        element: <UserSignUpPage />
+      },
+      {
+        path: "/signup/organization",
+        element: <OrganizationSignUpPage />
       }
     ]
   }

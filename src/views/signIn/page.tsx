@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,13 +12,12 @@ import { ToastAction } from "@/components/ui/toast";
 import {
   signin as signinRequest,
   saveTokens,
-  googleSignIn,
+  googleSignIn
 } from "../../services/authService";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 
 export default function SignInPage() {
   const { toast } = useToast();
-  // TODO: Change this
 
   const updateIsLoggedIn = useUserStore((state) => state.updateIsLoggedIn);
   const [email, setEmail] = useState("");
@@ -37,11 +36,12 @@ export default function SignInPage() {
 
       saveTokens({
         accessToken: loginGoogleRes.accessToken,
-        refreshToken: loginGoogleRes.refreshToken,
+        refreshToken: loginGoogleRes.refreshToken
       });
       user.setUser(loginGoogleRes.user);
+      updateIsLoggedIn(true);
 
-      router("/logInGoogle", { replace: true });
+      router("/home", { replace: true });
     } catch (err) {
       console.log(err);
     }
@@ -54,7 +54,7 @@ export default function SignInPage() {
         <ToastAction altText="Sorry, we have an issue logging in via Google">
           login error
         </ToastAction>
-      ),
+      )
     });
   };
 
@@ -67,17 +67,16 @@ export default function SignInPage() {
     event.preventDefault();
     setError("");
     setIsLoading(true);
-    updateIsLoggedIn(true);
 
     try {
-      console.log("Signing in with:", { email, password });
       const { data: signinRes } = await signinMutation.mutateAsync({
         email,
-        password,
+        password
       });
+      updateIsLoggedIn(true);
       saveTokens({
         accessToken: signinRes.accessToken,
-        refreshToken: signinRes.refreshToken,
+        refreshToken: signinRes.refreshToken
       });
       user.setUser(signinRes.user);
 
@@ -85,10 +84,10 @@ export default function SignInPage() {
         title: "Logged in successfully",
         action: (
           <ToastAction altText="Logged in successfully">login</ToastAction>
-        ),
+        )
       });
 
-      router("/");
+      router("/home");
     } catch {
       setError("Failed to sign in.");
     } finally {

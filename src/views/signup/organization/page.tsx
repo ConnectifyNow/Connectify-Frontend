@@ -10,7 +10,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/components/ui/select";
 import useUserStore from "@/stores/setUserStore";
 import CustomSelect from "../../../components/shared/customSelect";
@@ -19,7 +19,7 @@ import { getAiDescription } from "@/services/aiService";
 const cities = [
   { id: 1, name: "New York" },
   { id: 2, name: "Los Angeles" },
-  { id: 3, name: "Chicago" },
+  { id: 3, name: "Chicago" }
 ];
 
 const areas = [
@@ -28,7 +28,7 @@ const areas = [
   { id: 3, name: "Environment" },
   { id: 4, name: "Social Services" },
   { id: 5, name: "Arts and Culture" },
-  { id: 6, name: "Community Development" },
+  { id: 6, name: "Community Development" }
 ];
 
 export default function OrganizationSignUpPage() {
@@ -40,7 +40,7 @@ export default function OrganizationSignUpPage() {
     description: "",
     imageUrl: "",
     organizationUrl: "",
-    areas: [] as number[],
+    areas: [] as number[]
   });
   const router = useNavigate();
   const user = useUserStore();
@@ -53,14 +53,14 @@ export default function OrganizationSignUpPage() {
     }
   }, []);
 
-  const generateDescription = (organizationName: string) => {
-    console.log({ generateDescription: organizationName });
-  };
+  // const generateDescription = (organizationName: string) => {
+  //   console.log({ generateDescription: organizationName });
+  // };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
+    const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -86,7 +86,7 @@ export default function OrganizationSignUpPage() {
       username: "mock-username",
       email: formData.email,
       password: formData.password,
-      role: 1,
+      role: 1
     });
     router("/");
   };
@@ -155,7 +155,8 @@ export default function OrganizationSignUpPage() {
               <Label htmlFor="city">City</Label>
               <Select
                 onValueChange={(value) => handleSelectChange("city", value)}
-                required>
+                required
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a city" />
                 </SelectTrigger>
@@ -187,7 +188,8 @@ export default function OrganizationSignUpPage() {
             <Button
               onClick={() => handleGenerateClick()}
               disabled={isDisabled}
-              className="w-55">
+              className="w-55"
+            >
               {isDisabled
                 ? `Wait ${cooldownTime}s`
                 : "Generate Description using AI"}

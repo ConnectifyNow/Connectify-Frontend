@@ -1,11 +1,18 @@
 import { AddPostButton } from "@/components/home/addPostButton";
 import { NoPostsScreen } from "@/components/noPosts/noPosts";
-import { Pagination } from "@/components/ui/pagination";
 import { useState } from "react";
 import Sidebar from "../../components/home/sidebar";
 import { usePostsStore } from "../../stores/postsStore";
 import { Post as PostType } from "../../types";
 import PostCard from "@/components/shared/Posts/post";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious
+} from "@/components/ui/pagination";
 
 const POSTS_PER_PAGE = 3;
 
@@ -17,12 +24,12 @@ export default function Home() {
     addPost,
     updatePost,
     deletePost,
-    likeComment,
+    likeComment
   } = usePostsStore();
 
   const [filters, setFilters] = useState({
     postType: "all",
-    skillsIds: [] as number[],
+    skillsIds: [] as number[]
   });
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,27 +82,27 @@ export default function Home() {
                 style={{ cursor: "pointer" }}
               >
                 <Pagination>
-                  <Pagination.Content>
-                    <Pagination.Item>
-                      <Pagination.Previous
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
                         onClick={() =>
                           setCurrentPage((prev) => Math.max(prev - 1, 1))
                         }
                         className={currentPage === 1 ? "disabled" : ""}
                       />
-                    </Pagination.Item>
+                    </PaginationItem>
                     {[...Array(totalPages)].map((_, index) => (
-                      <Pagination.Item key={index}>
-                        <Pagination.Link
+                      <PaginationItem key={index}>
+                        <PaginationLink
                           isActive={currentPage === index + 1}
                           onClick={() => setCurrentPage(index + 1)}
                         >
                           {index + 1}
-                        </Pagination.Link>
-                      </Pagination.Item>
+                        </PaginationLink>
+                      </PaginationItem>
                     ))}
-                    <Pagination.Item>
-                      <Pagination.Next
+                    <PaginationItem>
+                      <PaginationNext
                         onClick={() =>
                           setCurrentPage((prev) =>
                             Math.min(prev + 1, totalPages)
@@ -103,8 +110,8 @@ export default function Home() {
                         }
                         className={currentPage === totalPages ? "disabled" : ""}
                       />
-                    </Pagination.Item>
-                  </Pagination.Content>
+                    </PaginationItem>
+                  </PaginationContent>
                 </Pagination>
               </div>
             ) : (

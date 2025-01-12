@@ -86,12 +86,12 @@ export interface Comment {
 
 export enum Role {
   Volunteer = 0,
-  Organization = 1,
+  Organization = 1
 }
 
 export enum tagType {
   skill = "skill",
-  focusArea = "focus-area",
+  focusArea = "focus-area"
 }
 
 export interface ProfileData {
@@ -108,3 +108,20 @@ export interface ProfileData {
 export interface AiDescription {
   description: string;
 }
+
+type GeneralResponse = {
+  user: User;
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type RefreshResponse = {
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type SigninResponse = GeneralResponse;
+
+export type GoogleSignInResponse = GeneralResponse;
+
+export type SignupResponse = GeneralResponse;

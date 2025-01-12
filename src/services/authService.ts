@@ -1,16 +1,19 @@
 import { CredentialResponse } from "@react-oauth/google";
 import { AxiosResponse } from "axios";
-import { User } from "../types/index";
+import {
+  GoogleSignInResponse,
+  RefreshResponse,
+  SigninResponse,
+  SignupResponse
+} from "../types/index";
 import apiClient from "./apiClient";
-
-const ACCESS_TOKEN_KEY = "access-token";
-const REFRESH_TOKEN_KEY = "refresh-token";
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "@/utils/constants";
 
 export const headers = () => {
   const tokens = getTokens();
   if (tokens.accessToken) {
     return {
-      Authorization: `Bearer ${tokens.accessToken}`,
+      Authorization: `Bearer ${tokens.accessToken}`
     };
   }
   return {};
@@ -20,7 +23,7 @@ export const refreshTokenHeaders = () => {
   const tokens = getTokens();
   if (tokens.refreshToken) {
     return {
-      Authorization: `Bearer ${tokens.refreshToken}`,
+      Authorization: `Bearer ${tokens.refreshToken}`
     };
   }
   return {};
@@ -29,13 +32,13 @@ export const refreshTokenHeaders = () => {
 export const getTokens = () => {
   return {
     accessToken: localStorage.getItem(ACCESS_TOKEN_KEY),
-    refreshToken: localStorage.getItem(REFRESH_TOKEN_KEY),
+    refreshToken: localStorage.getItem(REFRESH_TOKEN_KEY)
   };
 };
 
 export const saveTokens = ({
   accessToken,
-  refreshToken,
+  refreshToken
 }: {
   accessToken: string;
   refreshToken: string;
@@ -49,11 +52,6 @@ export const resetTokens = () => {
   localStorage.removeItem(REFRESH_TOKEN_KEY);
 };
 
-type SigninResponse = {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
-};
 export const signin = async (
   email: string,
   password: string
@@ -69,49 +67,24 @@ export const logout = async () => {
   );
 };
 
-type SignupResponse = {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
-};
-
 export const signup = async (
   name: string,
   email: string,
-  password: string,
-  type: string,
-  bio: string
+  password: string
 ): Promise<AxiosResponse<SignupResponse>> => {
   return await apiClient.post("/auth/signup", {
     name,
     email,
-    password,
-    type,
-    bio,
+    password
   });
-};
-
-type GoogleSignInResponse = {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
 };
 
 export const googleSignIn = async (
-  credentialResponse: CredentialResponse,
-  type?: string,
-  bio?: string
+  credentialResponse: CredentialResponse
 ): Promise<AxiosResponse<GoogleSignInResponse>> => {
   return await apiClient.post("/auth/google", {
-    credentialResponse,
-    type,
-    bio,
+    credentialResponse
   });
-};
-
-type RefreshResponse = {
-  accessToken: string;
-  refreshToken: string;
 };
 
 export const refresh = async (): Promise<AxiosResponse<RefreshResponse>> => {
@@ -119,23 +92,12 @@ export const refresh = async (): Promise<AxiosResponse<RefreshResponse>> => {
     "/auth/refresh",
     {},
     {
-      headers: refreshTokenHeaders(),
+      headers: refreshTokenHeaders()
     }
   );
 };
 
-// export const updateUserProfile = async (
-//   updatedUser: UpdateUserInput
-// ): Promise<AxiosResponse<{ user: UpdateUserInput }>> => {
-//   return await apiClient.put("/auth/update-profile", updatedUser, {
-//     headers: headers(),
-//   });
-// };
-
-// export const updateUserBioType = async (
-//   updatedUser: UpdateUserGoogleInput
-// ): Promise<AxiosResponse<{ user: UpdateUserGoogleInput }>> => {
-//   return await apiClient.put("/auth/update-additional-info", updatedUser, {
-//     headers: headers(),
-//   });
-// };
+export const isAuthenticated = () => {
+  const tokens = getTokens();
+  return tokens.accessToken !== null;
+};
