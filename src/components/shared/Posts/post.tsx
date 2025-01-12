@@ -3,7 +3,7 @@ import { EditPostModal } from "@/components/shared/Posts/edit-post-modal";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import useUserStore from "@/stores/setUserStore";
-import { Edit, Heart, MessageCircle, Trash2 } from "lucide-react";
+import { Edit, Heart, MessageCircle, Trash2, User } from "lucide-react";
 import { useState } from "react";
 import { Comment, Post, Role } from "../../../types";
 import { randomAvatarUrl } from "@/utils/functions";
@@ -11,7 +11,7 @@ import img from "../../../assets/hilaAndYoav.jpg";
 
 interface PostProps {
   post: Post;
-  onLike: (postId: string) => void;
+  onLike: (postId: string, userId: string) => void;
   onComment: (postId: string, comment: Comment) => void;
   onEdit: (updatedPost: Post) => void;
   onDelete: (postId: string) => void;
@@ -36,7 +36,7 @@ export default function PostCard({
   const currentUser = useUserStore();
 
   const handleLike = () => {
-    onLike(post.id);
+    onLike(post.id, currentUser.id);
   };
 
   const handleAddComment = (e: React.FormEvent) => {

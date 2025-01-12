@@ -1,6 +1,7 @@
 import { AddPostButton } from "@/components/home/addPostButton";
 import { NoPostsScreen } from "@/components/noPosts/noPosts";
 import { useState } from "react";
+import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import Sidebar from "../../components/home/sidebar";
 import { usePostsStore } from "../../stores/postsStore";
@@ -14,7 +15,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { createPost } from "@/services/postService";
+import { createPost, likePostApi, getPosts } from "@/services/postService";
 import { Toaster } from "@/components/ui/toaster";
 const POSTS_PER_PAGE = 3;
 
@@ -38,26 +39,52 @@ export default function Home() {
 
   const [currentPage, setCurrentPage] = useState(1);
 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await getPosts();
+        if (response.status === 200) {
+          const fetchedPosts = await response.data;
+          usePostsStore.setState({ posts: fetchedPosts });
+        } else {
+          console.error("Failed to fetch posts:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
   const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
 
   const handleAddPost = async (post: PostType) => {
     addPost(post); // add to State
 
-    console.log(post);
     const response = await createPost({
       title: post.title,
       content: post.content,
-      userId: "6782d6f6041e32502bdc95fa",
+      userId: post.author.id,
       requiredSkills: post.skills.map((skill) => skill.id),
     }); // add to API
 
     if (response.status === 201) {
-      console.log(response);
       toast({
         description: "Post created successfully!",
       });
     } else {
       console.error("Failed to create post:", response.statusText);
+    }
+  };
+
+  const handleLikePost = async (postId: string, userId: string) => {
+    likePost(postId);
+
+    const response = await likePostApi(postId, userId);
+
+    console.log(response);
+    if (response.status !== 200) {
+      console.error("Failed to like post:", response.statusText);
     }
   };
 
@@ -92,7 +119,7 @@ export default function Home() {
                 <PostCard
                   key={post.id}
                   post={post}
-                  onLike={likePost}
+                  onLike={handleLikePost}
                   onComment={addComment}
                   onEdit={updatePost}
                   onDelete={deletePost}
