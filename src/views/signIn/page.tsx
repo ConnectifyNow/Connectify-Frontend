@@ -12,7 +12,7 @@ import { ToastAction } from "@/components/ui/toast";
 import {
   signin as signinRequest,
   saveTokens,
-  googleSignIn
+  googleSignIn,
 } from "../../services/authService";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 
@@ -36,7 +36,7 @@ export default function SignInPage() {
 
       saveTokens({
         accessToken: loginGoogleRes.accessToken,
-        refreshToken: loginGoogleRes.refreshToken
+        refreshToken: loginGoogleRes.refreshToken,
       });
       user.setUser(loginGoogleRes.user);
       updateIsLoggedIn(true);
@@ -54,7 +54,7 @@ export default function SignInPage() {
         <ToastAction altText="Sorry, we have an issue logging in via Google">
           login error
         </ToastAction>
-      )
+      ),
     });
   };
 
@@ -71,12 +71,12 @@ export default function SignInPage() {
     try {
       const { data: signinRes } = await signinMutation.mutateAsync({
         email,
-        password
+        password,
       });
       updateIsLoggedIn(true);
       saveTokens({
         accessToken: signinRes.accessToken,
-        refreshToken: signinRes.refreshToken
+        refreshToken: signinRes.refreshToken,
       });
       user.setUser(signinRes.user);
 
@@ -84,7 +84,7 @@ export default function SignInPage() {
         title: "Logged in successfully",
         action: (
           <ToastAction altText="Logged in successfully">login</ToastAction>
-        )
+        ),
       });
 
       router("/home");

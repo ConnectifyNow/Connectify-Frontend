@@ -6,6 +6,8 @@ import UserAboutCard from "@/components/profile/userAboutCard/userAboutCard";
 import PostsList from "@/components/profile/userPostsLists/user-posts-list";
 import { resetTokens } from "@/services/authService";
 import { useNavigate } from "react-router-dom";
+import { getVolunteerByUserId } from "@/services/volunteerService";
+import { getOrganizationByUserId } from "@/services/organizationService";
 
 export default function ProfilePage() {
   const user = useUserStore();
@@ -13,6 +15,35 @@ export default function ProfilePage() {
 
   const [profile, setProfile] = useState<User>(user);
   const [isEditing, setIsEditing] = useState(false);
+
+  const onVolunteer = async () => {
+    try {
+      const response = await getVolunteerByUserId(user.id);
+      const { data: volunteerData } = response;
+
+      setProfile({ ...user, volunteer: volunteerData });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onOrganization = async () => {
+    try {
+      const response = await getOrganizationByUserId(user.id);
+      const { data: organizationData } = response;
+
+      setProfile({ ...user, organization: organizationData });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  if (user.role == 0) {
+    console.log({ user });
+    onVolunteer();
+  } else {
+    onOrganization();
+  }
 
   const handleChange = (key: keyof ProfileData, value: string) => {
     setProfile((prev) => ({
