@@ -46,3 +46,9 @@ export const addComment = async (postId: string, comment: Comment) => {
     headers: headers(),
   });
 };
+
+export const updatePost = async (post: ApiPost) => {
+  return await apiClient.put(`/posts/${post.id}`, post, {
+    headers: headers(),
+  });
+}
