@@ -15,6 +15,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { createPost } from "@/services/postService";
+import { Toaster } from "@/components/ui/toaster";
 const POSTS_PER_PAGE = 3;
 
 export default function Home() {
@@ -46,13 +47,14 @@ export default function Home() {
     const response = await createPost({
       title: post.title,
       content: post.content,
-      userId: post.author.id,
+      userId: "6782d6f6041e32502bdc95fa",
       requiredSkills: post.skills.map((skill) => skill.id),
     }); // add to API
 
     if (response.status === 201) {
+      console.log(response);
       toast({
-        description: "Post has been created successfully",
+        description: "Post created successfully!",
       });
     } else {
       console.error("Failed to create post:", response.statusText);
@@ -144,6 +146,7 @@ export default function Home() {
         </div>
       </div>
       <AddPostButton onAddPost={handleAddPost} />
+      <Toaster></Toaster>
     </main>
   );
 }
