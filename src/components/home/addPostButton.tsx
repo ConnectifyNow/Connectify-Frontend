@@ -46,6 +46,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
     );
 
     event.preventDefault();
+    
     const newPost: Post = {
       id: Date.now().toString(),
       author: {
