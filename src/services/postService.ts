@@ -23,3 +23,26 @@ export const getPosts = async () => {
     headers: headers(),
   });
 };
+
+export const deletePost = async (postId: string) => {
+  return await apiClient.delete(`/posts/${postId}`, {
+    headers: headers(),
+  });
+};
+
+//TODO: Implement likeComment in the backend
+// export const likeComment = async (postId: string, commentId: string) => {
+//   return await apiClient.put(
+//     `/posts/${postId}/comments/${commentId}/like`,
+//     {},
+//     {
+//       headers: headers(),
+//     }
+//   );
+// };
+
+export const addComment = async (postId: string, comment: Comment) => {
+  return await apiClient.post(`/posts/${postId}/comment`, comment, {
+    headers: headers(),
+  });
+};
