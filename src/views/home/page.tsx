@@ -1,9 +1,5 @@
 import { AddPostButton } from "@/components/home/addPostButton";
 import { NoPostsScreen } from "@/components/noPosts/noPosts";
-import { useState } from "react";
-import Sidebar from "../../components/home/sidebar";
-import { usePostsStore } from "../../stores/postsStore";
-import { Post as PostType } from "../../types";
 import PostCard from "@/components/shared/Posts/post";
 import {
   Pagination,
@@ -11,8 +7,12 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious
+  PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useState } from "react";
+import Sidebar from "../../components/home/sidebar";
+import { usePostsStore } from "../../stores/postsStore";
+import { Post as PostType } from "../../types";
 
 const POSTS_PER_PAGE = 3;
 
@@ -24,12 +24,12 @@ export default function Home() {
     addPost,
     updatePost,
     deletePost,
-    likeComment
+    likeComment,
   } = usePostsStore();
 
   const [filters, setFilters] = useState({
     postType: "all",
-    skillsIds: [] as number[]
+    skillsIds: [] as number[],
   });
 
   const [currentPage, setCurrentPage] = useState(1);
