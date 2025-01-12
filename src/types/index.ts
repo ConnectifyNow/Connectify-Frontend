@@ -76,6 +76,13 @@ export interface Post {
   likes: number;
 }
 
+export interface ApiPost {
+  userId: string;
+  title: string;
+  content: string;
+  requiredSkills: Number[];
+}
+
 export interface Comment {
   id: string;
   author: Author;

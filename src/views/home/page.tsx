@@ -1,6 +1,7 @@
 import { AddPostButton } from "@/components/home/addPostButton";
 import { NoPostsScreen } from "@/components/noPosts/noPosts";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 import Sidebar from "../../components/home/sidebar";
 import { usePostsStore } from "../../stores/postsStore";
 import { Post as PostType } from "../../types";
@@ -11,9 +12,9 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious
+  PaginationPrevious,
 } from "@/components/ui/pagination";
-
+import { createPost } from "@/services/postService";
 const POSTS_PER_PAGE = 3;
 
 export default function Home() {
@@ -24,17 +25,39 @@ export default function Home() {
     addPost,
     updatePost,
     deletePost,
-    likeComment
+    likeComment,
   } = usePostsStore();
+
+  const { toast } = useToast();
 
   const [filters, setFilters] = useState({
     postType: "all",
-    skillsIds: [] as number[]
+    skillsIds: [] as number[],
   });
 
   const [currentPage, setCurrentPage] = useState(1);
 
   const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
+
+  const handleAddPost = async (post: PostType) => {
+    addPost(post); // add to State
+
+    console.log(post);
+    const response = await createPost({
+      title: post.title,
+      content: post.content,
+      userId: post.author.id,
+      requiredSkills: post.skills.map((skill) => skill.id),
+    }); // add to API
+
+    if (response.status === 201) {
+      toast({
+        description: "Post has been created successfully",
+      });
+    } else {
+      console.error("Failed to create post:", response.statusText);
+    }
+  };
 
   const filteredPosts = sortedPosts.filter((post) => {
     const typeMatch =
@@ -120,7 +143,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <AddPostButton onAddPost={addPost} />
+      <AddPostButton onAddPost={handleAddPost} />
     </main>
   );
 }
