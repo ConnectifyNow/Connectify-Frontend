@@ -14,12 +14,10 @@ export default function App() {
   const focusAreas = useFocusAreaStore();
 
   useEffect(() => {
-    if (isAuthenticated()) {
-      user.updateIsLoggedIn(isAuthenticated());
-      skills.fetchSkills();
-      cities.fetchCities();
-      focusAreas.fetchFocusArea();
-    }
+    user.updateIsLoggedIn(isAuthenticated());
+    skills.fetchSkills();
+    cities.fetchCities();
+    focusAreas.fetchFocusArea();
   }, []);
 
   return <RouterProvider router={router} />;
