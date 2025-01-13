@@ -35,10 +35,12 @@ export default function ProfilePage() {
   };
 
   const handleLogout = async () => {
-    resetTokens();
-    navigate("/");
-    await logoutMutation.mutateAsync();
-    user.resetUser();
+    if (user.isLoggedIn) {
+      await logoutMutation.mutateAsync();
+      resetTokens();
+      user.resetUser();
+      navigate("/");
+    }
   };
 
   const saveProfile = () => {
