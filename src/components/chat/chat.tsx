@@ -1,28 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { User } from "@/types";
+import { ChatProps, Message } from "@/types";
 import { Building2, UserCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSocket } from "../../hooks/useSocket";
 import { ScrollArea } from "../ui/scroll-area";
 
-interface Message {
-  id: string;
-  content: string;
-  sender: User;
-  timestamp: Date;
-}
-
-interface ChatProps {
-  currentUser: User;
-  selectedUser: User | null;
-}
-
 export default function Chat({ currentUser, selectedUser }: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
 
-  const socket = useSocket(currentUser.id);
+  const socket = useSocket(currentUser._id);
 
   useEffect(() => {
     if (!socket) {
@@ -54,7 +42,7 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
     setMessages((prev) => [
       ...prev,
       {
-        id: Date.now().toString(),
+        _id: Date.now().toString(),
         content: input,
         sender: currentUser,
         timestamp: new Date()
@@ -80,22 +68,26 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
         ) : (
           <UserCircle className="h-6 w-6" />
         )}
-        <span className="font-semibold">{selectedUser.name}</span>
+        <span className="font-semibold">
+          {selectedUser.role
+            ? selectedUser.organization?.name
+            : `${selectedUser.volunteer?.firstName} ${selectedUser.volunteer?.lastName}`}
+        </span>
       </div>
       <ScrollArea className="h-[700px] rounded-md p-4 ">
         <div className=" p-4 space-y-4">
           {messages.map((message) => (
             <div
-              key={message.id}
+              key={message._id}
               className={`flex ${
-                message.sender.id === currentUser.id
+                message.sender._id === currentUser._id
                   ? "justify-end"
                   : "justify-start"
               }`}
             >
               <div
                 className={`rounded-lg p-2 max-w-sm ${
-                  message.sender.id === currentUser.id
+                  message.sender._id === currentUser._id
                     ? "bg-blue-500 text-white"
                     : "bg-gray-200"
                 }`}

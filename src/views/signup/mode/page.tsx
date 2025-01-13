@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 export default function SignUpModePage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
   const router = useNavigate();
 
   const handleModeSelection = async (mode: "user" | "organization") => {
@@ -14,11 +15,12 @@ export default function SignUpModePage() {
     setIsLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      console.log("Selected mode:", mode);
-
-      router(`/signup/${mode}`);
+      router(`/signup/${mode}`, {
+        state: {
+          email: location.state.email,
+          password: location.state.password
+        }
+      });
     } catch {
       setError("Failed to select mode. Please try again.");
     } finally {

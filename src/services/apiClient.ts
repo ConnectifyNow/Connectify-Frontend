@@ -4,8 +4,8 @@ import { saveTokens, refresh } from "./authService";
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_REACT_APP_API_URL + "/api",
   headers: {
-    "Content-type": "application/json",
-  },
+    "Content-type": "application/json"
+  }
 });
 
 apiClient.interceptors.response.use(
@@ -24,6 +24,7 @@ apiClient.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
+    return error;
   }
 );
 
