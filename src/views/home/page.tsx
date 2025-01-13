@@ -1,9 +1,5 @@
 import { AddPostButton } from "@/components/home/addPostButton";
 import { NoPostsScreen } from "@/components/noPosts/noPosts";
-import { useState } from "react";
-import Sidebar from "../../components/home/sidebar";
-import usePostsStore from "../../stores/setPostsStore";
-import { Post as PostType } from "../../types";
 import PostCard from "@/components/shared/Posts/post";
 import {
   Pagination,
@@ -15,7 +11,7 @@ import {
 } from "@/components/ui/pagination";
 import { useState } from "react";
 import Sidebar from "../../components/home/sidebar";
-import { usePostsStore } from "../../stores/postsStore";
+import usePostsStore from "../../stores/setPostsStore";
 import { Post as PostType } from "../../types";
 
 const POSTS_PER_PAGE = 3;

@@ -3,7 +3,7 @@ import { Role, Skill, User, Volunteer } from "@/types";
 import { create } from "zustand";
 
 const initialState: User = {
-  _id: "",
+  _id: "6784162109ecc3c0bec051d1",
   username: "hilaohana",
   email: "hila.ohana@gamil.com",
   password: "1234",

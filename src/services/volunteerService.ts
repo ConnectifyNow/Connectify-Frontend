@@ -19,7 +19,7 @@ export const createVolunteer = async (
 export const getVolunteerByUserId = async (
   userId: User["_id"]
 ): Promise<AxiosResponse<Volunteer>> => {
-  return await apiClient.get(`/volunteer/user/${userId}`, {
+  return await apiClient.get(`/volunteers/user/${userId}`, {
     headers: headers(),
   });
 };

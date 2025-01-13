@@ -19,7 +19,7 @@ export const createOrganization = async (
 export const getOrganizationByUserId = async (
   userId: User["_id"]
 ): Promise<AxiosResponse<Organization>> => {
-  return await apiClient.get(`/organization/user/${userId}`, {
+  return await apiClient.get(`/organizations/user/${userId}`, {
     headers: headers(),
   });
 };

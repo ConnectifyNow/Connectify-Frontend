@@ -23,10 +23,11 @@ export default function ProfilePage() {
 
   const onVolunteer = async () => {
     try {
+      console.log({ id: user._id });
       const response = await getVolunteerByUserId(user._id);
       const { data: volunteerData } = response;
-
-      setProfile({ ...user, volunteer: volunteerData });
+      console.log({ volunteerData });
+      // setProfile({ ...user, volunteer: volunteerData });
     } catch (err) {
       console.log(err);
     }
@@ -36,15 +37,15 @@ export default function ProfilePage() {
     try {
       const response = await getOrganizationByUserId(user._id);
       const { data: organizationData } = response;
+      console.log({ organizationData });
 
-      setProfile({ ...user, organization: organizationData });
+      // setProfile({ ...user, organization: organizationData });
     } catch (err) {
       console.log(err);
     }
   };
 
-  if (user.role == 0) {
-    console.log({ user });
+  if (user?.role === Role.Volunteer) {
     onVolunteer();
   } else {
     onOrganization();
