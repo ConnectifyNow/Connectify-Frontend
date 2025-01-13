@@ -10,7 +10,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
 import useUserStore from "@/stores/setUserStore";
 import CustomSelect from "../../../components/shared/customSelect";
@@ -36,7 +36,7 @@ export default function OrganizationSignUpPage() {
     description: "",
     imageUrl: "",
     websiteLink: "",
-    focusAreas: [] as string[]
+    focusAreas: [] as string[],
   });
   const router = useNavigate();
   const user = useUserStore();
@@ -71,7 +71,7 @@ export default function OrganizationSignUpPage() {
     ({
       email,
       password,
-      role
+      role,
     }: {
       email: string;
       password: string;
@@ -95,25 +95,25 @@ export default function OrganizationSignUpPage() {
       const signUpResponse = await signUpMutation.mutateAsync({
         email: formData.email,
         password: formData.password,
-        role: Role.Organization
+        role: Role.Organization,
       });
       const createdUser = signUpResponse.data;
 
       const loginResponse = await signinMutation.mutateAsync({
         email: formData.email,
-        password: formData.password
+        password: formData.password,
       });
 
       if (loginResponse.data.accessToken !== "") {
         saveTokens({
           accessToken: loginResponse.data.accessToken,
-          refreshToken: loginResponse.data.refreshToken
+          refreshToken: loginResponse.data.refreshToken,
         });
 
         const organizationResponse =
           await createOrganizationMutation.mutateAsync({
             ...formData,
-            userId: loginResponse.data.user._id
+            userId: loginResponse.data.user._id,
           });
 
         const simpleOrganization = organizationResponse.data;
@@ -121,7 +121,7 @@ export default function OrganizationSignUpPage() {
           ...simpleOrganization,
           focusAreas: areas.filter((focusArea) =>
             simpleOrganization.focusAreas.includes(focusArea._id)
-          )
+          ),
         };
 
         createdUser.organization = organization;
@@ -212,7 +212,7 @@ export default function OrganizationSignUpPage() {
                   <SelectValue placeholder="Select a city" />
                 </SelectTrigger>
                 <SelectContent>
-                  {cities.map((city) => (
+                  {cities?.map((city) => (
                     <SelectItem key={city._id} value={city._id}>
                       {city.name}
                     </SelectItem>
