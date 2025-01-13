@@ -19,21 +19,13 @@ import { Role, Volunteer } from "@/types";
 import { saveTokens, signin, signup } from "@/services/authService";
 import { createVolunteer } from "@/services/volunteerService";
 import { useMutation } from "react-query";
-
-const cities = [
-  { _id: "1", name: "New York" },
-  { _id: "2", name: "Los Angeles" },
-  { _id: "3", name: "Chicago" }
-];
-
-const skills = [
-  { _id: "1", name: "Software Developer" },
-  { _id: "2", name: "Designer" },
-  { _id: "3", name: "Project Manager" }
-];
+import useSkillsStore from "@/stores/setSkillsStore";
+import useCitiesStore from "@/stores/setCitiesStore";
 
 export default function UserSignUpPage() {
   const location = useLocation();
+  const cities = useCitiesStore((state) => state.cities);
+  const skills = useSkillsStore((state) => state.skills);
 
   const [formData, setFormData] = useState({
     email: location.state.email,
