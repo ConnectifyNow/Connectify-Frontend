@@ -26,7 +26,7 @@ export default function PostCard({
   onEdit,
   onDelete,
   onCommentLike,
-  showEditDelete = false
+  showEditDelete = false,
 }: PostProps) {
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -51,11 +51,11 @@ export default function PostCard({
             currentUser.role === Role.Volunteer
               ? currentUser.volunteer?.imageUrl ?? randomAvatarUrl()
               : currentUser.organization?.imageUrl ?? randomAvatarUrl(),
-          type: currentUser.role === Role.Volunteer ? "user" : "organization"
+          type: currentUser.role === Role.Volunteer ? "user" : "organization",
         },
         content: newComment.trim(),
         createdAt: new Date().toISOString(),
-        likes: 0
+        likes: 0,
       };
       onComment(post._id, comment);
       setNewComment("");
@@ -78,7 +78,7 @@ export default function PostCard({
       className="bg-white shadow-md rounded-lg p-6 mb-6"
       style={{ display: "flex" }}
     >
-      <div>
+      <div style={{ width: "60%" }}>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <img
@@ -218,7 +218,7 @@ export default function PostCard({
           </>
         )}
       </div>
-      <div style={{ width: "50%" }}>
+      <div style={{ width: "40%" }}>
         <img
           src={img}
           alt={post.author.name}
