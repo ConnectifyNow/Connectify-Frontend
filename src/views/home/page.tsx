@@ -11,7 +11,7 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious
+  PaginationPrevious,
 } from "@/components/ui/pagination";
 
 const POSTS_PER_PAGE = 3;
@@ -24,12 +24,12 @@ export default function Home() {
     addPost,
     updatePost,
     deletePost,
-    likeComment
+    likeComment,
   } = usePostsStore();
 
   const [filters, setFilters] = useState({
     postType: "all",
-    skillsIds: [] as string[]
+    skillsIds: [] as string[],
   });
 
   const [currentPage, setCurrentPage] = useState(1);
