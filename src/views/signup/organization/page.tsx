@@ -20,24 +20,13 @@ import { saveTokens, signin, signup } from "@/services/authService";
 import { createOrganization } from "@/services/organizationService";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Organization, Role } from "@/types";
-
-const cities = [
-  { _id: "1", name: "New York" },
-  { _id: "2", name: "Los Angeles" },
-  { _id: "3", name: "Chicago" }
-];
-
-const areas = [
-  { _id: "1", name: "Education" },
-  { _id: "2", name: "Healthcare" },
-  { _id: "3", name: "Environment" },
-  { _id: "4", name: "Social Services" },
-  { _id: "5", name: "Arts and Culture" },
-  { _id: "6", name: "Community Development" }
-];
+import useCitiesStore from "@/stores/setCitiesStore";
+import useFocusAreaStore from "@/stores/setFocusAreas";
 
 export default function OrganizationSignUpPage() {
   const location = useLocation();
+  const cities = useCitiesStore((state) => state.cities);
+  const areas = useFocusAreaStore((state) => state.focusAreas);
 
   const [formData, setFormData] = useState({
     email: location.state.email,
@@ -71,11 +60,10 @@ export default function OrganizationSignUpPage() {
 
   const handleAreaChange = (value: string) => {
     setFormData((prev) => {
-      console.log({ prev });
       const updatedAreas = prev.focusAreas.includes(value)
         ? prev.focusAreas.filter((area) => area !== value)
         : [...prev.focusAreas, value];
-      return { ...prev, areas: updatedAreas };
+      return { ...prev, focusAreas: updatedAreas };
     });
   };
 
@@ -147,15 +135,6 @@ export default function OrganizationSignUpPage() {
     } finally {
       setIsLoading(false);
     }
-    // console.log("Submitting organization data:", formData);
-    // user.setUser({
-    //   id: "mock-id",
-    //   username: "mock-username",
-    //   email: formData.email,
-    //   password: formData.password,
-    //   role: 1
-    // });
-    // router("/");
   };
 
   const [isDisabled, setIsDisabled] = useState(false);

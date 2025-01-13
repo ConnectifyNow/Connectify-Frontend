@@ -7,11 +7,14 @@ import PostsList from "@/components/profile/userPostsLists/user-posts-list";
 import { logout, resetTokens } from "@/services/authService";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
+import useSkillsStore from "@/stores/setSkillsStore";
 
 export default function ProfilePage() {
   const user = useUserStore();
   const navigate = useNavigate();
   const logoutMutation = useMutation(logout);
+  const getSkillById = useSkillsStore((state) => state.getSkillById);
+  const toggleSkill = useUserStore((state) => state.toggleSkill);
 
   const [profile, setProfile] = useState<User>(user);
   const [isEditing, setIsEditing] = useState(false);
@@ -24,8 +27,11 @@ export default function ProfilePage() {
   };
 
   const handleSkillsChange = (value: string) => {
-    //  TODO: Implement this function
-    console.log("Selected skill:", value);
+    const skill = getSkillById(value);
+
+    if (skill !== undefined) {
+      toggleSkill(skill);
+    }
   };
 
   const handleLogout = async () => {

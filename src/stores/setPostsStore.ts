@@ -12,7 +12,7 @@ interface PostsStore {
   likeComment: (postId: string, commentId: string) => void;
 }
 
-export const usePostsStore = create<PostsStore>((set) => ({
+const usePostsStore = create<PostsStore>((set) => ({
   posts: initialPosts,
   addPost: (post) => set((state) => ({ posts: [post, ...state.posts] })),
   updatePost: (updatedPost) =>
@@ -55,3 +55,5 @@ export const usePostsStore = create<PostsStore>((set) => ({
       )
     }))
 }));
+
+export default usePostsStore;

@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import CustomSelect from "@/components/shared/customSelect";
 import { useEffect, useState } from "react";
 import { getAiDescription } from "@/services/aiService";
+import useSkillsStore from "@/stores/setSkillsStore";
 
 type UserAboutProps = {
   profileData: ProfileData;
@@ -16,12 +17,6 @@ type UserAboutProps = {
   saveProfile: () => void;
   handleLogout: () => void;
 };
-
-const skills = [
-  { _id: "1", name: "Software Developer" },
-  { _id: "2", name: "Designer" },
-  { _id: "3", name: "Project Manager" }
-];
 
 export default function UserAboutCard({
   profileData,
@@ -34,6 +29,7 @@ export default function UserAboutCard({
 }: UserAboutProps) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [coolDownTime, setCoolDownTime] = useState(0);
+  const skills = useSkillsStore((state) => state.skills);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;

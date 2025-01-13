@@ -1,5 +1,5 @@
 import { isAuthenticated } from "@/services/authService";
-import { Role, User } from "@/types";
+import { Role, Skill, User, Volunteer } from "@/types";
 import { create } from "zustand";
 
 const initialState: User = {
@@ -14,11 +14,7 @@ const initialState: User = {
     lastName: "Ohana",
     city: "Tel Aviv",
     age: 30,
-    skills: [
-      { _id: "1", name: "React" },
-      { _id: "2", name: "Node.js" },
-      { _id: "3", name: "TypeScript" }
-    ],
+    skills: [],
     userId: "",
     about: "I am a software developer"
   },
@@ -39,15 +35,47 @@ type Action = {
   updateIsLoggedIn: (isLoggedIn: State["isLoggedIn"]) => void;
   setUser: (user: User) => void;
   resetUser: () => void;
+  toggleSkill: (skill: Skill) => void;
 };
 
-const useUserStore = create<State & Action>((set) => ({
+const useUserStore = create<State & Action>((set, get) => ({
   ...initialState,
   updateIsLoggedIn: (isLoggedIn) => set(() => ({ isLoggedIn })),
   setUser: (user: User) => set(() => ({ ...user })),
   resetUser: () => {
     set(() => ({ ...initialState }));
     set(() => ({ isLoggedIn: isAuthenticated() }));
+  },
+  toggleSkill: (skill) => {
+    const currentSkills = get().volunteer?.skills;
+    const currentVolunteer = get().volunteer;
+
+    const isSkillExist = currentSkills?.some(
+      (currentSkill) => currentSkill._id === skill._id
+    );
+
+    if (isSkillExist) {
+      const updatedSkills =
+        currentSkills?.filter(
+          (currentSkill) => currentSkill._id !== skill._id
+        ) ?? [];
+
+      set(() => ({
+        volunteer: {
+          ...currentVolunteer,
+          skills: updatedSkills
+        } as Volunteer
+      }));
+    } else {
+      const updatedSkills = currentSkills ? [...currentSkills, skill] : [skill];
+
+      set(() => ({
+        volunteer: {
+          ...currentVolunteer,
+          skills: updatedSkills
+        } as Volunteer
+      }));
+    }
   }
 }));
 

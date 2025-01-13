@@ -39,15 +39,14 @@ export type SimpleOrganization = Omit<Organization, "focusAreas"> & {
   focusAreas: string[];
 };
 
-export interface Skill {
+export interface IdName {
   _id: string;
   name: string;
 }
 
-export interface FocusArea {
-  _id: string;
-  name: string;
-}
+export type Skill = IdName;
+export type FocusArea = IdName;
+export type City = IdName;
 
 export interface Author {
   _id: string;
@@ -148,3 +147,5 @@ export type SignupResponse = User;
 export type CreateVolunteerResponse = SimpleVolunteer;
 
 export type CreateOrganizationResponse = SimpleOrganization;
+
+export type GetIdNameResponse = IdName[];
