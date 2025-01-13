@@ -10,7 +10,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import useUserStore from "@/stores/setUserStore";
@@ -21,6 +21,7 @@ import { createVolunteer } from "@/services/volunteerService";
 import { useMutation } from "react-query";
 import useSkillsStore from "@/stores/setSkillsStore";
 import useCitiesStore from "@/stores/setCitiesStore";
+import { ImageIcon } from "lucide-react";
 
 export default function UserSignUpPage() {
   const location = useLocation();
@@ -37,7 +38,7 @@ export default function UserSignUpPage() {
     skills: [] as string[],
     imageUrl: "",
     about: "",
-    phone: ""
+    phone: "",
   });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +61,7 @@ export default function UserSignUpPage() {
       ...previous,
       skills: previous.skills.includes(value)
         ? previous.skills.filter((o) => o !== value)
-        : [...previous.skills, value]
+        : [...previous.skills, value],
     }));
   };
 
@@ -68,7 +69,7 @@ export default function UserSignUpPage() {
     ({
       email,
       password,
-      role
+      role,
     }: {
       email: string;
       password: string;
@@ -92,24 +93,24 @@ export default function UserSignUpPage() {
       const signUpResponse = await signUpMutation.mutateAsync({
         email: formData.email,
         password: formData.password,
-        role: Role.Volunteer
+        role: Role.Volunteer,
       });
       const createdUser = signUpResponse.data;
 
       const loginResponse = await signinMutation.mutateAsync({
         email: formData.email,
-        password: formData.password
+        password: formData.password,
       });
 
       if (loginResponse.data.accessToken !== "") {
         saveTokens({
           accessToken: loginResponse.data.accessToken,
-          refreshToken: loginResponse.data.refreshToken
+          refreshToken: loginResponse.data.refreshToken,
         });
 
         const volunteerResponse = await createVolunteerMutation.mutateAsync({
           ...formData,
-          userId: loginResponse.data.user._id
+          userId: loginResponse.data.user._id,
         });
 
         const simpleVolunteer = volunteerResponse.data;
@@ -117,7 +118,7 @@ export default function UserSignUpPage() {
           ...simpleVolunteer,
           skills: skills.filter((skill) =>
             simpleVolunteer.skills.includes(skill._id)
-          )
+          ),
         };
 
         createdUser.volunteer = volunteer;
@@ -205,16 +206,20 @@ export default function UserSignUpPage() {
               selectedOptions={formData.skills}
               onChange={handleSkillChange}
             />
-
-            <div className="space-y-2">
-              <Label htmlFor="imageUrl">Profile Image URL</Label>
-              <Input
-                id="imageUrl"
-                name="imageUrl"
-                type="url"
-                value={formData.imageUrl}
-                onChange={handleChange}
-              />
+            <div>
+              <Label htmlFor="websiteLink">Profile image</Label>
+              <label
+                htmlFor="image"
+                className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                style={{ marginTop: "5px" }}
+              >
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <ImageIcon className="w-8 h-8 mb-4 text-gray-500" />
+                  <p className="mb-2 text-sm text-gray-500">
+                    <span className="font-semibold">Click to upload</span>
+                  </p>
+                </div>
+              </label>
             </div>
             <div className="space-y-2">
               <Label htmlFor="about">About</Label>

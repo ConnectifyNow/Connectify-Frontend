@@ -10,8 +10,9 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
+import { ImageIcon } from "lucide-react";
 import useUserStore from "@/stores/setUserStore";
 import CustomSelect from "../../../components/shared/customSelect";
 import { getAiDescription } from "@/services/aiService";
@@ -36,7 +37,7 @@ export default function OrganizationSignUpPage() {
     description: "",
     imageUrl: "",
     websiteLink: "",
-    focusAreas: [] as string[]
+    focusAreas: [] as string[],
   });
   const router = useNavigate();
   const user = useUserStore();
@@ -71,7 +72,7 @@ export default function OrganizationSignUpPage() {
     ({
       email,
       password,
-      role
+      role,
     }: {
       email: string;
       password: string;
@@ -95,25 +96,25 @@ export default function OrganizationSignUpPage() {
       const signUpResponse = await signUpMutation.mutateAsync({
         email: formData.email,
         password: formData.password,
-        role: Role.Organization
+        role: Role.Organization,
       });
       const createdUser = signUpResponse.data;
 
       const loginResponse = await signinMutation.mutateAsync({
         email: formData.email,
-        password: formData.password
+        password: formData.password,
       });
 
       if (loginResponse.data.accessToken !== "") {
         saveTokens({
           accessToken: loginResponse.data.accessToken,
-          refreshToken: loginResponse.data.refreshToken
+          refreshToken: loginResponse.data.refreshToken,
         });
 
         const organizationResponse =
           await createOrganizationMutation.mutateAsync({
             ...formData,
-            userId: loginResponse.data.user._id
+            userId: loginResponse.data.user._id,
           });
 
         const simpleOrganization = organizationResponse.data;
@@ -121,7 +122,7 @@ export default function OrganizationSignUpPage() {
           ...simpleOrganization,
           focusAreas: areas.filter((focusArea) =>
             simpleOrganization.focusAreas.includes(focusArea._id)
-          )
+          ),
         };
 
         createdUser.organization = organization;
@@ -190,17 +191,20 @@ export default function OrganizationSignUpPage() {
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="websiteLink">Organization URL</Label>
-              <Input
-                id="websiteLink"
-                name="websiteLink"
-                type="url"
-                value={formData.websiteLink}
-                onChange={handleChange}
-                placeholder="https://www.yourorganization.com"
-                required
-              />
+            <div>
+              <Label htmlFor="websiteLink">Organization image</Label>
+              <label
+                htmlFor="image"
+                className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                style={{ marginTop: "5px" }}
+              >
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <ImageIcon className="w-8 h-8 mb-4 text-gray-500" />
+                  <p className="mb-2 text-sm text-gray-500">
+                    <span className="font-semibold">Click to upload</span>
+                  </p>
+                </div>
+              </label>
             </div>
             <div className="space-y-2">
               <Label htmlFor="city">City</Label>
@@ -212,7 +216,7 @@ export default function OrganizationSignUpPage() {
                   <SelectValue placeholder="Select a city" />
                 </SelectTrigger>
                 <SelectContent>
-                  {cities.map((city) => (
+                  {cities?.map((city) => (
                     <SelectItem key={city._id} value={city._id}>
                       {city.name}
                     </SelectItem>
@@ -245,16 +249,22 @@ export default function OrganizationSignUpPage() {
                 ? `Wait ${coolDownTime}s`
                 : "Generate Description using AI"}
             </Button>
-            <div className="space-y-2">
-              <Label htmlFor="imageUrl">Organization Logo URL</Label>
-              <Input
-                id="imageUrl"
-                name="imageUrl"
-                type="url"
-                value={formData.imageUrl}
-                onChange={handleChange}
-              />
+            <div>
+              <Label htmlFor="websiteLink">Organization Logo</Label>
+              <label
+                htmlFor="image"
+                className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                style={{ marginTop: "5px" }}
+              >
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <ImageIcon className="w-8 h-8 mb-4 text-gray-500" />
+                  <p className="mb-2 text-sm text-gray-500">
+                    <span className="font-semibold">Click to upload</span>
+                  </p>
+                </div>
+              </label>
             </div>
+
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Completing Sign Up..." : "Complete Sign Up"}
             </Button>

@@ -10,7 +10,7 @@ interface customSelectProps {
 const customSelect: React.FC<customSelectProps> = ({
   options,
   selectedOptions,
-  onChange
+  onChange,
 }) => {
   const handleSelectedChange = (value: string) => {
     onChange(value);
@@ -19,7 +19,7 @@ const customSelect: React.FC<customSelectProps> = ({
   return (
     <div className="space-y-2">
       <div className="flex flex-wrap gap-2">
-        {options.map((option: { _id: string; name: string }) => (
+        {options?.map((option: { _id: string; name: string }) => (
           <Button
             key={option._id}
             type="button"
