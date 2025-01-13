@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { organizations, volunteers } from "../../data/directory";
+import { useEffect, useState } from "react";
 import OrganizationCard from "../../components/discover/organization-card";
 import VolunteerCard from "../../components/discover/volunteer-card";
 import Sidebar from "../../components/discover/sidebar";
@@ -13,6 +12,8 @@ import {
   PaginationNext,
   PaginationPrevious
 } from "@/components/ui/pagination";
+import useOrganizationsStore from "@/stores/setOrganizationsStore";
+import useVolunteersStore from "@/stores/setVolunteersStore";
 
 const ITEMS_PER_PAGE = 3;
 
@@ -22,6 +23,25 @@ export default function Directory() {
     searchTerm: ""
   });
   const [currentPage, setCurrentPage] = useState(1);
+
+  const organizations = useOrganizationsStore((state) => state.organizations);
+  const organizationPages = useOrganizationsStore((state) => state.pages);
+  const fetchOrganizations = useOrganizationsStore(
+    (state) => state.fetchOrganizations
+  );
+
+  const volunteers = useVolunteersStore((state) => state.volunteers);
+  const volunteerPages = useVolunteersStore((state) => state.pages);
+  const fetchVolunteers = useVolunteersStore((state) => state.fetchVolunteers);
+
+  useEffect(() => {
+    if (filters.mode === "organizations") {
+      fetchOrganizations(currentPage, ITEMS_PER_PAGE);
+    } else {
+      fetchVolunteers(currentPage, ITEMS_PER_PAGE);
+    }
+    console.log(organizations);
+  }, [currentPage, filters]);
 
   const filteredOrganizations = organizations.filter((organization) =>
     organization.name.toLowerCase().includes(filters.searchTerm.toLowerCase())
@@ -37,11 +57,8 @@ export default function Directory() {
       ? filteredOrganizations
       : filteredVolunteers;
 
-  const totalPages = Math.ceil(currentItems.length / ITEMS_PER_PAGE);
-  const paginatedItems = currentItems.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
+  const currentPages =
+    filters.mode === "organizations" ? organizationPages : volunteerPages;
 
   return (
     <main className="min-h-screen bg-gray-100 py-12">
@@ -56,7 +73,7 @@ export default function Directory() {
           </div>
           <div className="w-3/4">
             <div className="space-y-6">
-              {paginatedItems.map((item: Volunteer | Organization) =>
+              {currentItems.map((item: Volunteer | Organization) =>
                 filters.mode === "organizations" ? (
                   <OrganizationCard
                     key={(item as Organization).userId}
@@ -70,7 +87,7 @@ export default function Directory() {
                 )
               )}
             </div>
-            {paginatedItems.length > 0 ? (
+            {currentItems.length > 0 ? (
               <div
                 className="mt-8 flex justify-center"
                 style={{ cursor: "pointer" }}
@@ -85,7 +102,7 @@ export default function Directory() {
                         className={currentPage === 1 ? "disabled" : ""}
                       />
                     </PaginationItem>
-                    {[...Array(totalPages)].map((_, index) => (
+                    {[...Array(currentPages)].map((_, index) => (
                       <PaginationItem key={index}>
                         <PaginationLink
                           isActive={currentPage === index + 1}
@@ -99,10 +116,12 @@ export default function Directory() {
                       <PaginationNext
                         onClick={() =>
                           setCurrentPage((prev) =>
-                            Math.min(prev + 1, totalPages)
+                            Math.min(prev + 1, currentPages)
                           )
                         }
-                        className={currentPage === totalPages ? "disabled" : ""}
+                        className={
+                          currentPage === currentPages ? "disabled" : ""
+                        }
                       />
                     </PaginationItem>
                   </PaginationContent>

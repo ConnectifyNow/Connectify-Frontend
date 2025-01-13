@@ -39,6 +39,16 @@ export type SimpleOrganization = Omit<Organization, "focusAreas"> & {
   focusAreas: string[];
 };
 
+export type PaginationSimpleOrganization = {
+  organizations: SimpleOrganization[];
+  pages: number;
+};
+
+export type PaginationSimpleVolunteer = {
+  volunteers: SimpleVolunteer[];
+  pages: number;
+};
+
 export interface IdName {
   _id: string;
   name: string;
