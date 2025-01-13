@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import Sidebar from "../../components/home/sidebar";
-import { usePostsStore } from "../../stores/postsStore";
+import usePostsStore from "../../stores/setPostsStore";
 import { Post as PostType } from "../../types";
 import PostCard from "@/components/shared/Posts/post";
 import {
@@ -34,7 +34,7 @@ export default function Home() {
 
   const [filters, setFilters] = useState({
     postType: "all",
-    skillsIds: [] as number[],
+    skillsIds: [] as string[],
   });
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -64,8 +64,8 @@ export default function Home() {
     const response = await createPost({
       title: post.title,
       content: post.content,
-      userId: post.author.id,
-      requiredSkills: post.skills.map((skill) => skill.id),
+      userId: post.author._id,
+      requiredSkills: post.skills.map((skill) => skill._id),
     }); // add to API
 
     if (response.status === 201) {
@@ -93,8 +93,8 @@ export default function Home() {
       filters.postType === "all" || post.author.type === filters.postType;
     const skillsMatch: boolean =
       filters.skillsIds.length === 0 ||
-      filters.skillsIds.some((skillId: number) =>
-        post.skills.map((skill: { id: number }) => skill.id).includes(skillId)
+      filters.skillsIds.some((skillId: string) =>
+        post.skills.map((skill: { _id: string }) => skill._id).includes(skillId)
       );
     return typeMatch && skillsMatch;
   });
@@ -117,7 +117,7 @@ export default function Home() {
             <div className="space-y-6">
               {paginatedPosts.map((post: PostType) => (
                 <PostCard
-                  key={post.id}
+                  key={post._id}
                   post={post}
                   onLike={handleLikePost}
                   onComment={addComment}

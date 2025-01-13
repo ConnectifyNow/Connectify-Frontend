@@ -27,36 +27,44 @@ export default function UserList({ users, onSelectUser }: UserListProps) {
           <Button
             size="sm"
             variant={filter === "all" ? "default" : "outline"}
-            onClick={() => setFilter("all")}>
+            onClick={() => setFilter("all")}
+          >
             All
           </Button>
           <Button
             size="sm"
             variant={filter === "volunteers" ? "default" : "outline"}
-            onClick={() => setFilter("volunteers")}>
+            onClick={() => setFilter("volunteers")}
+          >
             Volunteers
           </Button>
           <Button
             size="sm"
             variant={filter === "organizations" ? "default" : "outline"}
-            onClick={() => setFilter("organizations")}>
+            onClick={() => setFilter("organizations")}
+          >
             Orgs
           </Button>
         </div>
       </div>
       <ul>
         {filteredUsers.map((user) => (
-          <li key={user.id} className="border-b last:border-b-0">
+          <li key={user._id} className="border-b last:border-b-0">
             <Button
               variant="ghost"
               className="w-full justify-start p-4 space-x-2"
-              onClick={() => onSelectUser(user)}>
+              onClick={() => onSelectUser(user)}
+            >
               {user.role ? (
                 <Building2 className="h-5 w-5" />
               ) : (
                 <User className="h-5 w-5" />
               )}
-              <span>{user.name}</span>
+              <span>
+                {user.role
+                  ? user.organization?.name
+                  : `${user.volunteer?.firstName} ${user.volunteer?.lastName}`}
+              </span>
               {user.role && (
                 <span className="ml-auto bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
                   Org

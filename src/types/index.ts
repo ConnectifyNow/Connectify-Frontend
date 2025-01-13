@@ -1,5 +1,5 @@
 export interface User {
-  id: string;
+  _id: string;
   username: string;
   email: string;
   password: string;
@@ -10,19 +10,23 @@ export interface User {
 }
 
 export interface Volunteer {
-  phone: string;
+  userId: string;
   firstName: string;
   lastName: string;
-  city: string;
-  age: number;
-  skills: Skill[];
+  phone?: string;
+  city?: string;
+  age?: number;
+  skills?: Skill[];
   imageUrl?: string;
-  about: string;
-  userId: string;
+  about?: string;
 }
 
+export type SimpleVolunteer = Omit<Volunteer, "skills"> & {
+  skills: string[];
+};
+
 export interface Organization {
-  id: string;
+  userId: string;
   city: string;
   name: string;
   description: string;
@@ -31,18 +35,21 @@ export interface Organization {
   websiteLink: string;
 }
 
-export interface Skill {
-  id: number;
+export type SimpleOrganization = Omit<Organization, "focusAreas"> & {
+  focusAreas: string[];
+};
+
+export interface IdName {
+  _id: string;
   name: string;
 }
 
-export interface FocusArea {
-  id: number;
-  name: string;
-}
+export type Skill = IdName;
+export type FocusArea = IdName;
+export type City = IdName;
 
 export interface Author {
-  id: string;
+  _id: string;
   name: string;
   avatar?: string;
   type: "user" | "organization";
@@ -56,7 +63,6 @@ export interface Tag {
 }
 
 export interface GeneralCardProps {
-  id: string;
   name: string;
   imageUrl: string;
   description: string;
@@ -67,7 +73,7 @@ export interface GeneralCardProps {
 }
 
 export interface Post {
-  id: string;
+  _id: string;
   author: Author;
   title: string;
   content: string;
@@ -81,11 +87,11 @@ export interface ApiPost {
   userId: string;
   title: string;
   content: string;
-  requiredSkills: Number[];
+  requiredSkills: string[];
 }
 
 export interface Comment {
-  id: string;
+  _id: string;
   author: Author;
   content: string;
   createdAt: string;
@@ -107,10 +113,22 @@ export interface ProfileData {
   email: string;
   role: Role;
   imageUrl?: string;
-  city: string;
+  city?: string;
   skills?: Skill[];
   username: string;
   about?: string;
+}
+
+export interface Message {
+  _id: string;
+  content: string;
+  sender: User;
+  timestamp: Date;
+}
+
+export interface ChatProps {
+  currentUser: User;
+  selectedUser: User | null;
 }
 
 export interface AiDescription {
@@ -132,4 +150,10 @@ export type SigninResponse = GeneralResponse;
 
 export type GoogleSignInResponse = GeneralResponse;
 
-export type SignupResponse = GeneralResponse;
+export type SignupResponse = User;
+
+export type CreateVolunteerResponse = SimpleVolunteer;
+
+export type CreateOrganizationResponse = SimpleOrganization;
+
+export type GetIdNameResponse = IdName[];

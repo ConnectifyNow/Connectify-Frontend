@@ -26,7 +26,7 @@ export default function PostCard({
   onEdit,
   onDelete,
   onCommentLike,
-  showEditDelete = false,
+  showEditDelete = false
 }: PostProps) {
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -36,42 +36,42 @@ export default function PostCard({
   const currentUser = useUserStore();
 
   const handleLike = () => {
-    onLike(post.id, currentUser.id);
+    onLike(post._id, currentUser._id);
   };
 
   const handleAddComment = (e: React.FormEvent) => {
     e.preventDefault();
     if (newComment.trim()) {
       const comment: Comment = {
-        id: Date.now().toString(),
+        _id: Date.now().toString(),
         author: {
-          id: currentUser.id,
+          _id: currentUser._id,
           name: currentUser.username,
           avatar:
             currentUser.role === Role.Volunteer
               ? currentUser.volunteer?.imageUrl ?? randomAvatarUrl()
               : currentUser.organization?.imageUrl ?? randomAvatarUrl(),
-          type: currentUser.role === Role.Volunteer ? "user" : "organization",
+          type: currentUser.role === Role.Volunteer ? "user" : "organization"
         },
         content: newComment.trim(),
         createdAt: new Date().toISOString(),
-        likes: 0,
+        likes: 0
       };
-      onComment(post.id, comment);
+      onComment(post._id, comment);
       setNewComment("");
     }
   };
 
   const handleDelete = () => {
-    onDelete(post.id);
+    onDelete(post._id);
     setIsDeleteDialogOpen(false);
   };
 
   const handleCommentLike = (commentId: string) => {
-    onCommentLike(post.id, commentId);
+    onCommentLike(post._id, commentId);
   };
 
-  const isCurrentUserPost = post.author.id === currentUser.id;
+  const isCurrentUserPost = post.author._id === currentUser._id;
 
   return (
     <div
@@ -119,7 +119,7 @@ export default function PostCard({
         <div className="flex flex-wrap gap-2 mb-4">
           {post.skills.map((skill) => (
             <span
-              key={skill.id}
+              key={skill._id}
               className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
             >
               {skill.name}
@@ -153,7 +153,7 @@ export default function PostCard({
         {showComments && (
           <div className="mt-4 space-y-4">
             {post.comments.map((comment) => (
-              <div key={comment.id} className="bg-gray-50 p-3 rounded">
+              <div key={comment._id} className="bg-gray-50 p-3 rounded">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center">
                     <img
@@ -175,7 +175,7 @@ export default function PostCard({
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => handleCommentLike(comment.id)}
+                  onClick={() => handleCommentLike(comment._id)}
                   className="flex items-center space-x-1"
                 >
                   <Heart
