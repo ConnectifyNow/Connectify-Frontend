@@ -23,7 +23,7 @@ export default function ProfilePage() {
 
   const onVolunteer = async () => {
     try {
-      const response = await getVolunteerByUserId(user.id);
+      const response = await getVolunteerByUserId(user._id);
       const { data: volunteerData } = response;
 
       setProfile({ ...user, volunteer: volunteerData });
@@ -34,7 +34,7 @@ export default function ProfilePage() {
 
   const onOrganization = async () => {
     try {
-      const response = await getOrganizationByUserId(user.id);
+      const response = await getOrganizationByUserId(user._id);
       const { data: organizationData } = response;
 
       setProfile({ ...user, organization: organizationData });
