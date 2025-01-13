@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { signup } from "@/services/authService";
+import { Role } from "@/types";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
@@ -13,20 +15,19 @@ export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useNavigate();
 
-  const handleContinue = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleContinue = async (event: React.FormEvent) => {
+    event.preventDefault();
     setError("");
     setIsLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await signup(email, password, Role.Volunteer, false); // The role doesn't matter here
 
-      console.log("Continuing with:", { email, password });
-
-      localStorage.setItem("signupEmail", email);
-      localStorage.setItem("signupPassword", password);
-
-      router("/signup/mode");
+      if (response.status === 406) {
+        setError("Email already exists. Please sign in.");
+      } else {
+        router("/signup/mode", { state: { email, password } });
+      }
     } catch {
       setError("Failed to proceed. Please try again.");
     } finally {

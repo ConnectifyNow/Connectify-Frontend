@@ -59,7 +59,7 @@ export default function Directory() {
               {paginatedItems.map((item: Volunteer | Organization) =>
                 filters.mode === "organizations" ? (
                   <OrganizationCard
-                    key={(item as Organization).id}
+                    key={(item as Organization).userId}
                     organization={item as Organization}
                   />
                 ) : (

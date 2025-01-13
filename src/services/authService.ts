@@ -68,14 +68,16 @@ export const logout = async () => {
 };
 
 export const signup = async (
-  name: string,
   email: string,
-  password: string
+  password: string,
+  role: number,
+  withCreation = true
 ): Promise<AxiosResponse<SignupResponse>> => {
   return await apiClient.post("/auth/signup", {
-    name,
     email,
-    password
+    password,
+    role,
+    withCreation
   });
 };
 

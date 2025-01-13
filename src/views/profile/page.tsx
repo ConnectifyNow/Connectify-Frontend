@@ -4,14 +4,19 @@ import useUserStore from "@/stores/setUserStore";
 import UserInformation from "@/components/profile/userInformationCard/userInformationCard";
 import UserAboutCard from "@/components/profile/userAboutCard/userAboutCard";
 import PostsList from "@/components/profile/userPostsLists/user-posts-list";
-import { resetTokens } from "@/services/authService";
+import { logout, resetTokens } from "@/services/authService";
 import { useNavigate } from "react-router-dom";
 import { getVolunteerByUserId } from "@/services/volunteerService";
 import { getOrganizationByUserId } from "@/services/organizationService";
+import { useMutation } from "react-query";
+import useSkillsStore from "@/stores/setSkillsStore";
 
 export default function ProfilePage() {
   const user = useUserStore();
   const navigate = useNavigate();
+  const logoutMutation = useMutation(logout);
+  const getSkillById = useSkillsStore((state) => state.getSkillById);
+  const toggleSkill = useUserStore((state) => state.toggleSkill);
 
   const [profile, setProfile] = useState<User>(user);
   const [isEditing, setIsEditing] = useState(false);
@@ -52,12 +57,16 @@ export default function ProfilePage() {
     }));
   };
 
-  const handleSkillsChange = (value: number) => {
-    //  TODO: Implement this function
-    console.log("Selected skill:", value);
+  const handleSkillsChange = (value: string) => {
+    const skill = getSkillById(value);
+
+    if (skill !== undefined) {
+      toggleSkill(skill);
+    }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logoutMutation.mutateAsync();
     resetTokens();
     user.resetUser();
     navigate("/");

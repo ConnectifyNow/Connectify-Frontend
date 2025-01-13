@@ -9,11 +9,7 @@ import useUserStore from "@/stores/setUserStore";
 import { useMutation } from "react-query";
 import { useToast } from "../../hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import {
-  signin as signinRequest,
-  saveTokens,
-  googleSignIn,
-} from "../../services/authService";
+import { signin, saveTokens, googleSignIn } from "../../services/authService";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 
 export default function SignInPage() {
@@ -60,7 +56,7 @@ export default function SignInPage() {
 
   const signinMutation = useMutation(
     ({ email, password }: { email: string; password: string }) =>
-      signinRequest(email, password)
+      signin(email, password)
   );
 
   const handleSignIn = async (event: React.FormEvent) => {
@@ -69,16 +65,19 @@ export default function SignInPage() {
     setIsLoading(true);
 
     try {
-      const { data: signinRes } = await signinMutation.mutateAsync({
+      const response = await signinMutation.mutateAsync({
         email,
         password,
       });
-      updateIsLoggedIn(true);
-      saveTokens({
-        accessToken: signinRes.accessToken,
-        refreshToken: signinRes.refreshToken,
-      });
-      user.setUser(signinRes.user);
+
+      if (response.data.accessToken !== "") {
+        saveTokens({
+          accessToken: response.data.accessToken,
+          refreshToken: response.data.refreshToken,
+        });
+        user.setUser(response.data.user);
+        updateIsLoggedIn(true);
+      }
 
       toast({
         title: "Logged in successfully",

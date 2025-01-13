@@ -1,18 +1,25 @@
-import { User, Volunteer } from "../types/index";
+import {
+  CreateVolunteerResponse,
+  SimpleVolunteer,
+  User,
+  Volunteer,
+} from "../types/index";
 import { headers } from "./authService";
 import apiClient from "./apiClient";
 import { AxiosResponse } from "axios";
 
-export const getVolunteerByUserId = async (
-  userId: User["id"]
-): Promise<AxiosResponse<Volunteer>> => {
-  return await apiClient.get(`/volunteer/user/${userId}`, {
+export const createVolunteer = async (
+  volunteer: SimpleVolunteer
+): Promise<AxiosResponse<CreateVolunteerResponse>> => {
+  return await apiClient.post(`/volunteers`, volunteer, {
     headers: headers(),
   });
 };
 
-export const createVolunteer = async (volunteer: Volunteer) => {
-  return await apiClient.post(`/volunteer`, volunteer, {
+export const getVolunteerByUserId = async (
+  userId: User["_id"]
+): Promise<AxiosResponse<Volunteer>> => {
+  return await apiClient.get(`/volunteer/user/${userId}`, {
     headers: headers(),
   });
 };

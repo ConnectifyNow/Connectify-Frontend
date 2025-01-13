@@ -1,18 +1,25 @@
-import { Organization, User } from "../types/index";
+import {
+  CreateOrganizationResponse,
+  Organization,
+  SimpleOrganization,
+  User,
+} from "../types/index";
 import { headers } from "./authService";
 import apiClient from "./apiClient";
 import { AxiosResponse } from "axios";
 
-export const getOrganizationByUserId = async (
-  userId: User["id"]
-): Promise<AxiosResponse<Organization>> => {
-  return await apiClient.get(`/organization/user/${userId}`, {
+export const createOrganization = async (
+  organization: SimpleOrganization
+): Promise<AxiosResponse<CreateOrganizationResponse>> => {
+  return await apiClient.post(`/organizations`, organization, {
     headers: headers(),
   });
 };
 
-export const createOrganization = async (organization: Organization) => {
-  return await apiClient.post(`/organization`, organization, {
+export const getOrganizationByUserId = async (
+  userId: User["_id"]
+): Promise<AxiosResponse<Organization>> => {
+  return await apiClient.get(`/organization/user/${userId}`, {
     headers: headers(),
   });
 };
