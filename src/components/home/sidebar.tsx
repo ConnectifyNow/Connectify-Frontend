@@ -30,7 +30,7 @@ export default function Sidebar({ onFilterChange }: SidebarProps) {
       <div className="mb-4">
         <h3 className="font-semibold mb-2">Post Type</h3>
         <div className="space-y-2">
-          {["all", "user", "organization"].map((type) => (
+          {["all", "user", "organization"]?.map((type) => (
             <label key={type} className="flex items-center">
               <input
                 type="radio"
@@ -48,7 +48,7 @@ export default function Sidebar({ onFilterChange }: SidebarProps) {
       <div>
         <h3 className="font-semibold mb-2">Skills</h3>
         <ScrollArea className="max-h-48 overflow-y-auto h-[200px]">
-          {skills.map((skill) => (
+          {skills?.map((skill) => (
             <label key={skill._id} className="flex items-center">
               <input
                 type="checkbox"
