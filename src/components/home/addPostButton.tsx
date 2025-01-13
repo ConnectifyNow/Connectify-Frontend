@@ -27,10 +27,10 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
+  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const currentUser = useUserStore();
 
-  const handleSkillsChange = (value: number) => {
+  const handleSkillsChange = (value: string) => {
     setSelectedSkills((prev) =>
       prev.includes(value)
         ? prev.filter((skill) => skill !== value)
@@ -40,16 +40,17 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
 
   const handleSubmit = (event: React.FormEvent) => {
     const selectedSkillsObjects =
-      selectedSkills.map((id) => skills.find((skill) => skill.id === id)) ?? [];
+      selectedSkills.map((id) => skills.find((skill) => skill._id === id)) ??
+      [];
     const filteredSelectedSkills = selectedSkillsObjects.filter(
       (selectedSkill) => selectedSkill !== undefined
     );
 
     event.preventDefault();
     const newPost: Post = {
-      id: Date.now().toString(),
+      _id: Date.now().toString(),
       author: {
-        id: currentUser.id,
+        _id: currentUser._id,
         name: currentUser.username,
         avatar:
           currentUser.role === Role.Volunteer

@@ -12,15 +12,15 @@ type UserAboutProps = {
   isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
   handleChange: (key: keyof ProfileData, value: string) => void;
-  handleSkillsChange: (value: number) => void;
+  handleSkillsChange: (value: string) => void;
   saveProfile: () => void;
   handleLogout: () => void;
 };
 
 const skills = [
-  { id: 1, name: "Software Developer" },
-  { id: 2, name: "Designer" },
-  { id: 3, name: "Project Manager" }
+  { _id: "1", name: "Software Developer" },
+  { _id: "2", name: "Designer" },
+  { _id: "3", name: "Project Manager" }
 ];
 
 export default function UserAboutCard({
@@ -96,7 +96,7 @@ export default function UserAboutCard({
                 <CustomSelect
                   options={skills}
                   selectedOptions={
-                    profileData.skills?.map((skill) => skill.id) ?? []
+                    profileData.skills?.map((skill) => skill._id) ?? []
                   }
                   onChange={handleSkillsChange}
                 />
@@ -110,7 +110,7 @@ export default function UserAboutCard({
               <div className="flex flex-wrap gap-2 mt-2">
                 {(profileData.skills ?? []).map((skill) => (
                   <span
-                    key={skill.id}
+                    key={skill._id}
                     className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-sm"
                   >
                     {skill.name}

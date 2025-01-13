@@ -1,6 +1,6 @@
-import { create } from 'zustand'
-import { posts as initialPosts } from '../data/posts'
-import { Post, Comment } from '../types'
+import { create } from "zustand";
+import { posts as initialPosts } from "../data/posts";
+import { Post, Comment } from "../types";
 
 interface PostsStore {
   posts: Post[];
@@ -15,35 +15,43 @@ interface PostsStore {
 export const usePostsStore = create<PostsStore>((set) => ({
   posts: initialPosts,
   addPost: (post) => set((state) => ({ posts: [post, ...state.posts] })),
-  updatePost: (updatedPost) => set((state) => ({
-    posts: state.posts.map(post => post.id === updatedPost.id ? updatedPost : post)
-  })),
-  deletePost: (postId) => set((state) => ({
-    posts: state.posts.filter(post => post.id !== postId)
-  })),
-  likePost: (postId) => set((state) => ({
-    posts: state.posts.map(post =>
-      post.id === postId ? { ...post, likes: post.likes + 1 } : post
-    )
-  })),
-  addComment: (postId, comment) => set((state) => ({
-    posts: state.posts.map(post =>
-      post.id === postId ? { ...post, comments: [...post.comments, comment] } : post
-    )
-  })),
-  likeComment: (postId, commentId) => set((state) => ({
-    posts: state.posts.map(post =>
-      post.id === postId
-        ? {
-            ...post,
-            comments: post.comments.map(comment =>
-              comment.id === commentId
-                ? { ...comment, likes: comment.likes + 1 }
-                : comment
-            )
-          }
-        : post
-    )
-  })),
-}))
-
+  updatePost: (updatedPost) =>
+    set((state) => ({
+      posts: state.posts.map((post) =>
+        post._id === updatedPost._id ? updatedPost : post
+      )
+    })),
+  deletePost: (postId) =>
+    set((state) => ({
+      posts: state.posts.filter((post) => post._id !== postId)
+    })),
+  likePost: (postId) =>
+    set((state) => ({
+      posts: state.posts.map((post) =>
+        post._id === postId ? { ...post, likes: post.likes + 1 } : post
+      )
+    })),
+  addComment: (postId, comment) =>
+    set((state) => ({
+      posts: state.posts.map((post) =>
+        post._id === postId
+          ? { ...post, comments: [...post.comments, comment] }
+          : post
+      )
+    })),
+  likeComment: (postId, commentId) =>
+    set((state) => ({
+      posts: state.posts.map((post) =>
+        post._id === postId
+          ? {
+              ...post,
+              comments: post.comments.map((comment) =>
+                comment._id === commentId
+                  ? { ...comment, likes: comment.likes + 1 }
+                  : comment
+              )
+            }
+          : post
+      )
+    }))
+}));

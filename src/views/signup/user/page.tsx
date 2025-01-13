@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,48 +15,47 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import useUserStore from "@/stores/setUserStore";
 import CustomSelect from "@/components/shared/customSelect";
+import { Role, Volunteer } from "@/types";
+import { saveTokens, signin, signup } from "@/services/authService";
+import { createVolunteer } from "@/services/volunteerService";
+import { useMutation } from "react-query";
 
 const cities = [
-  { id: 1, name: "New York" },
-  { id: 2, name: "Los Angeles" },
-  { id: 3, name: "Chicago" }
+  { _id: "1", name: "New York" },
+  { _id: "2", name: "Los Angeles" },
+  { _id: "3", name: "Chicago" }
 ];
 
 const skills = [
-  { id: 1, name: "Software Developer" },
-  { id: 2, name: "Designer" },
-  { id: 3, name: "Project Manager" }
+  { _id: "1", name: "Software Developer" },
+  { _id: "2", name: "Designer" },
+  { _id: "3", name: "Project Manager" }
 ];
 
 export default function UserSignUpPage() {
+  const location = useLocation();
+
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: location.state.email,
+    password: location.state.password,
     firstName: "",
     lastName: "",
     city: "",
-    age: "",
-    skills: [] as number[],
+    age: 0,
+    skills: [] as string[],
     imageUrl: "",
-    about: ""
+    about: "",
+    phone: ""
   });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const user = useUserStore();
   const router = useNavigate();
 
-  useEffect(() => {
-    const email = localStorage.getItem("signupEmail");
-    const password = localStorage.getItem("signupPassword");
-    if (email && password) {
-      setFormData((prev) => ({ ...prev, email, password }));
-    }
-  }, []);
-
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
+    const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -64,7 +63,7 @@ export default function UserSignUpPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSkillChange = (value: number) => {
+  const handleSkillChange = (value: string) => {
     setFormData((previous) => ({
       ...previous,
       skills: previous.skills.includes(value)
@@ -73,25 +72,68 @@ export default function UserSignUpPage() {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const signUpMutation = useMutation(
+    ({
+      email,
+      password,
+      role
+    }: {
+      email: string;
+      password: string;
+      role: number;
+    }) => signup(email, password, role)
+  );
+
+  const signinMutation = useMutation(
+    ({ email, password }: { email: string; password: string }) =>
+      signin(email, password)
+  );
+
+  const createVolunteerMutation = useMutation(createVolunteer);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     setError("");
     setIsLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      console.log("Submitting user data:", formData);
-      user.setUser({
-        id: "mock-id",
-        username: "mock-username",
-        name: "mock-name",
+      const signUpResponse = await signUpMutation.mutateAsync({
         email: formData.email,
         password: formData.password,
-        role: 0
+        role: Role.Volunteer
+      });
+      const createdUser = signUpResponse.data;
+
+      const loginResponse = await signinMutation.mutateAsync({
+        email: formData.email,
+        password: formData.password
       });
 
-      router("/");
+      if (loginResponse.data.accessToken !== "") {
+        saveTokens({
+          accessToken: loginResponse.data.accessToken,
+          refreshToken: loginResponse.data.refreshToken
+        });
+
+        const volunteerResponse = await createVolunteerMutation.mutateAsync({
+          ...formData,
+          userId: loginResponse.data.user._id
+        });
+
+        const simpleVolunteer = volunteerResponse.data;
+        const volunteer: Volunteer = {
+          ...simpleVolunteer,
+          skills: skills.filter((skill) =>
+            simpleVolunteer.skills.includes(skill._id)
+          )
+        };
+
+        createdUser.volunteer = volunteer;
+        user.setUser(createdUser);
+        user.updateIsLoggedIn(true);
+
+        router("/home");
+      }
     } catch {
       setError("Failed to complete sign-up. Please try again.");
     } finally {
@@ -147,7 +189,7 @@ export default function UserSignUpPage() {
                 </SelectTrigger>
                 <SelectContent>
                   {cities.map((city) => (
-                    <SelectItem key={city.id} value={city.id.toString()}>
+                    <SelectItem key={city._id} value={city._id}>
                       {city.name}
                     </SelectItem>
                   ))}

@@ -3,19 +3,19 @@ import { skills } from "../../data/posts";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface SidebarProps {
-  onFilterChange: (filters: { postType: string; skillsIds: number[] }) => void;
+  onFilterChange: (filters: { postType: string; skillsIds: string[] }) => void;
 }
 
 export default function Sidebar({ onFilterChange }: SidebarProps) {
   const [postType, setPostType] = useState("all");
-  const [selectedSkillsIds, setSelectedSkillsIds] = useState<number[]>([]);
+  const [selectedSkillsIds, setSelectedSkillsIds] = useState<string[]>([]);
 
   const handlePostTypeChange = (type: string) => {
     setPostType(type);
     onFilterChange({ postType: type, skillsIds: selectedSkillsIds });
   };
 
-  const handleSkillToggle = (skillId: number) => {
+  const handleSkillToggle = (skillId: string) => {
     const updatedSkills = selectedSkillsIds.includes(skillId)
       ? selectedSkillsIds.filter((id) => id !== skillId)
       : [...selectedSkillsIds, skillId];
@@ -48,12 +48,12 @@ export default function Sidebar({ onFilterChange }: SidebarProps) {
         <h3 className="font-semibold mb-2">Skills</h3>
         <ScrollArea className="max-h-48 overflow-y-auto h-[200px]">
           {skills.map((skill) => (
-            <label key={skill.id} className="flex items-center">
+            <label key={skill._id} className="flex items-center">
               <input
                 type="checkbox"
-                value={skill.id}
-                checked={selectedSkillsIds.includes(skill.id)}
-                onChange={() => handleSkillToggle(skill.id)}
+                value={skill._id}
+                checked={selectedSkillsIds.includes(skill._id)}
+                onChange={() => handleSkillToggle(skill._id)}
                 className="mr-2"
               />
               {skill.name}

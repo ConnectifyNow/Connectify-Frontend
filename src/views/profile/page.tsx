@@ -4,12 +4,14 @@ import useUserStore from "@/stores/setUserStore";
 import UserInformation from "@/components/profile/userInformationCard/userInformationCard";
 import UserAboutCard from "@/components/profile/userAboutCard/userAboutCard";
 import PostsList from "@/components/profile/userPostsLists/user-posts-list";
-import { resetTokens } from "@/services/authService";
+import { logout, resetTokens } from "@/services/authService";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
 
 export default function ProfilePage() {
   const user = useUserStore();
   const navigate = useNavigate();
+  const logoutMutation = useMutation(logout);
 
   const [profile, setProfile] = useState<User>(user);
   const [isEditing, setIsEditing] = useState(false);
@@ -21,12 +23,13 @@ export default function ProfilePage() {
     }));
   };
 
-  const handleSkillsChange = (value: number) => {
+  const handleSkillsChange = (value: string) => {
     //  TODO: Implement this function
     console.log("Selected skill:", value);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logoutMutation.mutateAsync();
     resetTokens();
     user.resetUser();
     navigate("/");

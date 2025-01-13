@@ -3,7 +3,7 @@ import { Role, User } from "@/types";
 import { create } from "zustand";
 
 const initialState: User = {
-  id: "",
+  _id: "",
   username: "hilaohana",
   email: "hila.ohana@example.com",
   password: "1234",
@@ -15,15 +15,15 @@ const initialState: User = {
     city: "Tel Aviv",
     age: 30,
     skills: [
-      { id: 1, name: "React" },
-      { id: 2, name: "Node.js" },
-      { id: 3, name: "TypeScript" }
+      { _id: "1", name: "React" },
+      { _id: "2", name: "Node.js" },
+      { _id: "3", name: "TypeScript" }
     ],
     userId: "",
     about: "I am a software developer"
   },
   organization: {
-    id: "123",
+    userId: "123",
     city: "Tel Aviv",
     name: "Hila Ohana",
     description: "Software Developer",

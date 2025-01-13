@@ -7,44 +7,94 @@ import useUserStore from "@/stores/setUserStore";
 // This is mock data. In a real application, you'd fetch this from an API.
 const mockUsers: User[] = [
   {
-    id: "1",
-    name: "John Doe",
+    _id: "1",
     email: "",
     password: "1",
     username: "hila.ohana",
-    role: 0
+    role: 0,
+    volunteer: {
+      firstName: "Hila",
+      lastName: "Ohana",
+      phone: "1234567890",
+      city: "Tel Aviv",
+      age: 30,
+      skills: [
+        { _id: "1", name: "React" },
+        { _id: "2", name: "Node.js" },
+        { _id: "3", name: "TypeScript" }
+      ],
+      userId: ""
+    }
   },
   {
-    id: "2",
-    name: "Jane Smith",
+    _id: "2",
     email: "",
     password: "1",
     username: "hila.ohana",
-    role: 0
+    role: 0,
+    volunteer: {
+      firstName: "Hila",
+      lastName: "Ohana 2",
+      phone: "1234567890",
+      city: "Tel Aviv",
+      age: 30,
+      skills: [
+        { _id: "1", name: "React" },
+        { _id: "2", name: "Node.js" },
+        { _id: "3", name: "TypeScript" }
+      ],
+      userId: ""
+    }
   },
   {
-    id: "3",
-    name: "Acme Corp",
+    _id: "3",
     email: "",
     password: "1",
     username: "hila.ohana",
-    role: 1
+    role: 1,
+    organization: {
+      userId: "3",
+      name: "Hila Ohana Organization 1",
+      city: "Tel Aviv",
+      description: "Software Developer",
+      focusAreas: [],
+      websiteLink: ""
+    }
   },
   {
-    id: "4",
-    name: "Globex Foundation",
+    _id: "4",
     email: "",
     password: "1",
     username: "hila.ohana",
-    role: 1
+    role: 1,
+    organization: {
+      userId: "3",
+      name: "Hila Ohana Organization 2",
+      city: "Tel Aviv",
+      description: "Software Developer",
+      focusAreas: [],
+      websiteLink: ""
+    }
   },
   {
-    id: "5",
-    name: "Bob Johnson",
+    _id: "5",
     email: "",
     password: "1",
     username: "hila.ohana",
-    role: 0
+    role: 0,
+    volunteer: {
+      firstName: "Hila",
+      lastName: "Ohana 3",
+      phone: "1234567890",
+      city: "Tel Aviv",
+      age: 30,
+      skills: [
+        { _id: "1", name: "React" },
+        { _id: "2", name: "Node.js" },
+        { _id: "3", name: "TypeScript" }
+      ],
+      userId: ""
+    }
   }
 ];
 

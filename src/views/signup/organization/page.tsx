@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,43 +15,44 @@ import {
 import useUserStore from "@/stores/setUserStore";
 import CustomSelect from "../../../components/shared/customSelect";
 import { getAiDescription } from "@/services/aiService";
+import { useMutation } from "react-query";
+import { saveTokens, signin, signup } from "@/services/authService";
+import { createOrganization } from "@/services/organizationService";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Organization, Role } from "@/types";
 
 const cities = [
-  { id: 1, name: "New York" },
-  { id: 2, name: "Los Angeles" },
-  { id: 3, name: "Chicago" }
+  { _id: "1", name: "New York" },
+  { _id: "2", name: "Los Angeles" },
+  { _id: "3", name: "Chicago" }
 ];
 
 const areas = [
-  { id: 1, name: "Education" },
-  { id: 2, name: "Healthcare" },
-  { id: 3, name: "Environment" },
-  { id: 4, name: "Social Services" },
-  { id: 5, name: "Arts and Culture" },
-  { id: 6, name: "Community Development" }
+  { _id: "1", name: "Education" },
+  { _id: "2", name: "Healthcare" },
+  { _id: "3", name: "Environment" },
+  { _id: "4", name: "Social Services" },
+  { _id: "5", name: "Arts and Culture" },
+  { _id: "6", name: "Community Development" }
 ];
 
 export default function OrganizationSignUpPage() {
+  const location = useLocation();
+
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: location.state.email,
+    password: location.state.password,
     name: "",
     city: "",
     description: "",
     imageUrl: "",
-    organizationUrl: "",
-    areas: [] as number[]
+    websiteLink: "",
+    focusAreas: [] as string[]
   });
   const router = useNavigate();
   const user = useUserStore();
-
-  useEffect(() => {
-    const email = localStorage.getItem("signupEmail");
-    const password = localStorage.getItem("signupPassword");
-    if (email && password) {
-      setFormData((prev) => ({ ...prev, email, password }));
-    }
-  }, []);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   // const generateDescription = (organizationName: string) => {
   //   console.log({ generateDescription: organizationName });
@@ -68,55 +69,121 @@ export default function OrganizationSignUpPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAreaChange = (value: number) => {
+  const handleAreaChange = (value: string) => {
     setFormData((prev) => {
       console.log({ prev });
-      const updatedAreas = prev.areas.includes(value)
-        ? prev.areas.filter((area) => area !== value)
-        : [...prev.areas, value];
+      const updatedAreas = prev.focusAreas.includes(value)
+        ? prev.focusAreas.filter((area) => area !== value)
+        : [...prev.focusAreas, value];
       return { ...prev, areas: updatedAreas };
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Submitting organization data:", formData);
-    user.setUser({
-      id: "mock-id",
-      username: "mock-username",
-      email: formData.email,
-      password: formData.password,
-      role: 1
-    });
-    router("/");
+  const signUpMutation = useMutation(
+    ({
+      email,
+      password,
+      role
+    }: {
+      email: string;
+      password: string;
+      role: number;
+    }) => signup(email, password, role)
+  );
+
+  const signinMutation = useMutation(
+    ({ email, password }: { email: string; password: string }) =>
+      signin(email, password)
+  );
+
+  const createOrganizationMutation = useMutation(createOrganization);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const signUpResponse = await signUpMutation.mutateAsync({
+        email: formData.email,
+        password: formData.password,
+        role: Role.Organization
+      });
+      const createdUser = signUpResponse.data;
+
+      const loginResponse = await signinMutation.mutateAsync({
+        email: formData.email,
+        password: formData.password
+      });
+
+      if (loginResponse.data.accessToken !== "") {
+        saveTokens({
+          accessToken: loginResponse.data.accessToken,
+          refreshToken: loginResponse.data.refreshToken
+        });
+
+        const organizationResponse =
+          await createOrganizationMutation.mutateAsync({
+            ...formData,
+            userId: loginResponse.data.user._id
+          });
+
+        const simpleOrganization = organizationResponse.data;
+        const organization: Organization = {
+          ...simpleOrganization,
+          focusAreas: areas.filter((focusArea) =>
+            simpleOrganization.focusAreas.includes(focusArea._id)
+          )
+        };
+
+        createdUser.organization = organization;
+        user.setUser(createdUser);
+        user.updateIsLoggedIn(true);
+
+        router("/home");
+      }
+    } catch {
+      setError("Failed to complete sign-up. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+    // console.log("Submitting organization data:", formData);
+    // user.setUser({
+    //   id: "mock-id",
+    //   username: "mock-username",
+    //   email: formData.email,
+    //   password: formData.password,
+    //   role: 1
+    // });
+    // router("/");
   };
 
   const [isDisabled, setIsDisabled] = useState(false);
-  const [cooldownTime, setCooldownTime] = useState(0);
+  const [coolDownTime, setCoolDownTime] = useState(0);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (isDisabled && cooldownTime > 0) {
+    if (isDisabled && coolDownTime > 0) {
       timer = setInterval(() => {
-        setCooldownTime((prevTime) => prevTime - 1);
+        setCoolDownTime((prevTime) => prevTime - 1);
       }, 1000);
     }
 
-    if (cooldownTime === 0) {
+    if (coolDownTime === 0) {
       setIsDisabled(false);
     }
 
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [isDisabled, cooldownTime]);
+  }, [isDisabled, coolDownTime]);
 
   const handleGenerateClick = async () => {
     // profileData.about = await generateDescription(profileData.username);
     const response = await getAiDescription(formData.name);
     formData.description = response.data.description;
     setIsDisabled(true);
-    setCooldownTime(20);
+    setCoolDownTime(20);
   };
 
   return (
@@ -128,6 +195,11 @@ export default function OrganizationSignUpPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
+          {error && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Organization Name</Label>
@@ -140,12 +212,12 @@ export default function OrganizationSignUpPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="organizationUrl">Organization URL</Label>
+              <Label htmlFor="websiteLink">Organization URL</Label>
               <Input
-                id="organizationUrl"
-                name="organizationUrl"
+                id="websiteLink"
+                name="websiteLink"
                 type="url"
-                value={formData.organizationUrl}
+                value={formData.websiteLink}
                 onChange={handleChange}
                 placeholder="https://www.yourorganization.com"
                 required
@@ -162,7 +234,7 @@ export default function OrganizationSignUpPage() {
                 </SelectTrigger>
                 <SelectContent>
                   {cities.map((city) => (
-                    <SelectItem key={city.id} value={city.id.toString()}>
+                    <SelectItem key={city._id} value={city._id}>
                       {city.name}
                     </SelectItem>
                   ))}
@@ -171,7 +243,7 @@ export default function OrganizationSignUpPage() {
             </div>
             <CustomSelect
               options={areas}
-              selectedOptions={formData.areas}
+              selectedOptions={formData.focusAreas}
               onChange={handleAreaChange}
             />
             <div className="space-y-2">
@@ -191,7 +263,7 @@ export default function OrganizationSignUpPage() {
               className="w-55"
             >
               {isDisabled
-                ? `Wait ${cooldownTime}s`
+                ? `Wait ${coolDownTime}s`
                 : "Generate Description using AI"}
             </Button>
             <div className="space-y-2">
@@ -204,8 +276,8 @@ export default function OrganizationSignUpPage() {
                 onChange={handleChange}
               />
             </div>
-            <Button type="submit" className="w-full">
-              Complete Sign Up
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Completing Sign Up..." : "Complete Sign Up"}
             </Button>
           </form>
         </CardContent>

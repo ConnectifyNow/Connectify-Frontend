@@ -2,9 +2,9 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 
 interface customSelectProps {
-  options: { id: number; name: string }[];
-  selectedOptions: number[];
-  onChange: (value: number) => void;
+  options: { _id: string; name: string }[];
+  selectedOptions: string[];
+  onChange: (value: string) => void;
 }
 
 const customSelect: React.FC<customSelectProps> = ({
@@ -12,21 +12,21 @@ const customSelect: React.FC<customSelectProps> = ({
   selectedOptions,
   onChange
 }) => {
-  const handleSelectedChange = (value: number) => {
+  const handleSelectedChange = (value: string) => {
     onChange(value);
   };
 
   return (
     <div className="space-y-2">
       <div className="flex flex-wrap gap-2">
-        {options.map((option: any) => (
+        {options.map((option: { _id: string; name: string }) => (
           <Button
-            key={option.id}
+            key={option._id}
             type="button"
             variant={
-              selectedOptions.includes(option.id) ? "default" : "outline"
+              selectedOptions.includes(option._id) ? "default" : "outline"
             }
-            onClick={() => handleSelectedChange(option.id)}
+            onClick={() => handleSelectedChange(option._id)}
           >
             {option.name}
           </Button>

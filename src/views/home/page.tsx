@@ -29,7 +29,7 @@ export default function Home() {
 
   const [filters, setFilters] = useState({
     postType: "all",
-    skillsIds: [] as number[]
+    skillsIds: [] as string[]
   });
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -41,8 +41,8 @@ export default function Home() {
       filters.postType === "all" || post.author.type === filters.postType;
     const skillsMatch: boolean =
       filters.skillsIds.length === 0 ||
-      filters.skillsIds.some((skillId: number) =>
-        post.skills.map((skill: { id: number }) => skill.id).includes(skillId)
+      filters.skillsIds.some((skillId: string) =>
+        post.skills.map((skill: { _id: string }) => skill._id).includes(skillId)
       );
     return typeMatch && skillsMatch;
   });
@@ -65,7 +65,7 @@ export default function Home() {
             <div className="space-y-6">
               {paginatedPosts.map((post: PostType) => (
                 <PostCard
-                  key={post.id}
+                  key={post._id}
                   post={post}
                   onLike={likePost}
                   onComment={addComment}

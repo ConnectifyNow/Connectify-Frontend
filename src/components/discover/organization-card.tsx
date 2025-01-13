@@ -4,7 +4,7 @@ import { tagType } from "@/types";
 import GeneralCard from "../shared/generic-card";
 
 export default function OrganizationCard({
-  organization,
+  organization
 }: {
   organization: Organization;
 }) {
@@ -12,12 +12,11 @@ export default function OrganizationCard({
     type: tagType.focusArea,
     text: area,
     bgColor: "bg-green-100",
-    textColor: "text-green-800",
+    textColor: "text-green-800"
   }));
 
   return (
     <GeneralCard
-      id={organization.id}
       name={organization.name}
       imageUrl={organization.imageUrl ?? randomAvatarUrl()}
       description={organization.description}

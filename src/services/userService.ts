@@ -8,7 +8,7 @@ export const getUsers = async (): Promise<AxiosResponse<User[]>> => {
 };
 
 export const getUserById = async (
-  userId: User["id"]
+  userId: User["_id"]
 ): Promise<AxiosResponse<User>> => {
   return await apiClient.get(`/users/${userId}`, { headers: headers() });
 };
