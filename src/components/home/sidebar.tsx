@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { skills } from "../../data/posts";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import useSkillsStore from "@/stores/setSkillsStore";
 
 interface SidebarProps {
   onFilterChange: (filters: { postType: string; skillsIds: string[] }) => void;
 }
 
 export default function Sidebar({ onFilterChange }: SidebarProps) {
+  const skills = useSkillsStore((state) => state.skills);
   const [postType, setPostType] = useState("all");
   const [selectedSkillsIds, setSelectedSkillsIds] = useState<string[]>([]);
 
