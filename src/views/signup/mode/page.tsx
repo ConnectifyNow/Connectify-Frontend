@@ -18,8 +18,8 @@ export default function SignUpModePage() {
       router(`/signup/${mode}`, {
         state: {
           email: location.state.email,
-          password: location.state.password
-        }
+          password: location.state.password,
+        },
       });
     } catch {
       setError("Failed to select mode. Please try again.");
@@ -47,7 +47,7 @@ export default function SignUpModePage() {
             className="w-full"
             disabled={isLoading}
           >
-            Sign Up as a User
+            Sign Up as a Volunteer
           </Button>
           <Button
             onClick={() => handleModeSelection("organization")}
