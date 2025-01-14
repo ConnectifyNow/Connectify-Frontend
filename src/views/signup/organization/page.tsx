@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { ImageUpload } from "@/components/home/imageUpload";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -12,18 +11,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ImageIcon } from "lucide-react";
-import useUserStore from "@/stores/setUserStore";
-import CustomSelect from "../../../components/shared/customSelect";
+import { Textarea } from "@/components/ui/textarea";
 import { getAiDescription } from "@/services/aiService";
-import { useMutation } from "react-query";
 import { saveTokens, signin, signup } from "@/services/authService";
 import { createOrganization } from "@/services/organizationService";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Organization, Role } from "@/types";
 import useCitiesStore from "@/stores/setCitiesStore";
 import useFocusAreaStore from "@/stores/setFocusAreas";
-import { ImageUpload } from "@/components/home/imageUpload";
+import useUserStore from "@/stores/setUserStore";
+import { Organization, Role } from "@/types";
+import { useEffect, useState } from "react";
+import { useMutation } from "react-query";
+import { useLocation, useNavigate } from "react-router-dom";
+import CustomSelect from "../../../components/shared/customSelect";
 
 export default function OrganizationSignUpPage() {
   const location = useLocation();
@@ -55,17 +54,6 @@ export default function OrganizationSignUpPage() {
   ) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleLogoChange = (e: any) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader: any = new FileReader();
-      reader.onloadend = () => {
-        setLogo(reader.result); // Store image base64 in state for preview
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const handleSelectChange = (name: string, value: string) => {

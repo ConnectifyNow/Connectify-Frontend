@@ -1,13 +1,11 @@
+import { AxiosResponse } from "axios";
 import {
   CreateVolunteerResponse,
   PaginationSimpleVolunteer,
   SimpleVolunteer,
-  User,
-  Volunteer,
 } from "../types/index";
-import { headers } from "./authService";
 import apiClient from "./apiClient";
-import { AxiosResponse } from "axios";
+import { headers } from "./authService";
 
 export const createVolunteer = async (
   volunteer: SimpleVolunteer

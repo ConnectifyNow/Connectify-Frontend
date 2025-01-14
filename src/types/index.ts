@@ -148,6 +148,11 @@ export type RefreshResponse = {
   refreshToken: string;
 };
 
+export type ImageUploadResponse = {
+  originalName: string;
+  serverFilename: string;
+};
+
 export type SigninResponse = GeneralResponse;
 
 export type GoogleSignInResponse = GeneralResponse;
