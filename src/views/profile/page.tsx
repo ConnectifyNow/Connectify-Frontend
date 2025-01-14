@@ -16,7 +16,6 @@ export default function ProfilePage() {
   const getSkillById = useSkillsStore((state) => state.getSkillById);
   const toggleSkill = useUserStore((state) => state.toggleSkill);
 
-  console.log({ user });
   const [profile, setProfile] = useState<User>(user);
   const [isEditing, setIsEditing] = useState(false);
 

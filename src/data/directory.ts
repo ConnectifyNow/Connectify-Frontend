@@ -104,8 +104,7 @@ export const volunteers: Volunteer[] = [
       "Passionate developer with a focus on creating accessible web applications.",
     skills: getRandomItems(skills, 3),
     city: "San Francisco, CA",
-    phone: "555-555-5555",
-    age: 25
+    phone: "555-555-5555"
   },
   {
     userId: "2",
@@ -115,8 +114,7 @@ export const volunteers: Volunteer[] = [
       "Data scientist interested in applying ML to solve environmental challenges.",
     skills: getRandomItems(skills, 3),
     city: "New York, NY",
-    phone: "555-555-5555",
-    age: 25
+    phone: "555-555-5555"
   },
   {
     userId: "3",
@@ -126,8 +124,7 @@ export const volunteers: Volunteer[] = [
       "Data scientist interested in applying ML to solve environmental challenges.",
     skills: getRandomItems(skills, 3),
     city: "New York, NY",
-    phone: "555-555-5555",
-    age: 25
+    phone: "555-555-5555"
   },
   {
     userId: "4",
@@ -137,8 +134,7 @@ export const volunteers: Volunteer[] = [
       "Data scientist interested in applying ML to solve environmental challenges.",
     skills: getRandomItems(skills, 3),
     city: "New York, NY",
-    phone: "555-555-5555",
-    age: 25
+    phone: "555-555-5555"
   },
   {
     userId: "5",
@@ -148,8 +144,7 @@ export const volunteers: Volunteer[] = [
       "Data scientist interested in applying ML to solve environmental challenges.",
     skills: getRandomItems(skills, 3),
     city: "New York, NY",
-    phone: "555-555-5555",
-    age: 25
+    phone: "555-555-5555"
   },
   {
     userId: "6",
@@ -159,8 +154,7 @@ export const volunteers: Volunteer[] = [
       "Data scientist interested in applying ML to solve environmental challenges.",
     skills: getRandomItems(skills, 3),
     city: "New York, NY",
-    phone: "555-555-5555",
-    age: 25
+    phone: "555-555-5555"
   },
   {
     userId: "7",
@@ -170,8 +164,7 @@ export const volunteers: Volunteer[] = [
       "Data scientist interested in applying ML to solve environmental challenges.",
     skills: getRandomItems(skills, 3),
     city: "New York, NY",
-    phone: "555-555-5555",
-    age: 25
+    phone: "555-555-5555"
   },
   {
     userId: "8",
@@ -181,7 +174,6 @@ export const volunteers: Volunteer[] = [
       "UX designer committed to creating user-friendly interfaces for non-profit organizations.",
     skills: getRandomItems(skills, 3),
     city: "Chicago, IL",
-    phone: "555-555-5555",
-    age: 25
+    phone: "555-555-5555"
   }
 ];

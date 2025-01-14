@@ -4,7 +4,7 @@ import {
   DialogTrigger,
   DialogContent,
   DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,10 +14,10 @@ import CustomSelect from "@/components/shared/customSelect";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useUserStore from "@/stores/setUserStore";
 import { Post, Role } from "@/types";
-import { skills } from "@/data/posts";
 import { Plus } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { ImageUpload } from "./imageUpload";
+import useSkillsStore from "@/stores/setSkillsStore";
 
 interface AddPostButtonProps {
   onAddPost: (post: Post) => void;
@@ -29,6 +29,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
   const [content, setContent] = useState("");
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [image, setImage] = useState("");
+  const skills = useSkillsStore((state) => state.skills);
 
   const currentUser = useUserStore();
 
@@ -58,13 +59,13 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
           currentUser.role === Role.Volunteer
             ? currentUser.volunteer?.imageUrl
             : currentUser.organization?.imageUrl,
-        type: currentUser.role === Role.Volunteer ? "user" : "organization",
+        type: currentUser.role === Role.Volunteer ? "user" : "organization"
       },
       title,
       content,
       skills: filteredSelectedSkills,
       comments: [],
-      likes: 0,
+      likes: 0
     };
     onAddPost(newPost);
     setIsOpen(false);

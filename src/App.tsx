@@ -1,6 +1,5 @@
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/routes";
-import { isAuthenticated } from "./services/authService";
 import useUserStore from "./stores/setUserStore";
 import { useEffect } from "react";
 import useSkillsStore from "./stores/setSkillsStore";
@@ -14,7 +13,7 @@ export default function App() {
   const focusAreas = useFocusAreaStore();
 
   useEffect(() => {
-    user.updateIsLoggedIn(isAuthenticated());
+    user.resetUser();
     skills.fetchSkills();
     cities.fetchCities();
     focusAreas.fetchFocusArea();
