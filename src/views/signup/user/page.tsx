@@ -219,7 +219,12 @@ export default function UserSignUpPage() {
               selectedOptions={formData.skills}
               onChange={handleSkillChange}
             />
-            <div className="flex flex-col items-center justify-center">
+
+            <Label htmlFor="websiteLink">Image</Label>
+            <div
+              className="flex flex-col items-center justify-center"
+              style={{ marginTop: "0" }}
+            >
               <label
                 htmlFor="image"
                 className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
@@ -239,6 +244,7 @@ export default function UserSignUpPage() {
                   <div className="mt-4" style={{ marginTop: "0" }}>
                     <img
                       src={image}
+                      style={{ maxHeight: "100px" }}
                       alt="Uploaded Preview"
                       className="w-32 h-32 object-cover rounded-lg"
                     />
