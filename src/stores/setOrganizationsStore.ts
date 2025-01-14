@@ -19,7 +19,6 @@ const useOrganizationsStore = create<OrganizationsStore>((set) => ({
       const response = await getOrganizations(page, limit);
 
       const simpleOrganizations = response.data.organizations;
-      console.log(simpleOrganizations);
 
       const organizations = simpleOrganizations?.map((simpleOrganization) => {
         const organizationFocusAreas = simpleOrganization.focusAreas?.map(
@@ -32,7 +31,7 @@ const useOrganizationsStore = create<OrganizationsStore>((set) => ({
 
         return {
           ...simpleOrganization,
-          focusAreas: filteredOrganizationFocusAreas,
+          focusAreas: filteredOrganizationFocusAreas
         };
       });
 
@@ -40,7 +39,7 @@ const useOrganizationsStore = create<OrganizationsStore>((set) => ({
     } catch (error) {
       console.error("Failed to fetch skills:", error);
     }
-  },
+  }
 }));
 
 export default useOrganizationsStore;
