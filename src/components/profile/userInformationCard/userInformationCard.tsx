@@ -88,10 +88,6 @@ export default function UserInformation({
             <p>
               <strong>City:</strong> {profileData.city}
             </p>
-
-            <Button className="ml-2" onClick={() => router("/chat")}>
-              chat with me
-            </Button>
           </>
         )}
       </CardContent>
