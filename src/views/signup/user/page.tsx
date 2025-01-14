@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { ImageUpload } from "@/components/home/imageUpload";
+import CustomSelect from "@/components/shared/customSelect";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -12,21 +12,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import useUserStore from "@/stores/setUserStore";
-import CustomSelect from "@/components/shared/customSelect";
-import { Role, Volunteer } from "@/types";
+import { Textarea } from "@/components/ui/textarea";
 import { saveTokens, signin, signup } from "@/services/authService";
 import { createVolunteer } from "@/services/volunteerService";
-import { useMutation } from "react-query";
-import useSkillsStore from "@/stores/setSkillsStore";
 import useCitiesStore from "@/stores/setCitiesStore";
-import { ImageIcon } from "lucide-react";
+import useSkillsStore from "@/stores/setSkillsStore";
+import useUserStore from "@/stores/setUserStore";
+import { Role, Volunteer } from "@/types";
+import { useState } from "react";
+import { useMutation } from "react-query";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function UserSignUpPage() {
   const location = useLocation();
   const cities = useCitiesStore((state) => state.cities);
   const skills = useSkillsStore((state) => state.skills);
+  const [image, setImage] = useState("");
 
   const [formData, setFormData] = useState({
     email: location.state.email,
@@ -110,6 +111,7 @@ export default function UserSignUpPage() {
 
         const volunteerResponse = await createVolunteerMutation.mutateAsync({
           ...formData,
+          imageUrl: image,
           userId: loginResponse.data.user._id,
         });
 
@@ -181,7 +183,7 @@ export default function UserSignUpPage() {
                   <SelectValue placeholder="Select a city" />
                 </SelectTrigger>
                 <SelectContent>
-                  {cities.map((city) => (
+                  {cities?.map((city) => (
                     <SelectItem key={city._id} value={city._id}>
                       {city.name}
                     </SelectItem>
@@ -206,21 +208,10 @@ export default function UserSignUpPage() {
               selectedOptions={formData.skills}
               onChange={handleSkillChange}
             />
-            <div>
-              <Label htmlFor="websiteLink">Profile image</Label>
-              <label
-                htmlFor="image"
-                className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-                style={{ marginTop: "5px" }}
-              >
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <ImageIcon className="w-8 h-8 mb-4 text-gray-500" />
-                  <p className="mb-2 text-sm text-gray-500">
-                    <span className="font-semibold">Click to upload</span>
-                  </p>
-                </div>
-              </label>
-            </div>
+            <Label style={{ marginTop: "30px" }} htmlFor="websiteLink">
+              Image
+            </Label>
+            <ImageUpload preview={image} setPreview={setImage} />
             <div className="space-y-2">
               <Label htmlFor="about">About</Label>
               <Textarea

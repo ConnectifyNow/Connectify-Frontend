@@ -42,7 +42,9 @@ export default function Home() {
     const skillsMatch: boolean =
       filters.skillsIds.length === 0 ||
       filters.skillsIds.some((skillId: string) =>
-        post.skills.map((skill: { _id: string }) => skill._id).includes(skillId)
+        post.skills
+          ?.map((skill: { _id: string }) => skill._id)
+          .includes(skillId)
       );
     return typeMatch && skillsMatch;
   });
@@ -63,7 +65,7 @@ export default function Home() {
           </div>
           <div className="w-3/4">
             <div className="space-y-6">
-              {paginatedPosts.map((post: PostType) => (
+              {paginatedPosts?.map((post: PostType) => (
                 <PostCard
                   key={post._id}
                   post={post}
@@ -91,7 +93,7 @@ export default function Home() {
                         className={currentPage === 1 ? "disabled" : ""}
                       />
                     </PaginationItem>
-                    {[...Array(totalPages)].map((_, index) => (
+                    {[...Array(totalPages)]?.map((_, index) => (
                       <PaginationItem key={index}>
                         <PaginationLink
                           isActive={currentPage === index + 1}

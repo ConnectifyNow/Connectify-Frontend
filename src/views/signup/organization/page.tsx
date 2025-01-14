@@ -23,6 +23,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Organization, Role } from "@/types";
 import useCitiesStore from "@/stores/setCitiesStore";
 import useFocusAreaStore from "@/stores/setFocusAreas";
+import { ImageUpload } from "@/components/home/imageUpload";
 
 export default function OrganizationSignUpPage() {
   const location = useLocation();
@@ -43,6 +44,7 @@ export default function OrganizationSignUpPage() {
   const user = useUserStore();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [logo, setLogo] = useState("");
 
   // const generateDescription = (organizationName: string) => {
   //   console.log({ generateDescription: organizationName });
@@ -53,6 +55,17 @@ export default function OrganizationSignUpPage() {
   ) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleLogoChange = (e: any) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader: any = new FileReader();
+      reader.onloadend = () => {
+        setLogo(reader.result); // Store image base64 in state for preview
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSelectChange = (name: string, value: string) => {
@@ -114,6 +127,7 @@ export default function OrganizationSignUpPage() {
         const organizationResponse =
           await createOrganizationMutation.mutateAsync({
             ...formData,
+            imageUrl: logo,
             userId: loginResponse.data.user._id,
           });
 
@@ -180,7 +194,11 @@ export default function OrganizationSignUpPage() {
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+            style={{ display: "flex", flexDirection: "column" }}
+          >
             <div className="space-y-2">
               <Label htmlFor="name">Organization Name</Label>
               <Input
@@ -191,20 +209,17 @@ export default function OrganizationSignUpPage() {
                 required
               />
             </div>
-            <div>
-              <Label htmlFor="websiteLink">Organization image</Label>
-              <label
-                htmlFor="image"
-                className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-                style={{ marginTop: "5px" }}
-              >
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <ImageIcon className="w-8 h-8 mb-4 text-gray-500" />
-                  <p className="mb-2 text-sm text-gray-500">
-                    <span className="font-semibold">Click to upload</span>
-                  </p>
-                </div>
-              </label>
+            <div className="space-y-2">
+              <Label htmlFor="websiteLink">Organization URL</Label>
+              <Input
+                id="websiteLink"
+                name="websiteLink"
+                type="url"
+                value={formData.websiteLink}
+                onChange={handleChange}
+                placeholder="https://www.yourorganization.com"
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="city">City</Label>
@@ -244,26 +259,17 @@ export default function OrganizationSignUpPage() {
               onClick={() => handleGenerateClick()}
               disabled={isDisabled}
               className="w-55"
+              style={{ width: "35%" }}
             >
               {isDisabled
                 ? `Wait ${coolDownTime}s`
                 : "Generate Description using AI"}
             </Button>
-            <div>
-              <Label htmlFor="websiteLink">Organization Logo</Label>
-              <label
-                htmlFor="image"
-                className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-                style={{ marginTop: "5px" }}
-              >
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <ImageIcon className="w-8 h-8 mb-4 text-gray-500" />
-                  <p className="mb-2 text-sm text-gray-500">
-                    <span className="font-semibold">Click to upload</span>
-                  </p>
-                </div>
-              </label>
-            </div>
+
+            <Label style={{ marginTop: "30px" }} htmlFor="websiteLink">
+              Organization Logo
+            </Label>
+            <ImageUpload preview={logo} setPreview={setLogo} />
 
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Completing Sign Up..." : "Complete Sign Up"}
