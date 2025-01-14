@@ -1,15 +1,13 @@
-import { useState } from "react";
-import { ProfileData, Role, User } from "../../types/index";
-import useUserStore from "@/stores/setUserStore";
-import UserInformation from "@/components/profile/userInformationCard/userInformationCard";
 import UserAboutCard from "@/components/profile/userAboutCard/userAboutCard";
+import UserInformation from "@/components/profile/userInformationCard/userInformationCard";
 import PostsList from "@/components/profile/userPostsLists/user-posts-list";
 import { logout, resetTokens } from "@/services/authService";
-import { useNavigate } from "react-router-dom";
-import { getVolunteerByUserId } from "@/services/volunteerService";
-import { getOrganizationByUserId } from "@/services/organizationService";
-import { useMutation } from "react-query";
 import useSkillsStore from "@/stores/setSkillsStore";
+import useUserStore from "@/stores/setUserStore";
+import { useState } from "react";
+import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { ProfileData, Role, User } from "../../types/index";
 
 export default function ProfilePage() {
   const user = useUserStore();
@@ -18,40 +16,9 @@ export default function ProfilePage() {
   const getSkillById = useSkillsStore((state) => state.getSkillById);
   const toggleSkill = useUserStore((state) => state.toggleSkill);
 
+  console.log({ user });
   const [profile, setProfile] = useState<User>(user);
   const [isEditing, setIsEditing] = useState(false);
-
-  const onVolunteer = async () => {
-    try {
-      console.log({ id: user._id });
-      const response = await getVolunteerByUserId(user._id);
-      const { data: volunteerData } = response;
-      console.log({ volunteerData });
-      // setProfile({ ...user, volunteer: volunteerData });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const onOrganization = async () => {
-    try {
-      const response = await getOrganizationByUserId(user._id);
-      const { data: organizationData } = response;
-      console.log({ organizationData });
-
-      // setProfile({ ...user, organization: organizationData });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  if (user.isLoggedIn) {
-    if (user?.role === Role.Volunteer) {
-      onVolunteer();
-    } else {
-      onOrganization();
-    }
-  }
 
   const handleChange = (key: keyof ProfileData, value: string) => {
     setProfile((prev) => ({

@@ -56,7 +56,7 @@ export default function GeneralCard({
           </strong>
         </div>
         <div className="flex flex-wrap gap-2 mb-4">
-          {tags.map((tag, index) => (
+          {tags?.map((tag, index) => (
             <span
               key={index}
               className={`${tag.bgColor} ${tag.textColor} text-xs font-semibold px-2.5 py-0.5 rounded`}

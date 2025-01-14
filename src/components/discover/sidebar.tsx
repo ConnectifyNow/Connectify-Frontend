@@ -36,7 +36,7 @@ export default function DirectorySidebar({
       <div className="mb-4">
         <h3 className="font-semibold mb-2">View Mode</h3>
         <div className="space-y-2">
-          {filters.map((filter) => (
+          {filters?.map((filter) => (
             <label key={filter.id} className="flex items-center">
               <input
                 type="radio"

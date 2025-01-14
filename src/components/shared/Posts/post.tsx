@@ -117,7 +117,7 @@ export default function PostCard({
           </div>
           <p className="text-gray-800 mb-4">{post.content}</p>
           <div className="flex flex-wrap gap-2 mb-4">
-            {post.skills.map((skill) => (
+            {post.skills?.map((skill) => (
               <span
                 key={skill._id}
                 className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
@@ -178,7 +178,7 @@ export default function PostCard({
       </div>
       {showComments && (
         <div className="mt-4 space-y-4">
-          {post.comments.map((comment) => (
+          {post.comments?.map((comment) => (
             <div key={comment._id} className="bg-gray-50 p-3 rounded">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center">

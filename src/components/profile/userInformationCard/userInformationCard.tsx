@@ -1,11 +1,9 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useNavigate } from "react-router-dom";
-import { ProfileData, Role, User } from "../../../types/index";
 import { randomAvatarUrl } from "@/utils/functions";
+import { ProfileData, Role, User } from "../../../types/index";
 
 type UserInformationProps = {
   profileData: ProfileData;
@@ -19,8 +17,6 @@ export default function UserInformation({
   isEditing,
   handleChange,
 }: UserInformationProps) {
-  const router = useNavigate();
-
   return (
     <Card>
       <CardHeader>
@@ -88,10 +84,6 @@ export default function UserInformation({
             <p>
               <strong>City:</strong> {profileData.city}
             </p>
-
-            <Button className="ml-2" onClick={() => router("/chat")}>
-              chat with me
-            </Button>
           </>
         )}
       </CardContent>

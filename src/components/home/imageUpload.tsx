@@ -1,14 +1,21 @@
 "use client";
 
-import { useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
+import { uploadImage } from "@/services/fileUploadService";
 import { ImageIcon } from "lucide-react";
+import { useRef } from "react";
 
-export function ImageUpload() {
-  const [preview, setPreview] = useState<string | null>(null);
+interface ImageUploadProps {
+  preview: string;
+  setPreview: (preview: string) => void;
+}
+
+export function ImageUpload({ preview, setPreview }: ImageUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -16,8 +23,9 @@ export function ImageUpload() {
         setPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
+      await uploadImage(file);
     } else {
-      setPreview(null);
+      setPreview("");
     }
   };
 
@@ -25,9 +33,13 @@ export function ImageUpload() {
     <div className="space-y-4">
       <div className="flex flex-col items-center justify-center w-full">
         {preview ? (
-          <div className="w-full aspect-video bg-gray-100 rounded-lg overflow-hidden">
+          <div
+            className="w-full aspect-video bg-gray-100 rounded-lg overflow-hidden"
+            style={{ maxHeight: "128px" }}
+          >
             <img
               src={preview}
+              style={{ maxHeight: "128px" }}
               alt="Preview"
               className="w-full h-full object-contain"
             />

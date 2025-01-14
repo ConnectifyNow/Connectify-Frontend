@@ -14,7 +14,7 @@ export default function PostsList() {
       <div className="max-w-2xl mx-auto px-4">
         <h1 className="text-3xl font-bold text-center mb-8">My Posts</h1>
         <div className="space-y-6">
-          {userPosts.map((post) => (
+          {userPosts?.map((post) => (
             <Post
               key={post._id}
               post={post}

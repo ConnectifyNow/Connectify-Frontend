@@ -102,12 +102,12 @@ export interface Comment {
 
 export enum Role {
   Volunteer = 0,
-  Organization = 1
+  Organization = 1,
 }
 
 export enum tagType {
   skill = "skill",
-  focusArea = "focus-area"
+  focusArea = "focus-area",
 }
 
 export interface ProfileData {
@@ -146,6 +146,11 @@ type GeneralResponse = {
 export type RefreshResponse = {
   accessToken: string;
   refreshToken: string;
+};
+
+export type ImageUploadResponse = {
+  originalName: string;
+  serverFilename: string;
 };
 
 export type SigninResponse = GeneralResponse;
