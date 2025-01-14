@@ -1,6 +1,7 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
+import { uploadImage } from "@/services/fileUploadService";
 import { ImageIcon } from "lucide-react";
 import { useRef } from "react";
 
@@ -12,7 +13,9 @@ interface ImageUploadProps {
 export function ImageUpload({ preview, setPreview }: ImageUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -20,6 +23,7 @@ export function ImageUpload({ preview, setPreview }: ImageUploadProps) {
         setPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
+      await uploadImage(file);
     } else {
       setPreview("");
     }

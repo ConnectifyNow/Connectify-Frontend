@@ -1,13 +1,11 @@
+import { AxiosResponse } from "axios";
 import {
   CreateOrganizationResponse,
   PaginationSimpleOrganization,
-  Organization,
   SimpleOrganization,
-  User,
 } from "../types/index";
-import { headers } from "./authService";
 import apiClient from "./apiClient";
-import { AxiosResponse } from "axios";
+import { headers } from "./authService";
 
 export const createOrganization = async (
   organization: SimpleOrganization
