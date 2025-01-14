@@ -138,6 +138,7 @@ export default function OrganizationSignUpPage() {
         const organizationResponse =
           await createOrganizationMutation.mutateAsync({
             ...formData,
+            imageUrl: image,
             userId: loginResponse.data.user._id,
           });
 
@@ -204,7 +205,11 @@ export default function OrganizationSignUpPage() {
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+            style={{ display: "flex", flexDirection: "column" }}
+          >
             <div className="space-y-2">
               <Label htmlFor="name">Organization Name</Label>
               <Input
@@ -293,16 +298,19 @@ export default function OrganizationSignUpPage() {
               onClick={() => handleGenerateClick()}
               disabled={isDisabled}
               className="w-55"
+              style={{ width: "35%" }}
             >
               {isDisabled
                 ? `Wait ${coolDownTime}s`
                 : "Generate Description using AI"}
             </Button>
 
-            <Label htmlFor="websiteLink">Organization Logo</Label>
+            <Label style={{ marginTop: "30px" }} htmlFor="websiteLink">
+              Organization Logo
+            </Label>
             <div
               className="flex flex-col items-center justify-center"
-              style={{ marginTop: "0" }}
+              style={{ marginTop: "2px" }}
             >
               <label
                 htmlFor="logo"
