@@ -43,7 +43,6 @@ export default function OrganizationSignUpPage() {
   const user = useUserStore();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [image, setImage] = useState("");
   const [logo, setLogo] = useState("");
 
   // const generateDescription = (organizationName: string) => {
@@ -55,17 +54,6 @@ export default function OrganizationSignUpPage() {
   ) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleImageChange = (e: any) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader: any = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result); // Store image base64 in state for preview
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const handleLogoChange = (e: any) => {
@@ -138,7 +126,7 @@ export default function OrganizationSignUpPage() {
         const organizationResponse =
           await createOrganizationMutation.mutateAsync({
             ...formData,
-            imageUrl: image,
+            imageUrl: logo,
             userId: loginResponse.data.user._id,
           });
 
@@ -220,44 +208,16 @@ export default function OrganizationSignUpPage() {
                 required
               />
             </div>
-            <Label htmlFor="websiteLink">Organization image</Label>
-            <div
-              className="flex flex-col items-center justify-center"
-              style={{ marginTop: "0" }}
-            >
-              <label
-                htmlFor="image"
-                className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-                style={{ marginTop: "5px", minHeight: "140px" }}
-              >
-                {!image && (
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <ImageIcon className="w-8 h-8 mb-4 text-gray-500" />
-                    <p className="mb-2 text-sm text-gray-500">
-                      <span className="font-semibold">
-                        Click to upload organization image
-                      </span>
-                    </p>
-                  </div>
-                )}
-                {image && (
-                  <div className="mt-4" style={{ marginTop: "0" }}>
-                    <img
-                      src={image}
-                      style={{ maxHeight: "100px" }}
-                      alt="Uploaded Preview"
-                      className="w-32 h-32 object-cover rounded-lg"
-                    />
-                  </div>
-                )}
-              </label>
-
-              <input
-                type="file"
-                id="image"
-                accept="image/*"
-                className="hidden"
-                onChange={handleImageChange}
+            <div className="space-y-2">
+              <Label htmlFor="websiteLink">Organization URL</Label>
+              <Input
+                id="websiteLink"
+                name="websiteLink"
+                type="url"
+                value={formData.websiteLink}
+                onChange={handleChange}
+                placeholder="https://www.yourorganization.com"
+                required
               />
             </div>
             <div className="space-y-2">
