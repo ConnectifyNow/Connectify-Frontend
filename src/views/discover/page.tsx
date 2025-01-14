@@ -10,7 +10,7 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious
+  PaginationPrevious,
 } from "@/components/ui/pagination";
 import useOrganizationsStore from "@/stores/setOrganizationsStore";
 import useVolunteersStore from "@/stores/setVolunteersStore";
@@ -20,7 +20,7 @@ const ITEMS_PER_PAGE = 3;
 export default function Directory() {
   const [filters, setFilters] = useState({
     mode: "organizations" as "organizations" | "volunteers",
-    searchTerm: ""
+    searchTerm: "",
   });
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -73,7 +73,7 @@ export default function Directory() {
           </div>
           <div className="w-3/4">
             <div className="space-y-6">
-              {currentItems.map((item: Volunteer | Organization) =>
+              {currentItems?.map((item: Volunteer | Organization) =>
                 filters.mode === "organizations" ? (
                   <OrganizationCard
                     key={(item as Organization).userId}
@@ -102,7 +102,7 @@ export default function Directory() {
                         className={currentPage === 1 ? "disabled" : ""}
                       />
                     </PaginationItem>
-                    {[...Array(currentPages)].map((_, index) => (
+                    {[...Array(currentPages)]?.map((_, index) => (
                       <PaginationItem key={index}>
                         <PaginationLink
                           isActive={currentPage === index + 1}

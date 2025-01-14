@@ -4,7 +4,7 @@ import {
   DialogTrigger,
   DialogContent,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,7 +40,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
 
   const handleSubmit = (event: React.FormEvent) => {
     const selectedSkillsObjects =
-      selectedSkills.map((id) => skills.find((skill) => skill._id === id)) ??
+      selectedSkills?.map((id) => skills.find((skill) => skill._id === id)) ??
       [];
     const filteredSelectedSkills = selectedSkillsObjects.filter(
       (selectedSkill) => selectedSkill !== undefined
@@ -56,13 +56,13 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
           currentUser.role === Role.Volunteer
             ? currentUser.volunteer?.imageUrl
             : currentUser.organization?.imageUrl,
-        type: currentUser.role === Role.Volunteer ? "user" : "organization"
+        type: currentUser.role === Role.Volunteer ? "user" : "organization",
       },
       title,
       content,
       skills: filteredSelectedSkills,
       comments: [],
-      likes: 0
+      likes: 0,
     };
     onAddPost(newPost);
     setIsOpen(false);

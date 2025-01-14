@@ -49,7 +49,7 @@ export default function UserList({ users, onSelectUser }: UserListProps) {
         </div>
       </div>
       <ul>
-        {filteredUsers.map((user) => (
+        {filteredUsers?.map((user) => (
           <li key={user._id} className="border-b last:border-b-0">
             <Button
               variant="ghost"

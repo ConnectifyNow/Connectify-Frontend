@@ -20,8 +20,8 @@ const useVolunteersStore = create<VolunteerStore>((set) => ({
 
       const simpleVolunteers = response.data.volunteers;
 
-      const volunteers = simpleVolunteers.map((simpleVolunteer) => {
-        const volunteerSkills = simpleVolunteer.skills.map((skillId) =>
+      const volunteers = simpleVolunteers?.map((simpleVolunteer) => {
+        const volunteerSkills = simpleVolunteer.skills?.map((skillId) =>
           skills.find((skill) => skill._id === skillId)
         );
         const filteredVolunteerSkills = volunteerSkills.filter(
@@ -30,7 +30,7 @@ const useVolunteersStore = create<VolunteerStore>((set) => ({
 
         return {
           ...simpleVolunteer,
-          skills: filteredVolunteerSkills
+          skills: filteredVolunteerSkills,
         };
       });
 
@@ -38,7 +38,7 @@ const useVolunteersStore = create<VolunteerStore>((set) => ({
     } catch (error) {
       console.error("Failed to fetch skills:", error);
     }
-  }
+  },
 }));
 
 export default useVolunteersStore;

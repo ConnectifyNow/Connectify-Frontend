@@ -3,7 +3,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,18 +22,18 @@ export function EditPostModal({
   post,
   isOpen,
   onClose,
-  onSave
+  onSave,
 }: EditPostModalProps) {
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
   const [skills, setSkills] = useState(
-    post.skills.map((skill) => skill.name).join(", ")
+    post.skills?.map((skill) => skill.name).join(", ")
   );
 
   useEffect(() => {
     setTitle(post.title);
     setContent(post.content);
-    setSkills(post.skills.map((skill) => skill.name).join(", "));
+    setSkills(post.skills?.map((skill) => skill.name).join(", "));
   }, [post]);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -42,12 +42,10 @@ export function EditPostModal({
       ...post,
       title,
       content,
-      skills: skills
-        .split(",")
-        .map((name, index) => ({
-          _id: (index + 1).toString(),
-          name: name.trim()
-        }))
+      skills: skills.split(",")?.map((name, index) => ({
+        _id: (index + 1).toString(),
+        name: name.trim(),
+      })),
     };
     onSave(updatedPost);
     onClose();

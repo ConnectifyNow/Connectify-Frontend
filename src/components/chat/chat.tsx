@@ -34,7 +34,7 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
     const messageData = {
       message: input,
       currentUser,
-      selectedUser
+      selectedUser,
     };
 
     socket.emit("send-message", messageData);
@@ -45,8 +45,8 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
         _id: Date.now().toString(),
         content: input,
         sender: currentUser,
-        timestamp: new Date()
-      }
+        timestamp: new Date(),
+      },
     ]);
 
     setInput("");
@@ -76,7 +76,7 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
       </div>
       <ScrollArea className="h-[700px] rounded-md p-4 ">
         <div className=" p-4 space-y-4">
-          {messages.map((message) => (
+          {messages?.map((message) => (
             <div
               key={message._id}
               className={`flex ${
