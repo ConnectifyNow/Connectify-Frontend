@@ -1,5 +1,4 @@
 import { Volunteer } from "@/types";
-import { randomAvatarUrl } from "@/utils/functions";
 import GeneralCard from "../shared/generic-card";
 import { tagType } from "@/types";
 
@@ -14,7 +13,9 @@ export default function VolunteerCard({ volunteer }: { volunteer: Volunteer }) {
   return (
     <GeneralCard
       name={volunteer.firstName + " " + volunteer.lastName}
-      imageUrl={volunteer.imageUrl ?? randomAvatarUrl()}
+      imageUrl={`${import.meta.env.VITE_REACT_APP_API_URL}/${
+        volunteer.imageUrl
+      }`}
       description={volunteer.about ?? ""}
       tags={tags}
       additionalInfo={volunteer.city}

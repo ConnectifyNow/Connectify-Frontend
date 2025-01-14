@@ -74,7 +74,7 @@ export interface Tag {
 
 export interface GeneralCardProps {
   name: string;
-  imageUrl: string;
+  imageUrl?: string;
   description: string;
   tags: Tag[];
   linkText?: string;
