@@ -23,6 +23,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Organization, Role } from "@/types";
 import useCitiesStore from "@/stores/setCitiesStore";
 import useFocusAreaStore from "@/stores/setFocusAreas";
+import { ImageUpload } from "@/components/home/imageUpload";
 
 export default function OrganizationSignUpPage() {
   const location = useLocation();
@@ -268,45 +269,8 @@ export default function OrganizationSignUpPage() {
             <Label style={{ marginTop: "30px" }} htmlFor="websiteLink">
               Organization Logo
             </Label>
-            <div
-              className="flex flex-col items-center justify-center"
-              style={{ marginTop: "2px" }}
-            >
-              <label
-                htmlFor="logo"
-                className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-                style={{ marginTop: "5px", minHeight: "140px" }}
-              >
-                {!logo && (
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <ImageIcon className="w-8 h-8 mb-4 text-gray-500" />
-                    <p className="mb-2 text-sm text-gray-500">
-                      <span className="font-semibold">
-                        Click to upload organization logo
-                      </span>
-                    </p>
-                  </div>
-                )}
-                {logo && (
-                  <div className="mt-4" style={{ marginTop: "0" }}>
-                    <img
-                      src={logo}
-                      style={{ maxHeight: "100px" }}
-                      alt="Uploaded Preview"
-                      className="w-32 h-32 object-cover rounded-lg"
-                    />
-                  </div>
-                )}
-              </label>
+            <ImageUpload preview={logo} setPreview={setLogo} />
 
-              <input
-                type="file"
-                id="logo"
-                accept="logo/*"
-                className="hidden"
-                onChange={handleLogoChange}
-              />
-            </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Completing Sign Up..." : "Complete Sign Up"}
             </Button>

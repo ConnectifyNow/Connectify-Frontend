@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { ImageUpload } from "@/components/home/imageUpload";
+import CustomSelect from "@/components/shared/customSelect";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -12,16 +12,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import useUserStore from "@/stores/setUserStore";
-import CustomSelect from "@/components/shared/customSelect";
-import { Role, Volunteer } from "@/types";
+import { Textarea } from "@/components/ui/textarea";
 import { saveTokens, signin, signup } from "@/services/authService";
 import { createVolunteer } from "@/services/volunteerService";
-import { useMutation } from "react-query";
-import useSkillsStore from "@/stores/setSkillsStore";
 import useCitiesStore from "@/stores/setCitiesStore";
-import { ImageIcon } from "lucide-react";
+import useSkillsStore from "@/stores/setSkillsStore";
+import useUserStore from "@/stores/setUserStore";
+import { Role, Volunteer } from "@/types";
+import { useState } from "react";
+import { useMutation } from "react-query";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function UserSignUpPage() {
   const location = useLocation();
@@ -51,17 +51,6 @@ export default function UserSignUpPage() {
   ) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleImageChange = (e: any) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader: any = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result); // Store image base64 in state for preview
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const handleSelectChange = (name: string, value: string) => {
@@ -219,47 +208,10 @@ export default function UserSignUpPage() {
               selectedOptions={formData.skills}
               onChange={handleSkillChange}
             />
-
-            <Label htmlFor="websiteLink">Image</Label>
-            <div
-              className="flex flex-col items-center justify-center"
-              style={{ marginTop: "0" }}
-            >
-              <label
-                htmlFor="image"
-                className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-                style={{ marginTop: "5px", minHeight: "140px" }}
-              >
-                {!image && (
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <ImageIcon className="w-8 h-8 mb-4 text-gray-500" />
-                    <p className="mb-2 text-sm text-gray-500">
-                      <span className="font-semibold">
-                        Click to upload image
-                      </span>
-                    </p>
-                  </div>
-                )}
-                {image && (
-                  <div className="mt-4" style={{ marginTop: "0" }}>
-                    <img
-                      src={image}
-                      style={{ maxHeight: "100px" }}
-                      alt="Uploaded Preview"
-                      className="w-32 h-32 object-cover rounded-lg"
-                    />
-                  </div>
-                )}
-              </label>
-
-              <input
-                type="file"
-                id="image"
-                accept="image/*"
-                className="hidden"
-                onChange={handleImageChange}
-              />
-            </div>
+            <Label style={{ marginTop: "30px" }} htmlFor="websiteLink">
+              Image
+            </Label>
+            <ImageUpload preview={image} setPreview={setImage} />
             <div className="space-y-2">
               <Label htmlFor="about">About</Label>
               <Textarea

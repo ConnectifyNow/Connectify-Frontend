@@ -28,6 +28,8 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const [image, setImage] = useState("");
+
   const currentUser = useUserStore();
 
   const handleSkillsChange = (value: string) => {
@@ -124,7 +126,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
           </div>
           <Card>
             <CardContent className="pt-6">
-              <ImageUpload />
+              <ImageUpload preview={image} setPreview={setImage} />
             </CardContent>
           </Card>
 
