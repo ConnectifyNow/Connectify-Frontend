@@ -27,6 +27,7 @@ export default function UserSignUpPage() {
   const location = useLocation();
   const cities = useCitiesStore((state) => state.cities);
   const skills = useSkillsStore((state) => state.skills);
+  const [image, setImage] = useState("");
 
   const [formData, setFormData] = useState({
     email: location.state.email,
@@ -50,6 +51,17 @@ export default function UserSignUpPage() {
   ) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageChange = (e: any) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader: any = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result); // Store image base64 in state for preview
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSelectChange = (name: string, value: string) => {
@@ -110,6 +122,7 @@ export default function UserSignUpPage() {
 
         const volunteerResponse = await createVolunteerMutation.mutateAsync({
           ...formData,
+          imageUrl: image,
           userId: loginResponse.data.user._id,
         });
 
@@ -206,20 +219,40 @@ export default function UserSignUpPage() {
               selectedOptions={formData.skills}
               onChange={handleSkillChange}
             />
-            <div>
-              <Label htmlFor="websiteLink">Profile image</Label>
+            <div className="flex flex-col items-center justify-center">
               <label
                 htmlFor="image"
                 className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-                style={{ marginTop: "5px" }}
+                style={{ marginTop: "5px", minHeight: "140px" }}
               >
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <ImageIcon className="w-8 h-8 mb-4 text-gray-500" />
-                  <p className="mb-2 text-sm text-gray-500">
-                    <span className="font-semibold">Click to upload</span>
-                  </p>
-                </div>
+                {!image && (
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <ImageIcon className="w-8 h-8 mb-4 text-gray-500" />
+                    <p className="mb-2 text-sm text-gray-500">
+                      <span className="font-semibold">
+                        Click to upload image
+                      </span>
+                    </p>
+                  </div>
+                )}
+                {image && (
+                  <div className="mt-4" style={{ marginTop: "0" }}>
+                    <img
+                      src={image}
+                      alt="Uploaded Preview"
+                      className="w-32 h-32 object-cover rounded-lg"
+                    />
+                  </div>
+                )}
               </label>
+
+              <input
+                type="file"
+                id="image"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageChange}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="about">About</Label>
