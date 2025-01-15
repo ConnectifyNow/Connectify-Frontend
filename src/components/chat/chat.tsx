@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { ChatProps, Message } from "@/types";
 import { Building2, UserCircle } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useSocket } from "../../hooks/useSocket";
 import { ScrollArea } from "../ui/scroll-area";
 
 export default function Chat({ currentUser, selectedUser }: ChatProps) {
@@ -83,15 +82,13 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
                 message.sender._id === currentUser._id
                   ? "justify-end"
                   : "justify-start"
-              }`}
-            >
+              }`}>
               <div
                 className={`rounded-lg p-2 max-w-sm ${
                   message.sender._id === currentUser._id
                     ? "bg-blue-500 text-white"
                     : "bg-gray-200"
-                }`}
-              >
+                }`}>
                 <div>{message.content}</div>
                 <div className="text-xs mt-1 opacity-70">
                   {new Date(message.timestamp).toLocaleTimeString()}

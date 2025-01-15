@@ -164,3 +164,23 @@ export type CreateVolunteerResponse = SimpleVolunteer;
 export type CreateOrganizationResponse = SimpleOrganization;
 
 export type GetIdNameResponse = IdName[];
+
+export type Message1 = {
+  _id: string;
+  sender: MessageSender;
+  content: string;
+  createdAt: Date;
+};
+
+type MessageSender = Pick<User, "_id" | "username" | "email">;
+
+export type SendMessageInput = Pick<Message, "content"> & {
+  userId: User["_id"];
+  conversationId: Conversation["_id"];
+};
+
+export type Conversation = {
+  _id: string;
+  users: User[];
+  messagesBehind?: number;
+};
