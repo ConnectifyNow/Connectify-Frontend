@@ -26,7 +26,7 @@ export default function PostCard({
   onEdit,
   onDelete,
   onCommentLike,
-  showEditDelete = false
+  showEditDelete = false,
 }: PostProps) {
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -35,6 +35,7 @@ export default function PostCard({
 
   const currentUser = useUserStore();
 
+  console.log(post);
   const handleLike = () => {
     onLike(post._id, currentUser._id);
   };
@@ -44,18 +45,10 @@ export default function PostCard({
     if (newComment.trim()) {
       const comment: Comment = {
         _id: Date.now().toString(),
-        author: {
-          _id: currentUser._id,
-          name: currentUser.username,
-          avatar:
-            currentUser.role === Role.Volunteer
-              ? currentUser.volunteer?.imageUrl ?? randomAvatarUrl()
-              : currentUser.organization?.imageUrl ?? randomAvatarUrl(),
-          type: currentUser.role === Role.Volunteer ? "user" : "organization"
-        },
+        userId: currentUser._id,
         content: newComment.trim(),
         createdAt: new Date().toISOString(),
-        likes: 0
+        likes: 0,
       };
       onComment(post._id, comment);
       setNewComment("");
@@ -71,6 +64,9 @@ export default function PostCard({
     onCommentLike(post._id, commentId);
   };
 
+  console.log(post);
+  console.log(currentUser);
+
   const isCurrentUserPost = post.author._id === currentUser._id;
 
   return (
@@ -82,16 +78,22 @@ export default function PostCard({
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <img
-              src={post.author.avatar ?? randomAvatarUrl()}
-              alt={post.author.name}
+              src={
+                post.author.volunteer?.imageUrl ??
+                post.author.organization?.imageUrl ??
+                randomAvatarUrl()
+              }
+              alt={post.author.username}
               width={40}
               height={40}
               className="rounded-full mr-4"
             />
             <div>
-              <h3 className="font-semibold text-lg">{post.author.name}</h3>
+              <h3 className="font-semibold text-lg">{post.author.username}</h3>
               <h4 className="text-gray-600">{post.title}</h4>
-              <span className="text-sm text-gray-500">{post.author.type}</span>
+              <span className="text-sm text-gray-500">
+                {Role[post.author.role]}
+              </span>
             </div>
           </div>
           {showEditDelete && isCurrentUserPost && (
@@ -157,14 +159,14 @@ export default function PostCard({
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center">
                     <img
-                      src={comment.author.avatar}
-                      alt={comment.author.name}
+                      src={comment.author.imageUrl}
+                      alt={comment.author.username}
                       width={24}
                       height={24}
                       className="rounded-full mr-2"
                     />
                     <span className="font-semibold text-sm">
-                      {comment.author.name}
+                      {comment.author.username}
                     </span>
                   </div>
                   <span className="text-xs text-gray-500">
@@ -221,7 +223,7 @@ export default function PostCard({
       <div style={{ width: "50%" }}>
         <img
           src={img}
-          alt={post.author.name}
+          alt={post.author.username}
           style={{ width: "100%", height: "100%" }}
         />
       </div>

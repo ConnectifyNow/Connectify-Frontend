@@ -3,7 +3,7 @@ export interface User {
   username: string;
   email: string;
   password: string;
-  role?: Role;
+  role: Role;
   volunteer?: Volunteer;
   organization?: Organization;
   isLoggedIn?: boolean;
@@ -48,12 +48,12 @@ export type Skill = IdName;
 export type FocusArea = IdName;
 export type City = IdName;
 
-export interface Author {
-  _id: string;
-  name: string;
-  avatar?: string;
-  type: "user" | "organization";
-}
+// export interface Author {
+//   _id: string;
+//   name: string;
+//   avatar?: string;
+//   type: "user" | "organization";
+// }
 
 export interface Tag {
   type: tagType;
@@ -74,7 +74,7 @@ export interface GeneralCardProps {
 
 export interface Post {
   _id: string;
-  author: Author;
+  author: User;
   title: string;
   content: string;
   skills: Skill[] | FocusArea[];
@@ -92,7 +92,7 @@ export interface ApiPost {
 
 export interface Comment {
   _id: string;
-  author: Author;
+  userId: User;
   content: string;
   createdAt: string;
   likes: number;

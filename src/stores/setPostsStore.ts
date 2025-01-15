@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { posts as initialPosts } from "../data/posts";
-import { Post, Comment } from "../types";
+import { Post, Comment, User } from "../types";
 
 interface PostsStore {
   posts: Post[];

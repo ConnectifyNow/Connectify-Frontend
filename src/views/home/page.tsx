@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import Sidebar from "../../components/home/sidebar";
 import usePostsStore from "../../stores/setPostsStore";
-import { Post as PostType } from "../../types";
+import { Post as PostType, Role } from "../../types";
 import PostCard from "@/components/shared/Posts/post";
 import {
   Pagination,
@@ -45,6 +45,8 @@ export default function Home() {
         const response = await getPosts();
         if (response.status === 200) {
           const fetchedPosts = await response.data;
+          console.log(fetchedPosts);
+
           usePostsStore.setState({ posts: fetchedPosts });
         } else {
           console.error("Failed to fetch posts:", response.statusText);
@@ -57,6 +59,7 @@ export default function Home() {
     fetchPosts();
   }, []);
   const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
+  console.log("SORETD: ", sortedPosts);
 
   const handleAddPost = async (post: PostType) => {
     addPost(post); // add to State
@@ -90,7 +93,7 @@ export default function Home() {
 
   const filteredPosts = sortedPosts.filter((post) => {
     const typeMatch =
-      filters.postType === "all" || post.author.type === filters.postType;
+      filters.postType === "all" || Role[post.author.role] === filters.postType;
     const skillsMatch: boolean =
       filters.skillsIds.length === 0 ||
       filters.skillsIds.some((skillId: string) =>
