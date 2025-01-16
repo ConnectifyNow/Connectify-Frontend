@@ -34,12 +34,12 @@ export default function PostCard({
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const currentUser = useUserStore();
-  console.log(post);
   const handleLike = () => {
     onLike(post._id, currentUser._id);
   };
 
   const handleAddComment = (e: React.FormEvent) => {
+    console.log("current User: ", currentUser);
     e.preventDefault();
     if (newComment.trim()) {
       const comment: ApiComment = {

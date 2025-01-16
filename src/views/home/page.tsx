@@ -12,7 +12,14 @@ import {
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/home/sidebar";
 import usePostsStore from "../../stores/setPostsStore";
-import { ApiComment, ApiPost, Post, Post as PostType, Role } from "../../types";
+import {
+  ApiComment,
+  ApiPost,
+  Post,
+  Post as PostType,
+  reqApiPost,
+  Role,
+} from "../../types";
 import { Toaster } from "@/components/ui/toaster";
 import {
   addCommentToPost,
@@ -62,14 +69,13 @@ export default function Home() {
 
   const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
 
-  const handleAddPost = async (post: PostType) => {
-    addPost(post); // add to State
-
+  const handleAddPost = async (post: reqApiPost) => {
+    // addPost(post); // add to State
     const response = await createPost({
       title: post.title,
       content: post.content,
-      user: post.author._id,
-      requiredSkills: post.skills.map((skill) => skill._id),
+      user: post.user,
+      requiredSkills: post.requiredSkills,
     }); // add to API
 
     if (response.status === 201) {
@@ -85,6 +91,7 @@ export default function Home() {
     const postId = comment.post;
 
     addComment(postId, comment);
+    console.log(comment);
 
     const response = await addCommentToPost(postId, comment);
 
@@ -92,6 +99,7 @@ export default function Home() {
       console.error("Failed to add comment:", response.statusText);
     }
   };
+
   const handleLikePost = async (postId: string, userId: string) => {
     likePost(postId);
 

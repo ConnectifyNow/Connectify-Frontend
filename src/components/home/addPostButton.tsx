@@ -13,14 +13,14 @@ import { Textarea } from "@/components/ui/textarea";
 import CustomSelect from "@/components/shared/customSelect";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useUserStore from "@/stores/setUserStore";
-import { Post, Role } from "@/types";
+import { Post, reqApiPost, Role } from "@/types";
 import { skills } from "@/data/posts";
 import { Plus } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { ImageUpload } from "./imageUpload";
 
 interface AddPostButtonProps {
-  onAddPost: (post: Post) => void;
+  onAddPost: (post: reqApiPost) => void;
 }
 
 export function AddPostButton({ onAddPost }: AddPostButtonProps) {
@@ -50,22 +50,11 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
 
     event.preventDefault();
     
-    const newPost: Post = {
-      _id: Date.now().toString(),
-      author: {
-        _id: currentUser._id,
-        name: currentUser.username,
-        avatar:
-          currentUser.role === Role.Volunteer
-            ? currentUser.volunteer?.imageUrl
-            : currentUser.organization?.imageUrl,
-        type: currentUser.role === Role.Volunteer ? "user" : "organization",
-      },
+    const newPost: reqApiPost = {
+      user: currentUser._id,
       title,
       content,
-      skills: filteredSelectedSkills,
-      comments: [],
-      likes: 0,
+      requiredSkills: filteredSelectedSkills.map(skill => skill?._id ?? ""),
     };
     onAddPost(newPost);
     setIsOpen(false);

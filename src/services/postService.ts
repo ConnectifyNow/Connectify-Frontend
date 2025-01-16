@@ -41,7 +41,8 @@ export const likeComment = async (commentId: string) => {
 };
 
 export const addCommentToPost = async (postId: string, comment: ApiComment) => {
-  return await apiClient.post(`/posts/${postId}/comment`, comment, {
+  console.log("comment User: ", comment.user)
+  return await apiClient.post(`/posts/${postId}/comment`, {text: comment.content, userId: comment.user}, {
     headers: headers(),
   });
 };

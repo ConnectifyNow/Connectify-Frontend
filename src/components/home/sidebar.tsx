@@ -30,7 +30,7 @@ export default function Sidebar({ onFilterChange }: SidebarProps) {
       <div className="mb-4">
         <h3 className="font-semibold mb-2">Post Type</h3>
         <div className="space-y-2">
-          {["all", "user", "organization"]?.map((type) => (
+          {["all", "Volunteer", "Organization"]?.map((type) => (
             <label key={type} className="flex items-center">
               <input
                 type="radio"
