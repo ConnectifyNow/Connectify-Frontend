@@ -59,7 +59,7 @@ const usePostsStore = create<PostsStore>((set) => ({
         post._id === postId
           ? {
               ...post,
-              comments: [...post.comments],
+              comments: [...post.comments, comment],
             }
           : post
       ),

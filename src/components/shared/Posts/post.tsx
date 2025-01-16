@@ -33,7 +33,7 @@ export default function PostCard({
 
   const currentUser = useUserStore();
   const handleLike = () => {
-    onLike(post._id, currentUser._id);
+    onLike(currentUser._id, currentUser._id);
   };
 
   const handleAddComment = (e: React.FormEvent) => {
@@ -43,9 +43,9 @@ export default function PostCard({
       const comment: ApiComment = {
         _id: Date.now().toString(),
         user: currentUser._id,
-        content: newComment.trim(),
+        text: newComment.trim(),
         post: post._id,
-        createdAt: new Date().toISOString(),
+        date: new Date().toISOString(),
         likes: 0
       };
       onComment(comment);
@@ -159,6 +159,8 @@ export default function PostCard({
       {showComments && (
         <div className="mt-4 space-y-4">
           {post.comments?.map((comment) => (
+            console.log("comment: ", comment),
+            console.log("comment likes: ", comment.likes.keys()),
             <div key={comment._id} className="bg-blue-50 p-3 rounded">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center">
@@ -190,10 +192,10 @@ export default function PostCard({
               >
                 <Heart
                   className={`w-4 h-4 ${
-                    comment.likes > 0 ? "fill-red-500 text-red-500" : ""
+                    comment.likes.length > 0 ? "fill-red-500 text-red-500" : ""
                   }`}
                 />
-                <span className="text-xs">{comment.likes}</span>
+                <span className="text-xs">{comment.likes.length}</span>
               </Button>
             </div>
           ))}

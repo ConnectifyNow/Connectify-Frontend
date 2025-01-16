@@ -115,8 +115,8 @@ export interface ApiComment {
   _id: string;
   user: string;
   post: string;
-  content: string;
-  createdAt: string;
+  text: string;
+  date: string;
   likes: number;
 }
 
@@ -125,7 +125,7 @@ export interface Comment {
   user: User;
   text: string;
   date: string;
-  likes: number;
+  likes: string[];
 }
 
 export enum Role {

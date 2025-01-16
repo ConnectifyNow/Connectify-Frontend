@@ -30,10 +30,10 @@ export const deletePostApi = async (postId: string) => {
   });
 };
 
-export const likeComment = async (commentId: string) => {
+export const likeCommentApi = async (userId: string, commentId: string) => {
   return await apiClient.put(
     `/comments/${commentId}/like`,
-    {},
+    { userId },
     {
       headers: headers(),
     }
@@ -41,10 +41,14 @@ export const likeComment = async (commentId: string) => {
 };
 
 export const addCommentToPost = async (postId: string, comment: ApiComment) => {
-  console.log("comment User: ", comment.user)
-  return await apiClient.post(`/posts/${postId}/comment`, {text: comment.content, userId: comment.user}, {
-    headers: headers(),
-  });
+  console.log("comment User: ", comment.user);
+  return await apiClient.post(
+    `/posts/${postId}/comment`,
+    { text: comment.text, userId: comment.user },
+    {
+      headers: headers(),
+    }
+  );
 };
 
 export const updatePost = async (post: ApiPost) => {

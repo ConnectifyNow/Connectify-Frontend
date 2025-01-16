@@ -26,6 +26,7 @@ import {
   createPost,
   deletePostApi,
   getPosts,
+  likeCommentApi,
   likePostApi,
 } from "@/services/postService";
 
@@ -81,7 +82,6 @@ export default function Home() {
     }); // add to API
 
     if (response.status === 201) {
-
       window.location.reload();
       // toast({
       //   description: "Post created successfully!",
@@ -101,6 +101,16 @@ export default function Home() {
 
     if (response.status !== 201) {
       console.error("Failed to add comment:", response.statusText);
+    }
+  };
+
+  const handleLikeComment = async (userId: string, commentId: string) => {
+    const response = await likeCommentApi(userId, commentId);
+
+    if (response.status === 200) {
+      // likeComment(commentId); // increment state
+    } else if (response.status === 500) {
+      console.error("Failed to like comment:", response.statusText);
     }
   };
 
@@ -165,7 +175,7 @@ export default function Home() {
                   onComment={handleAddComment}
                   onEdit={updatePost}
                   onDelete={handleDeletePost}
-                  onCommentLike={likeComment}
+                  onCommentLike={handleLikeComment}
                   showEditDelete={true}
                 />
               ))}
