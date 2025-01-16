@@ -75,7 +75,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button
-          className="fixed bottom-8 right-8 rounded-full w-16 h-16 shadow-lg bg-blue-300"
+          className="fixed bottom-8 right-8 rounded-full w-16 h-16 shadow-lg"
           onClick={() => setIsOpen(true)}
         >
           <Plus className="w-8 h-8" />

@@ -7,7 +7,7 @@ export default function VolunteerCard({ volunteer }: { volunteer: Volunteer }) {
     type: tagType.skill,
     text: skill,
     bgColor: "bg-blue-100",
-    textColor: "text-blue-800",
+    textColor: "text-blue-800"
   }));
 
   return (

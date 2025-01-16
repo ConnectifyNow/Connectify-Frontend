@@ -68,7 +68,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="bg-blue-50 px-4 py-8">
+    <div className="bg-sky-50 px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Profile</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <UserInformation

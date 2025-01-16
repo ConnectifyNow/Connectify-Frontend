@@ -25,7 +25,7 @@ export default function UserAboutCard({
   handleChange,
   handleSkillsChange,
   saveProfile,
-  handleLogout
+  handleLogout,
 }: UserAboutProps) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [coolDownTime, setCoolDownTime] = useState(0);
@@ -101,7 +101,7 @@ export default function UserAboutCard({
           </>
         ) : (
           <>
-            <p>{profileData.about}</p>
+            <div style={{ wordWrap: "break-word" }}>{profileData.about}</div>
             <div>
               <div className="flex flex-wrap gap-2 mt-2">
                 {(profileData.skills ?? [])?.map((skill) => (
@@ -120,9 +120,7 @@ export default function UserAboutCard({
           {isEditing ? (
             <Button onClick={saveProfile}>Save Profile</Button>
           ) : (
-            <Button className="bg-blue-200" onClick={() => setIsEditing(true)}>
-              Edit Profile
-            </Button>
+            <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
           )}
           <Button variant="destructive" onClick={handleLogout}>
             Logout
