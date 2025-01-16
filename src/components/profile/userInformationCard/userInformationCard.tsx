@@ -2,20 +2,30 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ProfileData, Role, User } from "../../../types/index";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import useCitiesStore from "@/stores/setCitiesStore";
+import { ProfileData, Role } from "../../../types/index";
 
 type UserInformationProps = {
   profileData: ProfileData;
   isEditing: boolean;
-  changeProfile: (profile: User) => void;
   handleChange: (key: keyof ProfileData, value: string) => void;
 };
 
 export default function UserInformation({
   profileData,
   isEditing,
-  handleChange
+  handleChange,
 }: UserInformationProps) {
+  const cities = useCitiesStore((state) => state.cities);
+  const ProfileDataCity = cities.find((city) => city._id === profileData.city);
+
   return (
     <Card>
       <CardHeader>
@@ -64,13 +74,29 @@ export default function UserInformation({
                 onChange={(event) => handleChange("email", event.target.value)}
               />
             </div>
-            <div>
-              <Label htmlFor="location">Location</Label>
-              <Input
-                id="location"
-                value={profileData.city}
-                onChange={(event) => handleChange("city", event.target.value)}
-              />
+            <div className="space-y-2">
+              <Label htmlFor="city">City</Label>
+              <Select
+                onValueChange={(event) => handleChange("city", event)}
+                required
+              >
+                <SelectTrigger>
+                  <SelectValue
+                    placeholder={
+                      ProfileDataCity
+                        ? `${ProfileDataCity?.name}`
+                        : "Select A City"
+                    }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {cities?.map((city) => (
+                    <SelectItem key={city._id} value={city._id}>
+                      {city.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </>
         ) : (
@@ -85,7 +111,7 @@ export default function UserInformation({
               <strong>Email:</strong> {profileData.email}
             </p>
             <p>
-              <strong>City:</strong> {profileData.city}
+              <strong>City:</strong> {`${ProfileDataCity?.name}`}
             </p>
           </>
         )}
