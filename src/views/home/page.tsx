@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/home/sidebar";
 import usePostsStore from "../../stores/setPostsStore";
-import { ApiComment, Post, reqApiPost, Role } from "../../types";
+import { ApiComment, IdName, Post, reqApiPost, Role, User } from "../../types";
 import { Toaster } from "@/components/ui/toaster";
 import {
   addCommentToPost,
@@ -23,6 +23,8 @@ import {
   likePostApi,
   updatePostApi
 } from "@/services/postService";
+import useUserStore from "@/stores/setUserStore";
+import useSkillsStore from "@/stores/setSkillsStore";
 
 const POSTS_PER_PAGE = 3;
 
@@ -34,12 +36,15 @@ export default function Home() {
     updatePost,
     deletePost,
     addComment,
-    likeComment
+    likeComment,
+    addPost
   } = usePostsStore();
   const [filters, setFilters] = useState({
     postType: "all",
     skillsIds: [] as string[]
   });
+  const user = useUserStore();
+  const getSkillById = useSkillsStore((state) => state.getSkillById);
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -64,20 +69,31 @@ export default function Home() {
   const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
 
   const handleAddPost = async (post: reqApiPost) => {
-    // addPost(post);
     const response = await createPost({
       title: post.title,
       content: post.content,
       user: post.user,
       requiredSkills: post.requiredSkills,
       imageUrl: post.imageUrl
-    }); // add to API
+    });
 
     if (response.status === 201) {
-      window.location.reload();
-      // toast({
-      //   description: "Post created successfully!",
-      // });
+      const skills = post.requiredSkills
+        .map((skillId) => getSkillById(skillId))
+        .filter((skill) => skill !== undefined) as IdName[];
+
+      const newPost: Post = {
+        _id: response.data._id,
+        author: user as User,
+        title: post.title,
+        content: post.content,
+        imageUrl: post.imageUrl,
+        skills,
+        comments: [],
+        likes: 0
+      };
+
+      addPost(newPost);
     } else {
       console.error("Failed to create post:", response.statusText);
     }
