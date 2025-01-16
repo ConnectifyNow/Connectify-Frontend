@@ -9,7 +9,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { getAiDescription } from "@/services/aiService";
@@ -30,14 +30,15 @@ export default function OrganizationSignUpPage() {
   const areas = useFocusAreaStore((state) => state.focusAreas);
 
   const [formData, setFormData] = useState({
-    email: location.state.email,
+    email: "",
+    username: location.state.username,
     password: location.state.password,
     name: "",
     city: "",
     description: "",
     imageUrl: "",
     websiteLink: "",
-    focusAreas: [] as string[],
+    focusAreas: [] as string[]
   });
   const router = useNavigate();
   const user = useUserStore();
@@ -71,19 +72,19 @@ export default function OrganizationSignUpPage() {
 
   const signUpMutation = useMutation(
     ({
-      email,
+      username,
       password,
-      role,
+      role
     }: {
-      email: string;
+      username: string;
       password: string;
       role: number;
-    }) => signup(email, password, role)
+    }) => signup(username, password, role)
   );
 
   const signinMutation = useMutation(
-    ({ email, password }: { email: string; password: string }) =>
-      signin(email, password)
+    ({ username, password }: { username: string; password: string }) =>
+      signin(username, password)
   );
 
   const createOrganizationMutation = useMutation(createOrganization);
@@ -95,28 +96,28 @@ export default function OrganizationSignUpPage() {
 
     try {
       const signUpResponse = await signUpMutation.mutateAsync({
-        email: formData.email,
+        username: formData.username,
         password: formData.password,
-        role: Role.Organization,
+        role: Role.Organization
       });
       const createdUser = signUpResponse.data;
 
       const loginResponse = await signinMutation.mutateAsync({
-        email: formData.email,
-        password: formData.password,
+        username: formData.username,
+        password: formData.password
       });
 
       if (loginResponse.data.accessToken !== "") {
         saveTokens({
           accessToken: loginResponse.data.accessToken,
-          refreshToken: loginResponse.data.refreshToken,
+          refreshToken: loginResponse.data.refreshToken
         });
 
         const organizationResponse =
           await createOrganizationMutation.mutateAsync({
             ...formData,
             imageUrl: logo,
-            userId: loginResponse.data.user._id,
+            userId: loginResponse.data.user._id
           });
 
         setLogo("");
@@ -126,7 +127,7 @@ export default function OrganizationSignUpPage() {
           ...simpleOrganization,
           focusAreas: areas.filter((focusArea) =>
             simpleOrganization.focusAreas.includes(focusArea._id)
-          ),
+          )
         };
 
         createdUser.organization = organization;
@@ -189,6 +190,17 @@ export default function OrganizationSignUpPage() {
             className="space-y-4"
             style={{ display: "flex", flexDirection: "column" }}
           >
+            <div className="space-y-2">
+              <Label htmlFor="email">Organization Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="name">Organization Name</Label>
               <Input

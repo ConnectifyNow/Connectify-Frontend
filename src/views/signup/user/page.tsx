@@ -10,7 +10,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { saveTokens, signin, signup } from "@/services/authService";
@@ -30,7 +30,8 @@ export default function UserSignUpPage() {
   const [image, setImage] = useState("");
 
   const [formData, setFormData] = useState({
-    email: location.state.email,
+    email: "",
+    username: location.state.username,
     password: location.state.password,
     firstName: "",
     lastName: "",
@@ -39,7 +40,7 @@ export default function UserSignUpPage() {
     skills: [] as string[],
     imageUrl: "",
     about: "",
-    phone: "",
+    phone: ""
   });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -62,25 +63,25 @@ export default function UserSignUpPage() {
       ...previous,
       skills: previous.skills.includes(value)
         ? previous.skills.filter((o) => o !== value)
-        : [...previous.skills, value],
+        : [...previous.skills, value]
     }));
   };
 
   const signUpMutation = useMutation(
     ({
-      email,
+      username,
       password,
-      role,
+      role
     }: {
-      email: string;
+      username: string;
       password: string;
       role: number;
-    }) => signup(email, password, role)
+    }) => signup(username, password, role)
   );
 
   const signinMutation = useMutation(
-    ({ email, password }: { email: string; password: string }) =>
-      signin(email, password)
+    ({ username, password }: { username: string; password: string }) =>
+      signin(username, password)
   );
 
   const createVolunteerMutation = useMutation(createVolunteer);
@@ -92,27 +93,27 @@ export default function UserSignUpPage() {
 
     try {
       const signUpResponse = await signUpMutation.mutateAsync({
-        email: formData.email,
+        username: formData.username,
         password: formData.password,
-        role: Role.Volunteer,
+        role: Role.Volunteer
       });
       const createdUser = signUpResponse.data;
 
       const loginResponse = await signinMutation.mutateAsync({
-        email: formData.email,
-        password: formData.password,
+        username: formData.username,
+        password: formData.password
       });
 
       if (loginResponse.data.accessToken !== "") {
         saveTokens({
           accessToken: loginResponse.data.accessToken,
-          refreshToken: loginResponse.data.refreshToken,
+          refreshToken: loginResponse.data.refreshToken
         });
 
         const volunteerResponse = await createVolunteerMutation.mutateAsync({
           ...formData,
           imageUrl: image,
-          userId: loginResponse.data.user._id,
+          userId: loginResponse.data.user._id
         });
 
         setImage("");
@@ -121,7 +122,7 @@ export default function UserSignUpPage() {
           ...simpleVolunteer,
           skills: skills.filter((skill) =>
             simpleVolunteer.skills.includes(skill._id)
-          ),
+          )
         };
 
         createdUser.volunteer = volunteer;
@@ -152,6 +153,17 @@ export default function UserSignUpPage() {
             </Alert>
           )}
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Your Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="firstName">First Name</Label>

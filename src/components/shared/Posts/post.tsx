@@ -62,6 +62,10 @@ export default function PostCard({
   };
 
   const isCurrentUserPost = post.author._id === currentUser._id;
+  const imagePath =
+    post.author.role === Role.Volunteer
+      ? post.author.volunteer?.imageUrl
+      : post.author.organization?.imageUrl;
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
@@ -70,11 +74,7 @@ export default function PostCard({
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <img
-                src={
-                  post.author.role === Role.Volunteer
-                    ? post.author.volunteer?.imageUrl
-                    : post.author.organization?.imageUrl
-                }
+                src={`${import.meta.env.VITE_REACT_APP_API_URL}/${imagePath}`}
                 alt={post.author.username}
                 width={40}
                 height={40}
@@ -149,7 +149,7 @@ export default function PostCard({
         </div>
         <div style={{ width: "40%" }}>
           <img
-            src={post.imageUrl}
+            src={`${import.meta.env.VITE_REACT_APP_API_URL}/${post.imageUrl}`}
             alt={post.author.username}
             style={{ width: "100%", height: "100%" }}
           />
@@ -163,9 +163,13 @@ export default function PostCard({
                 <div className="flex items-center">
                   <img
                     src={
-                      post.author.role === Role.Volunteer
-                        ? post.author.volunteer?.imageUrl
-                        : post.author.organization?.imageUrl
+                      comment.user.role === Role.Volunteer
+                        ? `${import.meta.env.VITE_REACT_APP_API_URL}/${
+                            comment.user.volunteer?.imageUrl
+                          }`
+                        : `${import.meta.env.VITE_REACT_APP_API_URL}/${
+                            comment.user.organization?.imageUrl
+                          }`
                     }
                     alt={comment.user.username}
                     width={24}
@@ -173,6 +177,7 @@ export default function PostCard({
                     className="rounded-full mr-2"
                   />
                   <span className="font-semibold text-sm">
+                    {comment.user.role}
                     {comment.user.username}
                   </span>
                 </div>

@@ -20,6 +20,7 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleChange = (key: keyof ProfileData, value: string) => {
+    console.log(profile);
     setProfile((prev) => ({
       ...prev,
       [key]: value

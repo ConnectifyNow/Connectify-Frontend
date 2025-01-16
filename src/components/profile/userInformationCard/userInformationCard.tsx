@@ -1,8 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { randomAvatarUrl } from "@/utils/functions";
-import { City, ProfileData, Role, User } from "../../../types/index";
+import { City, ProfileData, Role } from "../../../types/index";
 import { ImageUpload } from "@/components/home/imageUpload";
 import { useState } from "react";
 import {
@@ -10,7 +9,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/components/ui/select";
 import useCitiesStore from "@/stores/setCitiesStore";
 
@@ -23,7 +22,7 @@ type UserInformationProps = {
 export default function UserInformation({
   profileData,
   isEditing,
-  handleChange,
+  handleChange
 }: UserInformationProps) {
   const [image, setImage] = useState("");
   const cities = useCitiesStore((state) => state.cities);
@@ -120,7 +119,9 @@ export default function UserInformation({
             </div>
             <div className="flex justify-center">
               <img
-                src={profileData.imageUrl ?? randomAvatarUrl()}
+                src={`${import.meta.env.VITE_REACT_APP_API_URL}/${
+                  profileData.imageUrl
+                }`}
                 alt={profileData.username}
                 width={"60%"}
                 height={"60%"}

@@ -16,7 +16,7 @@ export default function SignInPage() {
   const { toast } = useToast();
 
   const updateIsLoggedIn = useUserStore((state) => state.updateIsLoggedIn);
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +32,7 @@ export default function SignInPage() {
 
       saveTokens({
         accessToken: loginGoogleRes.accessToken,
-        refreshToken: loginGoogleRes.refreshToken,
+        refreshToken: loginGoogleRes.refreshToken
       });
       user.setUser(loginGoogleRes.user);
       updateIsLoggedIn(true);
@@ -50,13 +50,13 @@ export default function SignInPage() {
         <ToastAction altText="Sorry, we have an issue logging in via Google">
           login error
         </ToastAction>
-      ),
+      )
     });
   };
 
   const signinMutation = useMutation(
-    ({ email, password }: { email: string; password: string }) =>
-      signin(email, password)
+    ({ username, password }: { username: string; password: string }) =>
+      signin(username, password)
   );
 
   const handleSignIn = async (event: React.FormEvent) => {
@@ -66,14 +66,14 @@ export default function SignInPage() {
 
     try {
       const response = await signinMutation.mutateAsync({
-        email,
-        password,
+        username,
+        password
       });
 
       if (response.data.accessToken !== "") {
         saveTokens({
           accessToken: response.data.accessToken,
-          refreshToken: response.data.refreshToken,
+          refreshToken: response.data.refreshToken
         });
         user.setUser(response.data.user);
         updateIsLoggedIn(true);
@@ -83,7 +83,7 @@ export default function SignInPage() {
         title: "Logged in successfully",
         action: (
           <ToastAction altText="Logged in successfully">login</ToastAction>
-        ),
+        )
       });
 
       router("/home");
@@ -110,13 +110,13 @@ export default function SignInPage() {
           )}
           <form onSubmit={handleSignIn} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="username">Username</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
+                id="username"
+                type="text"
+                placeholder="Enter your username"
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
                 required
               />
             </div>

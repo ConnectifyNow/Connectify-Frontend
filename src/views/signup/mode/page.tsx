@@ -17,9 +17,9 @@ export default function SignUpModePage() {
     try {
       router(`/signup/${mode}`, {
         state: {
-          email: location.state.email,
-          password: location.state.password,
-        },
+          username: location.state.username,
+          password: location.state.password
+        }
       });
     } catch {
       setError("Failed to select mode. Please try again.");
