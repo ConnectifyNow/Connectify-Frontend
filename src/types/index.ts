@@ -3,7 +3,7 @@ export interface User {
   username: string;
   email: string;
   password: string;
-  role?: Role;
+  role: Role;
   volunteer?: Volunteer;
   organization?: Organization;
   isLoggedIn?: boolean;
@@ -83,7 +83,7 @@ export interface GeneralCardProps {
 
 export interface Post {
   _id: string;
-  author: Author;
+  author: User;
   title: string;
   content: string;
   imageUrl: string;
@@ -92,12 +92,41 @@ export interface Post {
   likes: number;
 }
 
+export interface reqApiPost {
+  _id?: string;
+  user: string;
+  title: string;
+  content: string;
+  requiredSkills: string[];
+  imageUrl: string;
+}
+
+export interface ApiPost {
+  _id: string;
+  user: User;
+  title: string;
+  content: string;
+  requiredSkills: string[];
+  likes: string[];
+  comments: Comment[];
+  imageUrl: string;
+}
+
+export interface ApiComment {
+  _id: string;
+  user: string;
+  post: string;
+  text: string;
+  date: string;
+  likes: number;
+}
+
 export interface Comment {
   _id: string;
-  author: Author;
-  content: string;
-  createdAt: string;
-  likes: number;
+  user: User;
+  text: string;
+  date: string;
+  likes: string[];
 }
 
 export enum Role {

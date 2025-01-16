@@ -1,14 +1,58 @@
-import { AxiosResponse } from "axios";
-import { Post, User } from "../types/index";
-import apiClient from "./apiClient";
+import { ApiComment, ApiPost, reqApiPost } from "../types/index";
 import { headers } from "./authService";
+import apiClient from "./apiClient";
 
-export const getPosts = async (): Promise<AxiosResponse<Post[]>> => {
-  return await apiClient.get(`/posts`, { headers: headers() });
+export const createPost = async (post: reqApiPost) => {
+  return await apiClient.post(`/posts`, post, {
+    headers: headers(),
+  });
 };
 
-export const getPostsByUserId = async (
-  userId: User["_id"]
-): Promise<AxiosResponse<Post>> => {
-  return await apiClient.get(`/posts/user/${userId}`, { headers: headers() });
+export const likePostApi = async (postId: string, userId: string) => {
+  return await apiClient.put(
+    `/posts/${postId}/like`,
+    { userId },
+    {
+      headers: headers(),
+    }
+  );
+};
+
+export const getPosts = async () => {
+  return await apiClient.get(`/posts`, {
+    headers: headers(),
+  });
+};
+
+export const deletePostApi = async (postId: string) => {
+  return await apiClient.delete(`/posts/${postId}`, {
+    headers: headers(),
+  });
+};
+
+export const likeCommentApi = async (userId: string, commentId: string) => {
+  return await apiClient.put(
+    `/comments/${commentId}/like`,
+    { userId },
+    {
+      headers: headers(),
+    }
+  );
+};
+
+export const addCommentToPost = async (postId: string, comment: ApiComment) => {
+  console.log("comment User: ", comment.user);
+  return await apiClient.post(
+    `/posts/${postId}/comment`,
+    { text: comment.text, userId: comment.user },
+    {
+      headers: headers(),
+    }
+  );
+};
+
+export const updatePostApi = async (post: reqApiPost) => {
+  return await apiClient.put(`/posts/${post._id}`, post, {
+    headers: headers(),
+  });
 };

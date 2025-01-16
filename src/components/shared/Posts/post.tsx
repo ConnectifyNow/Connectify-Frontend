@@ -5,13 +5,12 @@ import { Textarea } from "@/components/ui/textarea";
 import useUserStore from "@/stores/setUserStore";
 import { Edit, Heart, MessageCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { Comment, Post, Role } from "../../../types";
-import { randomAvatarUrl } from "@/utils/functions";
+import { ApiComment, Post, Role } from "../../../types";
 
 interface PostProps {
   post: Post;
-  onLike: (postId: string) => void;
-  onComment: (postId: string, comment: Comment) => void;
+  onLike: (postId: string, userId: string) => void;
+  onComment: (comment: ApiComment) => void;
   onEdit: (updatedPost: Post) => void;
   onDelete: (postId: string) => void;
   onCommentLike: (postId: string, commentId: string) => void;
@@ -33,31 +32,23 @@ export default function PostCard({
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const currentUser = useUserStore();
-
   const handleLike = () => {
-    onLike(post._id);
+    onLike(currentUser._id, currentUser._id);
   };
 
   const handleAddComment = (e: React.FormEvent) => {
+    console.log("current User: ", currentUser);
     e.preventDefault();
     if (newComment.trim()) {
-      const comment: Comment = {
+      const comment: ApiComment = {
         _id: Date.now().toString(),
-        author: {
-          _id: currentUser._id,
-          name: currentUser.username,
-          avatar:
-            currentUser.role === Role.Volunteer
-              ? currentUser.volunteer?.imageUrl ?? randomAvatarUrl()
-              : currentUser.organization?.imageUrl ?? randomAvatarUrl(),
-          type:
-            currentUser.role === Role.Volunteer ? "volunteer" : "organization"
-        },
-        content: newComment.trim(),
-        createdAt: new Date().toISOString(),
+        user: currentUser._id,
+        text: newComment.trim(),
+        post: post._id,
+        date: new Date().toISOString(),
         likes: 0
       };
-      onComment(post._id, comment);
+      onComment(comment);
       setNewComment("");
     }
   };
@@ -80,17 +71,25 @@ export default function PostCard({
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <img
-                src={post.author.avatar ?? randomAvatarUrl()}
-                alt={post.author.name}
+                src={
+                  post.author.role === Role.Volunteer
+                    ? post.author.volunteer?.imageUrl
+                    : post.author.organization?.imageUrl
+                }
+                alt={post.author.username}
                 width={40}
                 height={40}
                 className="rounded-full mr-4"
               />
               <div>
-                <h3 className="font-semibold text-lg">{post.author.name}</h3>
+                <h3 className="font-semibold text-lg">
+                  {post.author.username}
+                </h3>
                 <h4 className="text-gray-600">{post.title}</h4>
                 <span className="text-sm text-gray-500">
-                  {post.author.type}
+                  {post.author.role === Role.Volunteer
+                    ? "Volunteer"
+                    : "Organization"}
                 </span>
               </div>
             </div>
@@ -152,7 +151,7 @@ export default function PostCard({
         <div style={{ width: "40%" }}>
           <img
             src={post.imageUrl}
-            alt={post.author.name}
+            alt={post.author.username}
             style={{ width: "100%", height: "100%" }}
           />
         </div>
@@ -160,25 +159,31 @@ export default function PostCard({
       {showComments && (
         <div className="mt-4 space-y-4">
           {post.comments?.map((comment) => (
+            console.log("comment: ", comment),
+            console.log("comment likes: ", comment.likes.keys()),
             <div key={comment._id} className="bg-blue-50 p-3 rounded">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center">
                   <img
-                    src={comment.author.avatar}
-                    alt={comment.author.name}
+                    src={
+                      post.author.role === Role.Volunteer
+                        ? post.author.volunteer?.imageUrl
+                        : post.author.organization?.imageUrl
+                    }
+                    alt={comment.user.username}
                     width={24}
                     height={24}
                     className="rounded-full mr-2"
                   />
                   <span className="font-semibold text-sm">
-                    {comment.author.name}
+                    {comment.user.username}
                   </span>
                 </div>
                 <span className="text-xs text-gray-500">
-                  {new Date(comment.createdAt).toLocaleString()}
+                  {new Date(comment.date).toLocaleString()}
                 </span>
               </div>
-              <p className="text-sm text-gray-700 mb-2">{comment.content}</p>
+              <p className="text-sm text-gray-700 mb-2">{comment.text}</p>
               <Button
                 variant="ghost"
                 size="sm"
@@ -187,10 +192,10 @@ export default function PostCard({
               >
                 <Heart
                   className={`w-4 h-4 ${
-                    comment.likes > 0 ? "fill-red-500 text-red-500" : ""
+                    comment.likes.length > 0 ? "fill-red-500 text-red-500" : ""
                   }`}
                 />
-                <span className="text-xs">{comment.likes}</span>
+                <span className="text-xs">{comment.likes.length}</span>
               </Button>
             </div>
           ))}
