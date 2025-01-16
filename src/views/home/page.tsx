@@ -48,9 +48,7 @@ export default function Home() {
         const response = await getPosts();
         if (response.status === 200) {
           const fetchedPosts = await response.data;
-          console.log("fetchedPosts", fetchedPosts);
           setPosts(fetchedPosts);
-          // setState({ posts: fetchedPosts });
         } else {
           console.error("Failed to fetch posts:", response.statusText);
         }

@@ -34,7 +34,6 @@ const usePostsStore = create<PostsStore>((set) => ({
         comments: apiPost.comments,
       };
     });
-    console.log("posts", posts);
     set(() => ({ apiPosts, posts }));
   },
   addPost: (post) => set((state) => ({ posts: [post, ...state.posts] })),
