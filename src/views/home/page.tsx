@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { AddPostButton } from "@/components/home/addPostButton";
 import { NoPostsScreen } from "@/components/noPosts/noPosts";
 import PostCard from "@/components/shared/Posts/post";
@@ -112,7 +113,7 @@ export default function Home() {
     const response = await updatePostApi(postToUpdate);
 
     if (response.status === 200) {
-      updatePost(post); // update state
+      updatePost(post);
     } else {
       console.error("Failed to update post:", response.statusText);
     }
@@ -166,8 +167,13 @@ export default function Home() {
   };
 
   const filteredPosts = sortedPosts.filter((post) => {
+    const isAllPosts = filters.postType === "all";
+    const isMyPosts = filters.postType === "my" && post.author._id === user._id;
+
     const typeMatch =
-      filters.postType === "all" || Role[post.author.role] === filters.postType;
+      isAllPosts ||
+      Role[post.author.role].toLowerCase() === filters.postType ||
+      isMyPosts;
     const skillsMatch: boolean =
       filters.skillsIds.length === 0 ||
       filters.skillsIds.some((skillId: string) =>
