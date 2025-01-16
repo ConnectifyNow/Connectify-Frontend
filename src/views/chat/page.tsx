@@ -17,7 +17,6 @@ const mockUsers: User[] = [
       lastName: "Ohana",
       phone: "1234567890",
       city: "Tel Aviv",
-      age: 30,
       skills: [
         { _id: "1", name: "React" },
         { _id: "2", name: "Node.js" },
@@ -37,7 +36,6 @@ const mockUsers: User[] = [
       lastName: "Ohana 2",
       phone: "1234567890",
       city: "Tel Aviv",
-      age: 30,
       skills: [
         { _id: "1", name: "React" },
         { _id: "2", name: "Node.js" },
@@ -87,7 +85,6 @@ const mockUsers: User[] = [
       lastName: "Ohana 3",
       phone: "1234567890",
       city: "Tel Aviv",
-      age: 30,
       skills: [
         { _id: "1", name: "React" },
         { _id: "2", name: "Node.js" },
@@ -103,7 +100,7 @@ export default function ChatPage() {
   const user = useUserStore();
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-sky-50">
       <UserList users={mockUsers} onSelectUser={setSelectedUser} />
       <div className="flex-1">
         <Chat currentUser={user} selectedUser={selectedUser} />
