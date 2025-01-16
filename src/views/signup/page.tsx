@@ -21,7 +21,13 @@ export default function SignUpPage() {
     setIsLoading(true);
 
     try {
-      const response = await signup(username, password, Role.Volunteer, false);
+      const response = await signup(
+        username,
+        password,
+        Role.Volunteer,
+        undefined,
+        false
+      );
 
       if (response.status === 406) {
         setError("Username already exists. Please sign in.");

@@ -71,10 +71,12 @@ export const signup = async (
   username: string,
   password: string,
   role: number,
+  email?: string,
   withCreation = true
 ): Promise<AxiosResponse<SignupResponse>> => {
   return await apiClient.post("/auth/signup", {
     username,
+    email,
     password,
     role,
     withCreation

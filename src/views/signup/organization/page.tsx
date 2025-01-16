@@ -74,12 +74,14 @@ export default function OrganizationSignUpPage() {
     ({
       username,
       password,
-      role
+      role,
+      email
     }: {
       username: string;
       password: string;
       role: number;
-    }) => signup(username, password, role)
+      email?: string;
+    }) => signup(username, password, role, email)
   );
 
   const signinMutation = useMutation(
@@ -98,7 +100,8 @@ export default function OrganizationSignUpPage() {
       const signUpResponse = await signUpMutation.mutateAsync({
         username: formData.username,
         password: formData.password,
-        role: Role.Organization
+        role: Role.Organization,
+        email: formData.email
       });
       const createdUser = signUpResponse.data;
 
