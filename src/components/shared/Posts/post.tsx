@@ -152,7 +152,7 @@ export default function PostCard({
         </div>
         <div style={{ width: "40%" }}>
           <img
-            src={post.imageUrl ?? img}
+            src={post.imageUrl}
             alt={post.author.name}
             style={{ width: "100%", height: "100%" }}
           />
