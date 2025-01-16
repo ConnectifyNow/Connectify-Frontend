@@ -19,11 +19,10 @@ export function ImageUpload({ preview, setPreview }: ImageUploadProps) {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result as string);
-      };
       reader.readAsDataURL(file);
-      await uploadImage(file);
+      const image = await uploadImage(file);
+
+      setPreview(image.data.serverFilename);
     } else {
       setPreview("");
     }
