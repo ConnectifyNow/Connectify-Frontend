@@ -120,7 +120,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
                 ? "Requirements"
                 : "Skills"}
             </Label>
-            <ScrollArea className="h-32 rounded-md ">
+            <ScrollArea className="rounded-md ">
               <CustomSelect
                 options={skills}
                 selectedOptions={selectedSkills}
@@ -128,12 +128,14 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
               />
             </ScrollArea>
           </div>
-          <Card>
-            <CardContent className="pt-6">
-              <ImageUpload preview={image} setPreview={setImage} />
-            </CardContent>
-          </Card>
-
+          <div className="space-y-2">
+            <Label htmlFor="image">image</Label>
+            <Card>
+              <CardContent className="pt-6">
+                <ImageUpload preview={image} setPreview={setImage} />
+              </CardContent>
+            </Card>
+          </div>
           <Button type="submit">Create Post</Button>
         </form>
       </DialogContent>
