@@ -25,7 +25,7 @@ export default function UserAboutCard({
   handleChange,
   handleSkillsChange,
   saveProfile,
-  handleLogout,
+  handleLogout
 }: UserAboutProps) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [coolDownTime, setCoolDownTime] = useState(0);
@@ -120,7 +120,9 @@ export default function UserAboutCard({
           {isEditing ? (
             <Button onClick={saveProfile}>Save Profile</Button>
           ) : (
-            <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
+            <Button className="bg-blue-200" onClick={() => setIsEditing(true)}>
+              Edit Profile
+            </Button>
           )}
           <Button variant="destructive" onClick={handleLogout}>
             Logout

@@ -3,7 +3,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger,
+  TooltipTrigger
 } from "@radix-ui/react-tooltip";
 import { MessageSquareText } from "lucide-react";
 import { GeneralCardProps } from "@/types";
@@ -15,7 +15,7 @@ export default function GeneralCard({
   tags,
   linkText,
   linkUrl,
-  additionalInfo,
+  additionalInfo
 }: GeneralCardProps) {
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6 flex flex-col">
@@ -70,7 +70,7 @@ export default function GeneralCard({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <button className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 ">
+              <button className="bg-blue-200 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 ">
                 <MessageSquareText></MessageSquareText>
               </button>
             </TooltipTrigger>

@@ -34,7 +34,7 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
     const messageData = {
       message: input,
       currentUser,
-      selectedUser,
+      selectedUser
     };
 
     socket.emit("send-message", messageData);
@@ -45,8 +45,8 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
         _id: Date.now().toString(),
         content: input,
         sender: currentUser,
-        timestamp: new Date(),
-      },
+        timestamp: new Date()
+      }
     ]);
 
     setInput("");
@@ -62,7 +62,7 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
 
   return (
     <div className="w-full h-full">
-      <div className="bg-gray-200 p-4 flex items-center space-x-2">
+      <div className="bg-blue-100 p-4 flex items-center space-x-2">
         {selectedUser?.role == 0 ? (
           <Building2 className="h-6 w-6" />
         ) : (
@@ -89,7 +89,7 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
                 className={`rounded-lg p-2 max-w-sm ${
                   message.sender._id === currentUser._id
                     ? "bg-blue-500 text-white"
-                    : "bg-gray-200"
+                    : "bg-blue-100"
                 }`}
               >
                 <div>{message.content}</div>

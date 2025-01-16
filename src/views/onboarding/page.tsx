@@ -36,7 +36,7 @@ export default function OnBoarding() {
             <div className="space-x-4">
               <Button
                 size="lg"
-                className="bg-white text-primary hover:bg-gray-100"
+                className="bg-white text-primary hover:bg-blue-50"
                 onClick={() => router("/signin")}
               >
                 Get Started
