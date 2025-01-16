@@ -24,6 +24,7 @@ import { Toaster } from "@/components/ui/toaster";
 import {
   addCommentToPost,
   createPost,
+  deletePostApi,
   getPosts,
   likePostApi,
 } from "@/services/postService";
@@ -102,12 +103,26 @@ export default function Home() {
   };
 
   const handleLikePost = async (postId: string, userId: string) => {
-    likePost(postId);
-
     const response = await likePostApi(postId, userId);
 
-    if (response.status !== 200) {
+    if (response.status === 200) {
+      likePost(postId); //increment state
+    } else if (response.status === 500) {
       console.error("Failed to like post:", response.statusText);
+    }
+  };
+
+  const handleDeletePost = async (postId: string) => {
+    deletePost(postId); // delete from state
+
+    const response = await deletePostApi(postId); // delete from API
+
+    if (response.status === 200) {
+      // toast({
+      //   description: "Post deleted successfully!",
+      // });
+    } else {
+      console.error("Failed to delete post:", response.statusText);
     }
   };
 
@@ -136,7 +151,7 @@ export default function Home() {
         <h1 className="text-3xl font-bold text-center mb-8">Feed</h1>
         <div className="flex gap-8">
           <div className="w-1/4">
-            <Sidebar onFilterChange={ setFilters} allPosts={sortedPosts} />
+            <Sidebar onFilterChange={setFilters} allPosts={sortedPosts} />
           </div>
           <div className="w-3/4">
             <div className="space-y-6">
@@ -147,7 +162,7 @@ export default function Home() {
                   onLike={handleLikePost}
                   onComment={handleAddComment}
                   onEdit={updatePost}
-                  onDelete={deletePost}
+                  onDelete={handleDeletePost}
                   onCommentLike={likeComment}
                   showEditDelete={true}
                 />

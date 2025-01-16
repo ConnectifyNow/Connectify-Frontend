@@ -24,7 +24,7 @@ export const getPosts = async () => {
   });
 };
 
-export const deletePost = async (postId: string) => {
+export const deletePostApi = async (postId: string) => {
   return await apiClient.delete(`/posts/${postId}`, {
     headers: headers(),
   });
