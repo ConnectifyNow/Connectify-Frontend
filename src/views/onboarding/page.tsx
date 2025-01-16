@@ -36,7 +36,7 @@ export default function OnBoarding() {
             <div className="space-x-4">
               <Button
                 size="lg"
-                className="bg-white text-primary hover:bg-gray-100"
+                className="bg-white text-primary hover:bg-blue-50"
                 onClick={() => router("/signin")}
               >
                 Get Started
@@ -79,7 +79,7 @@ export default function OnBoarding() {
       </section>
 
       {/* Features Section */}
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-blue-50">
         <div className="px-4 md:px-6">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12">
             How Connectify Works

@@ -15,7 +15,6 @@ export interface Volunteer {
   lastName: string;
   phone?: string;
   city?: string;
-  age?: number;
   skills?: Skill[];
   imageUrl?: string;
   about?: string;
@@ -58,12 +57,12 @@ export type Skill = IdName;
 export type FocusArea = IdName;
 export type City = IdName;
 
-// export interface Author {
-//   _id: string;
-//   name: string;
-//   avatar?: string;
-//   type: "user" | "organization";
-// }
+export interface Author {
+  _id: string;
+  name: string;
+  avatar?: string;
+  type: "volunteer" | "organization";
+}
 
 export interface Tag {
   type: tagType;
@@ -87,6 +86,7 @@ export interface Post {
   author: User;
   title: string;
   content: string;
+  imageUrl: string;
   skills: Skill[] | FocusArea[];
   comments: Comment[];
   likes: number;

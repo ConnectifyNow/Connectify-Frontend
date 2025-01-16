@@ -4,7 +4,7 @@ import {
   DialogTrigger,
   DialogContent,
   DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,7 @@ import { skills } from "@/data/posts";
 import { Plus } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { ImageUpload } from "./imageUpload";
+import useSkillsStore from "@/stores/setSkillsStore";
 
 interface AddPostButtonProps {
   onAddPost: (post: reqApiPost) => void;
@@ -29,6 +30,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
   const [content, setContent] = useState("");
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [image, setImage] = useState("");
+  const skills = useSkillsStore((state) => state.skills);
 
   const currentUser = useUserStore();
 
@@ -57,6 +59,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
       requiredSkills: filteredSelectedSkills.map(skill => skill?._id ?? ""),
     };
     onAddPost(newPost);
+    setImage("");
     setIsOpen(false);
     resetForm();
   };
@@ -71,7 +74,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button
-          className="fixed bottom-8 right-8 rounded-full w-16 h-16 shadow-lg"
+          className="fixed bottom-8 right-8 rounded-full w-16 h-16 shadow-lg bg-blue-300"
           onClick={() => setIsOpen(true)}
         >
           <Plus className="w-8 h-8" />
@@ -106,7 +109,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
                 ? "Requirements"
                 : "Skills"}
             </Label>
-            <ScrollArea className="h-32 rounded-md ">
+            <ScrollArea className="rounded-md ">
               <CustomSelect
                 options={skills}
                 selectedOptions={selectedSkills}
@@ -114,12 +117,14 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
               />
             </ScrollArea>
           </div>
-          <Card>
-            <CardContent className="pt-6">
-              <ImageUpload preview={image} setPreview={setImage} />
-            </CardContent>
-          </Card>
-
+          <div className="space-y-2">
+            <Label htmlFor="image">image</Label>
+            <Card>
+              <CardContent className="pt-6">
+                <ImageUpload preview={image} setPreview={setImage} />
+              </CardContent>
+            </Card>
+          </div>
           <Button type="submit">Create Post</Button>
         </form>
       </DialogContent>

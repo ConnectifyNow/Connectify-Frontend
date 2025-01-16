@@ -3,11 +3,9 @@ import { EditPostModal } from "@/components/shared/Posts/edit-post-modal";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import useUserStore from "@/stores/setUserStore";
-import { Edit, Heart, MessageCircle, Trash2, User } from "lucide-react";
+import { Edit, Heart, MessageCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { ApiComment, ApiPost, Comment, Post, Role } from "../../../types";
-import { randomAvatarUrl } from "@/utils/functions";
-import img from "../../../assets/hilaAndYoav.jpg";
+import { ApiComment, Post, Role } from "../../../types";
 
 interface PostProps {
   post: Post;
@@ -26,7 +24,7 @@ export default function PostCard({
   onEdit,
   onDelete,
   onCommentLike,
-  showEditDelete = false,
+  showEditDelete = false
 }: PostProps) {
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -48,7 +46,7 @@ export default function PostCard({
         content: newComment.trim(),
         post: post._id,
         createdAt: new Date().toISOString(),
-        likes: 0,
+        likes: 0
       };
       onComment(comment);
       setNewComment("");
@@ -95,26 +93,6 @@ export default function PostCard({
                 </span>
               </div>
             </div>
-            {showEditDelete && isCurrentUserPost && (
-              <div className="flex space-x-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setIsEditModalOpen(true)}
-                >
-                  <Edit className="w-4 h-4 mr-2" />
-                  Edit
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setIsDeleteDialogOpen(true)}
-                >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Delete
-                </Button>
-              </div>
-            )}
           </div>
           <p className="text-gray-800 mb-4">{post.content}</p>
           <div className="flex flex-wrap gap-2 mb-4">
@@ -151,6 +129,7 @@ export default function PostCard({
               <span>{post.comments.length}</span>
             </Button>
           </div>
+
           {showEditDelete && (
             <>
               <EditPostModal
@@ -171,7 +150,7 @@ export default function PostCard({
         </div>
         <div style={{ width: "40%" }}>
           <img
-            src={img}
+            src={post.imageUrl}
             alt={post.author.username}
             style={{ width: "100%", height: "100%" }}
           />
@@ -180,7 +159,7 @@ export default function PostCard({
       {showComments && (
         <div className="mt-4 space-y-4">
           {post.comments?.map((comment) => (
-            <div key={comment._id} className="bg-gray-50 p-3 rounded">
+            <div key={comment._id} className="bg-blue-50 p-3 rounded">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center">
                   <img
@@ -227,9 +206,31 @@ export default function PostCard({
           placeholder="Add a comment..."
           className="mb-2"
         />
-        <Button type="submit" size="sm">
-          Add Comment
-        </Button>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Button type="submit" size="sm" className="bg-blue-200">
+            Add Comment
+          </Button>
+          {showEditDelete && isCurrentUserPost && (
+            <div className="flex space-x-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsEditModalOpen(true)}
+              >
+                <Edit className="w-4 h-4 mr-2" />
+                Edit
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsDeleteDialogOpen(true)}
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </Button>
+            </div>
+          )}
+        </div>
       </form>
     </div>
   );

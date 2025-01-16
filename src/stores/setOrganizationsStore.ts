@@ -31,7 +31,7 @@ const useOrganizationsStore = create<OrganizationsStore>((set) => ({
 
         return {
           ...simpleOrganization,
-          focusAreas: filteredOrganizationFocusAreas,
+          focusAreas: filteredOrganizationFocusAreas
         };
       });
 
@@ -39,7 +39,7 @@ const useOrganizationsStore = create<OrganizationsStore>((set) => ({
     } catch (error) {
       console.error("Failed to fetch skills:", error);
     }
-  },
+  }
 }));
 
 export default useOrganizationsStore;

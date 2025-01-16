@@ -115,6 +115,7 @@ export default function UserSignUpPage() {
           userId: loginResponse.data.user._id,
         });
 
+        setImage("");
         const simpleVolunteer = volunteerResponse.data;
         const volunteer: Volunteer = {
           ...simpleVolunteer,
@@ -191,27 +192,23 @@ export default function UserSignUpPage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="age">Age</Label>
-              <Input
-                id="age"
-                name="age"
-                type="number"
-                value={formData.age}
-                onChange={handleChange}
-                required
+
+            <div>
+              <Label htmlFor="skills" style={{ marginTop: "30px" }}>
+                Skills
+              </Label>
+              <CustomSelect
+                options={skills}
+                selectedOptions={formData.skills}
+                onChange={handleSkillChange}
               />
             </div>
-
-            <CustomSelect
-              options={skills}
-              selectedOptions={formData.skills}
-              onChange={handleSkillChange}
-            />
-            <Label style={{ marginTop: "30px" }} htmlFor="websiteLink">
-              Image
-            </Label>
-            <ImageUpload preview={image} setPreview={setImage} />
+            <div>
+              <Label style={{ marginTop: "30px" }} htmlFor="websiteLink">
+                Image
+              </Label>
+              <ImageUpload preview={image} setPreview={setImage} />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="about">About</Label>
               <Textarea

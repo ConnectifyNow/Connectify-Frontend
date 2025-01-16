@@ -2,7 +2,6 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { randomAvatarUrl } from "@/utils/functions";
 import { ProfileData, Role, User } from "../../../types/index";
 
 type UserInformationProps = {
@@ -15,7 +14,7 @@ type UserInformationProps = {
 export default function UserInformation({
   profileData,
   isEditing,
-  handleChange,
+  handleChange
 }: UserInformationProps) {
   return (
     <Card>
@@ -29,7 +28,11 @@ export default function UserInformation({
       <CardContent className="space-y-4">
         <div className="flex justify-center">
           <Avatar className="w-32 h-32 text-4xl">
-            <AvatarImage src={profileData.imageUrl ?? randomAvatarUrl()} />
+            <AvatarImage
+              src={`${import.meta.env.VITE_REACT_APP_API_URL}/${
+                profileData.imageUrl
+              }`}
+            />
           </Avatar>
         </div>
         {isEditing ? (
