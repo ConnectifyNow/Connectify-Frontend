@@ -10,10 +10,10 @@ import { ApiComment, Post, Role } from "../../../types";
 interface PostProps {
   post: Post;
   onLike: (postId: string, userId: string) => void;
-  onComment: (comment: ApiComment) => void;
+  onComment: (postId: string, comment: ApiComment) => void;
   onEdit: (updatedPost: Post) => void;
   onDelete: (postId: string) => void;
-  onCommentLike: (postId: string, commentId: string) => void;
+  onCommentLike: (postId: string, userId: string, commentId: string) => void;
   showEditDelete?: boolean;
 }
 
@@ -33,12 +33,11 @@ export default function PostCard({
 
   const currentUser = useUserStore();
   const handleLike = () => {
-    onLike(currentUser._id, currentUser._id);
+    onLike(post._id, currentUser._id);
   };
 
-  const handleAddComment = (e: React.FormEvent) => {
-    console.log("current User: ", currentUser);
-    e.preventDefault();
+  const handleAddComment = (event: React.FormEvent) => {
+    event.preventDefault();
     if (newComment.trim()) {
       const comment: ApiComment = {
         _id: Date.now().toString(),
@@ -48,7 +47,7 @@ export default function PostCard({
         date: new Date().toISOString(),
         likes: 0
       };
-      onComment(comment);
+      onComment(post._id, comment);
       setNewComment("");
     }
   };
@@ -59,7 +58,7 @@ export default function PostCard({
   };
 
   const handleCommentLike = (commentId: string) => {
-    onCommentLike(post._id, commentId);
+    onCommentLike(post._id, currentUser._id, commentId);
   };
 
   const isCurrentUserPost = post.author._id === currentUser._id;
@@ -158,53 +157,45 @@ export default function PostCard({
       </div>
       {showComments && (
         <div className="mt-4 space-y-4">
-          {post.comments?.map(
-            (comment) => (
-              console.log("comment: ", comment),
-              console.log("comment likes: ", comment.likes.keys()),
-              (
-                <div key={comment._id} className="bg-gray-100 p-3 rounded">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center">
-                      <img
-                        src={
-                          post.author.role === Role.Volunteer
-                            ? post.author.volunteer?.imageUrl
-                            : post.author.organization?.imageUrl
-                        }
-                        alt={comment.user.username}
-                        width={24}
-                        height={24}
-                        className="rounded-full mr-2"
-                      />
-                      <span className="font-semibold text-sm">
-                        {comment.user.username}
-                      </span>
-                    </div>
-                    <span className="text-xs text-gray-500">
-                      {new Date(comment.date).toLocaleString()}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-700 mb-2">{comment.text}</p>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleCommentLike(comment._id)}
-                    className="flex items-center space-x-1"
-                  >
-                    <Heart
-                      className={`w-4 h-4 ${
-                        comment.likes.length > 0
-                          ? "fill-red-500 text-red-500"
-                          : ""
-                      }`}
-                    />
-                    <span className="text-xs">{comment.likes.length}</span>
-                  </Button>
+          {post.comments?.map((comment) => (
+            <div key={comment._id} className="bg-gray-100 p-3 rounded">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center">
+                  <img
+                    src={
+                      post.author.role === Role.Volunteer
+                        ? post.author.volunteer?.imageUrl
+                        : post.author.organization?.imageUrl
+                    }
+                    alt={comment.user.username}
+                    width={24}
+                    height={24}
+                    className="rounded-full mr-2"
+                  />
+                  <span className="font-semibold text-sm">
+                    {comment.user.username}
+                  </span>
                 </div>
-              )
-            )
-          )}
+                <span className="text-xs text-gray-500">
+                  {new Date(comment.date).toLocaleString()}
+                </span>
+              </div>
+              <p className="text-sm text-gray-700 mb-2">{comment.text}</p>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleCommentLike(comment._id)}
+                className="flex items-center space-x-1"
+              >
+                <Heart
+                  className={`w-4 h-4 ${
+                    comment.likes.length > 0 ? "fill-red-500 text-red-500" : ""
+                  }`}
+                />
+                <span className="text-xs">{comment.likes.length}</span>
+              </Button>
+            </div>
+          ))}
         </div>
       )}
       <form onSubmit={handleAddComment} className="mt-2">

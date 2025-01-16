@@ -27,7 +27,15 @@ import {
 const POSTS_PER_PAGE = 3;
 
 export default function Home() {
-  const { posts, likePost, setPosts, updatePost, deletePost } = usePostsStore();
+  const {
+    posts,
+    likePost,
+    setPosts,
+    updatePost,
+    deletePost,
+    addComment,
+    likeComment
+  } = usePostsStore();
   const [filters, setFilters] = useState({
     postType: "all",
     skillsIds: [] as string[]
@@ -56,7 +64,7 @@ export default function Home() {
   const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
 
   const handleAddPost = async (post: reqApiPost) => {
-    // addPost(post); // add to State
+    // addPost(post);
     const response = await createPost({
       title: post.title,
       content: post.content,
@@ -93,24 +101,25 @@ export default function Home() {
       console.error("Failed to update post:", response.statusText);
     }
   };
-  const handleAddComment = async (comment: ApiComment) => {
-    const postId = comment.post;
-
-    // addComment(postId, comment);
-    console.log(comment);
-
+  const handleAddComment = async (postId: string, comment: ApiComment) => {
     const response = await addCommentToPost(postId, comment);
+    comment._id = response.data._id;
+    addComment(postId, comment);
 
     if (response.status !== 201) {
       console.error("Failed to add comment:", response.statusText);
     }
   };
 
-  const handleLikeComment = async (userId: string, commentId: string) => {
+  const handleLikeComment = async (
+    postId: string,
+    userId: string,
+    commentId: string
+  ) => {
     const response = await likeCommentApi(userId, commentId);
 
     if (response.status === 200) {
-      // likeComment(commentId); // increment state
+      likeComment(postId, commentId);
     } else if (response.status === 500) {
       console.error("Failed to like comment:", response.statusText);
     }

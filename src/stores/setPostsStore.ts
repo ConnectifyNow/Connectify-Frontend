@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import { Post,ApiComment, ApiPost } from "../types";
+import { Post, ApiComment, ApiPost, Comment } from "../types";
 import useSkillsStore from "./setSkillsStore";
+import useUserStore from "./setUserStore";
 
 interface PostsStore {
   posts: Post[];
@@ -31,7 +32,7 @@ const usePostsStore = create<PostsStore>((set) => ({
         likes: apiPost.likes.length,
         skills: filteredSkills,
         comments: apiPost.comments,
-        imageUrl: apiPost.imageUrl,
+        imageUrl: apiPost.imageUrl
       };
     });
     set(() => ({ apiPosts, posts }));
@@ -41,30 +42,39 @@ const usePostsStore = create<PostsStore>((set) => ({
     set((state) => ({
       posts: state.posts?.map((post) =>
         post._id === updatedPost._id ? updatedPost : post
-      ),
+      )
     })),
   deletePost: (postId) =>
     set((state) => ({
-      posts: state.posts.filter((post) => post._id !== postId),
+      posts: state.posts.filter((post) => post._id !== postId)
     })),
   likePost: (postId) =>
     set((state) => ({
       posts: state.posts?.map((post) =>
         post._id === postId ? { ...post, likes: post.likes + 1 } : post
-      ),
+      )
     })),
-  addComment: (postId, comment) =>
+  addComment: (postId, apiComment) => {
+    const user = useUserStore.getState();
+    const comment: Comment = {
+      ...apiComment,
+      user,
+      likes: []
+    };
+
     set((state) => ({
       posts: state.posts?.map((post) =>
         post._id === postId
           ? {
               ...post,
-              comments: [...post.comments, comment],
+              comments: [...post.comments, comment]
             }
           : post
-      ),
-    })),
-  likeComment: (postId, commentId) =>
+      )
+    }));
+  },
+  likeComment: (postId, commentId) => {
+    const userId = useUserStore.getState()._id;
     set((state) => ({
       posts: state.posts?.map((post) =>
         post._id === postId
@@ -72,13 +82,14 @@ const usePostsStore = create<PostsStore>((set) => ({
               ...post,
               comments: post.comments?.map((comment) =>
                 comment._id === commentId
-                  ? { ...comment, likes: comment.likes + 1 }
+                  ? { ...comment, likes: [...comment.likes, userId] }
                   : comment
-              ),
+              )
             }
           : post
-      ),
-    })),
+      )
+    }));
+  }
 }));
 
 export default usePostsStore;
