@@ -6,13 +6,13 @@ import { Conversation, Message, SendMessageInput, User } from "@/types";
 export const getConversations = async (): Promise<
   AxiosResponse<Conversation[]>
 > => {
-  return await apiClient.get(`/chat/conversation`, { headers: headers() });
+  return await apiClient.get(`/chats/conversation`, { headers: headers() });
 };
 
 export const getConversationWith = async (
   userId?: User["_id"]
 ): Promise<AxiosResponse<Conversation | null>> => {
-  return await apiClient.get(`/chat/conversation/with/${userId}`, {
+  return await apiClient.get(`/chats/conversation/with/${userId}`, {
     headers: headers(),
   });
 };

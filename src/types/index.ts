@@ -121,12 +121,12 @@ export interface ProfileData {
   about?: string;
 }
 
-export interface Message {
+export type Message = {
   _id: string;
+  sender: MessageSender;
   content: string;
-  sender: User;
-  timestamp: Date;
-}
+  createdAt: Date;
+};
 
 export interface ChatProps {
   currentUser: User;
