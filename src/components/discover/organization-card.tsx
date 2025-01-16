@@ -1,5 +1,4 @@
 import { Organization } from "@/types";
-import { randomAvatarUrl } from "@/utils/functions";
 import { tagType } from "@/types";
 import GeneralCard from "../shared/generic-card";
 
@@ -18,7 +17,9 @@ export default function OrganizationCard({
   return (
     <GeneralCard
       name={organization.name}
-      imageUrl={organization.imageUrl ?? randomAvatarUrl()}
+      imageUrl={`${import.meta.env.VITE_REACT_APP_API_URL}/${
+        organization.imageUrl
+      }`}
       description={organization.description}
       tags={tags}
       linkText="Visit Website"
