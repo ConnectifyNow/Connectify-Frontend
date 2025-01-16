@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import { posts as initialPosts } from "../data/posts";
-import { Post, Comment, User, ApiComment, ApiPost } from "../types";
+import { Post,ApiComment, ApiPost } from "../types";
 import useSkillsStore from "./setSkillsStore";
 
 interface PostsStore {

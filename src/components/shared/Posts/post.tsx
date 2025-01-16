@@ -34,7 +34,7 @@ export default function PostCard({
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const currentUser = useUserStore();
-
+  console.log(post);
   const handleLike = () => {
     onLike(post._id, currentUser._id);
   };
@@ -199,10 +199,10 @@ export default function PostCard({
                   </span>
                 </div>
                 <span className="text-xs text-gray-500">
-                  {new Date(comment.createdAt).toLocaleString()}
+                  {new Date(comment.date).toLocaleString()}
                 </span>
               </div>
-              <p className="text-sm text-gray-700 mb-2">{comment.content}</p>
+              <p className="text-sm text-gray-700 mb-2">{comment.text}</p>
               <Button
                 variant="ghost"
                 size="sm"

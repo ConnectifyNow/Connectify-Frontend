@@ -121,8 +121,8 @@ export interface ApiComment {
 export interface Comment {
   _id: string;
   user: User;
-  content: string;
-  createdAt: string;
+  text: string;
+  date: string;
   likes: number;
 }
 
