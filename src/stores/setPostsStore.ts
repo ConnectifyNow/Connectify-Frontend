@@ -31,6 +31,7 @@ const usePostsStore = create<PostsStore>((set) => ({
         likes: apiPost.likes.length,
         skills: filteredSkills,
         comments: apiPost.comments,
+        imageUrl: apiPost.imageUrl,
       };
     });
     set(() => ({ apiPosts, posts }));

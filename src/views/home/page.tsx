@@ -7,7 +7,7 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious
+  PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/home/sidebar";
@@ -39,12 +39,12 @@ export default function Home() {
     addPost,
     updatePost,
     deletePost,
-    likeComment
+    likeComment,
   } = usePostsStore();
 
   const [filters, setFilters] = useState({
     postType: "all",
-    skillsIds: [] as string[]
+    skillsIds: [] as string[],
   });
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -76,6 +76,7 @@ export default function Home() {
       content: post.content,
       user: post.user,
       requiredSkills: post.requiredSkills,
+      imageUrl: post.imageUrl,
     }); // add to API
 
     if (response.status === 201) {
@@ -135,7 +136,7 @@ export default function Home() {
         <h1 className="text-3xl font-bold text-center mb-8">Feed</h1>
         <div className="flex gap-8">
           <div className="w-1/4">
-            <Sidebar onFilterChange={setFilters} />
+            <Sidebar onFilterChange={ setFilters} allPosts={sortedPosts} />
           </div>
           <div className="w-3/4">
             <div className="space-y-6">

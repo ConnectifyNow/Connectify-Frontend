@@ -57,6 +57,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
       title,
       content,
       requiredSkills: filteredSelectedSkills.map(skill => skill?._id ?? ""),
+      imageUrl: image
     };
     onAddPost(newPost);
     setImage("");

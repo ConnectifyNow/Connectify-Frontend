@@ -92,11 +92,12 @@ export interface Post {
   likes: number;
 }
 
-export interface reqApiPost{
+export interface reqApiPost {
   user: string;
   title: string;
   content: string;
   requiredSkills: string[];
+  imageUrl: string;
 }
 
 export interface ApiPost {
@@ -107,6 +108,7 @@ export interface ApiPost {
   requiredSkills: string[];
   likes: string[];
   comments: Comment[];
+  imageUrl: string;
 }
 
 export interface ApiComment {
