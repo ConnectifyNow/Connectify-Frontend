@@ -1,27 +1,28 @@
-import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { ImageUpload } from "@/components/home/imageUpload";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
-import useUserStore from "@/stores/setUserStore";
-import CustomSelect from "../../../components/shared/customSelect";
+import { Textarea } from "@/components/ui/textarea";
 import { getAiDescription } from "@/services/aiService";
-import { useMutation } from "react-query";
 import { saveTokens, signin, signup } from "@/services/authService";
 import { createOrganization } from "@/services/organizationService";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Organization, Role } from "@/types";
 import useCitiesStore from "@/stores/setCitiesStore";
 import useFocusAreaStore from "@/stores/setFocusAreas";
+import useUserStore from "@/stores/setUserStore";
+import { Organization, Role } from "@/types";
+import { useEffect, useState } from "react";
+import { useMutation } from "react-query";
+import { useLocation, useNavigate } from "react-router-dom";
+import CustomSelect from "../../../components/shared/customSelect";
 
 export default function OrganizationSignUpPage() {
   const location = useLocation();
@@ -36,12 +37,13 @@ export default function OrganizationSignUpPage() {
     description: "",
     imageUrl: "",
     websiteLink: "",
-    focusAreas: [] as string[]
+    focusAreas: [] as string[],
   });
   const router = useNavigate();
   const user = useUserStore();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [logo, setLogo] = useState("");
 
   // const generateDescription = (organizationName: string) => {
   //   console.log({ generateDescription: organizationName });
@@ -71,7 +73,7 @@ export default function OrganizationSignUpPage() {
     ({
       email,
       password,
-      role
+      role,
     }: {
       email: string;
       password: string;
@@ -95,25 +97,26 @@ export default function OrganizationSignUpPage() {
       const signUpResponse = await signUpMutation.mutateAsync({
         email: formData.email,
         password: formData.password,
-        role: Role.Organization
+        role: Role.Organization,
       });
       const createdUser = signUpResponse.data;
 
       const loginResponse = await signinMutation.mutateAsync({
         email: formData.email,
-        password: formData.password
+        password: formData.password,
       });
 
       if (loginResponse.data.accessToken !== "") {
         saveTokens({
           accessToken: loginResponse.data.accessToken,
-          refreshToken: loginResponse.data.refreshToken
+          refreshToken: loginResponse.data.refreshToken,
         });
 
         const organizationResponse =
           await createOrganizationMutation.mutateAsync({
             ...formData,
-            userId: loginResponse.data.user._id
+            imageUrl: logo,
+            userId: loginResponse.data.user._id,
           });
 
         const simpleOrganization = organizationResponse.data;
@@ -121,7 +124,7 @@ export default function OrganizationSignUpPage() {
           ...simpleOrganization,
           focusAreas: areas.filter((focusArea) =>
             simpleOrganization.focusAreas.includes(focusArea._id)
-          )
+          ),
         };
 
         createdUser.organization = organization;
@@ -179,7 +182,11 @@ export default function OrganizationSignUpPage() {
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+            style={{ display: "flex", flexDirection: "column" }}
+          >
             <div className="space-y-2">
               <Label htmlFor="name">Organization Name</Label>
               <Input
@@ -212,7 +219,7 @@ export default function OrganizationSignUpPage() {
                   <SelectValue placeholder="Select a city" />
                 </SelectTrigger>
                 <SelectContent>
-                  {cities.map((city) => (
+                  {cities?.map((city) => (
                     <SelectItem key={city._id} value={city._id}>
                       {city.name}
                     </SelectItem>
@@ -240,21 +247,18 @@ export default function OrganizationSignUpPage() {
               onClick={() => handleGenerateClick()}
               disabled={isDisabled}
               className="w-55"
+              style={{ width: "35%" }}
             >
               {isDisabled
                 ? `Wait ${coolDownTime}s`
                 : "Generate Description using AI"}
             </Button>
-            <div className="space-y-2">
-              <Label htmlFor="imageUrl">Organization Logo URL</Label>
-              <Input
-                id="imageUrl"
-                name="imageUrl"
-                type="url"
-                value={formData.imageUrl}
-                onChange={handleChange}
-              />
-            </div>
+
+            <Label style={{ marginTop: "30px" }} htmlFor="websiteLink">
+              Organization Logo
+            </Label>
+            <ImageUpload preview={logo} setPreview={setLogo} />
+
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Completing Sign Up..." : "Complete Sign Up"}
             </Button>

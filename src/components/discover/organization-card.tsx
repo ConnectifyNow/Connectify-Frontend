@@ -1,24 +1,25 @@
 import { Organization } from "@/types";
-import { randomAvatarUrl } from "@/utils/functions";
 import { tagType } from "@/types";
 import GeneralCard from "../shared/generic-card";
 
 export default function OrganizationCard({
-  organization
+  organization,
 }: {
   organization: Organization;
 }) {
-  const tags = organization.focusAreas.map((area) => ({
+  const tags = organization.focusAreas?.map((area) => ({
     type: tagType.focusArea,
     text: area,
     bgColor: "bg-green-100",
-    textColor: "text-green-800"
+    textColor: "text-green-800",
   }));
 
   return (
     <GeneralCard
       name={organization.name}
-      imageUrl={organization.imageUrl ?? randomAvatarUrl()}
+      imageUrl={`${import.meta.env.VITE_REACT_APP_API_URL}/${
+        organization.imageUrl
+      }`}
       description={organization.description}
       tags={tags}
       linkText="Visit Website"

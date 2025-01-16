@@ -3,9 +3,9 @@ import { Role, Skill, User, Volunteer } from "@/types";
 import { create } from "zustand";
 
 const initialState: User = {
-  _id: "",
+  _id: "6784162109ecc3c0bec051d1",
   username: "hilaohana",
-  email: "hila.ohana@example.com",
+  email: "hila.ohana@gamil.com",
   password: "1234",
   role: Role.Volunteer,
   volunteer: {
@@ -16,7 +16,7 @@ const initialState: User = {
     age: 30,
     skills: [],
     userId: "",
-    about: "I am a software developer"
+    about: "I am a software developer",
   },
   organization: {
     userId: "123",
@@ -24,9 +24,9 @@ const initialState: User = {
     name: "Hila Ohana",
     description: "Software Developer",
     focusAreas: [],
-    websiteLink: ""
+    websiteLink: "",
   },
-  isLoggedIn: false
+  isLoggedIn: false,
 };
 
 type State = User;
@@ -63,8 +63,8 @@ const useUserStore = create<State & Action>((set, get) => ({
       set(() => ({
         volunteer: {
           ...currentVolunteer,
-          skills: updatedSkills
-        } as Volunteer
+          skills: updatedSkills,
+        } as Volunteer,
       }));
     } else {
       const updatedSkills = currentSkills ? [...currentSkills, skill] : [skill];
@@ -72,11 +72,11 @@ const useUserStore = create<State & Action>((set, get) => ({
       set(() => ({
         volunteer: {
           ...currentVolunteer,
-          skills: updatedSkills
-        } as Volunteer
+          skills: updatedSkills,
+        } as Volunteer,
       }));
     }
-  }
+  },
 }));
 
 export default useUserStore;

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { User, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { User as UserItem } from "@/types";
+import "./UserList.css";
 
 interface UserListProps {
   users: UserItem[];
@@ -48,7 +49,7 @@ export default function UserList({ users, onSelectUser }: UserListProps) {
         </div>
       </div>
       <ul>
-        {filteredUsers.map((user) => (
+        {filteredUsers?.map((user) => (
           <li key={user._id} className="border-b last:border-b-0">
             <Button
               variant="ghost"
@@ -60,7 +61,7 @@ export default function UserList({ users, onSelectUser }: UserListProps) {
               ) : (
                 <User className="h-5 w-5" />
               )}
-              <span>
+              <span className="ellipsis">
                 {user.role
                   ? user.organization?.name
                   : `${user.volunteer?.firstName} ${user.volunteer?.lastName}`}

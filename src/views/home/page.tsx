@@ -1,11 +1,5 @@
 import { AddPostButton } from "@/components/home/addPostButton";
 import { NoPostsScreen } from "@/components/noPosts/noPosts";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useToast } from "@/hooks/use-toast";
-import Sidebar from "../../components/home/sidebar";
-import usePostsStore from "../../stores/setPostsStore";
-import { Post as PostType, Role } from "../../types";
 import PostCard from "@/components/shared/Posts/post";
 import {
   Pagination,
@@ -15,8 +9,13 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { createPost, likePostApi, getPosts } from "@/services/postService";
+import { useEffect, useState } from "react";
+import Sidebar from "../../components/home/sidebar";
+import usePostsStore from "../../stores/setPostsStore";
+import { Post as PostType, Role } from "../../types";
 import { Toaster } from "@/components/ui/toaster";
+import { createPost, getPosts, likePostApi } from "@/services/postService";
+
 const POSTS_PER_PAGE = 3;
 
 export default function Home() {
@@ -97,7 +96,9 @@ export default function Home() {
     const skillsMatch: boolean =
       filters.skillsIds.length === 0 ||
       filters.skillsIds.some((skillId: string) =>
-        post.skills.map((skill: { _id: string }) => skill._id).includes(skillId)
+        post.skills
+          ?.map((skill: { _id: string }) => skill._id)
+          .includes(skillId)
       );
     return typeMatch && skillsMatch;
   });
@@ -118,7 +119,7 @@ export default function Home() {
           </div>
           <div className="w-3/4">
             <div className="space-y-6">
-              {paginatedPosts.map((post: PostType) => (
+              {paginatedPosts?.map((post: PostType) => (
                 <PostCard
                   key={post._id}
                   post={post}
@@ -146,7 +147,7 @@ export default function Home() {
                         className={currentPage === 1 ? "disabled" : ""}
                       />
                     </PaginationItem>
-                    {[...Array(totalPages)].map((_, index) => (
+                    {[...Array(totalPages)]?.map((_, index) => (
                       <PaginationItem key={index}>
                         <PaginationLink
                           isActive={currentPage === index + 1}
@@ -180,3 +181,7 @@ export default function Home() {
     </main>
   );
 }
+function useToast(): { toast: any; } {
+  throw new Error("Function not implemented.");
+}
+

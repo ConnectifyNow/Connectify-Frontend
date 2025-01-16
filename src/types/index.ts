@@ -39,6 +39,16 @@ export type SimpleOrganization = Omit<Organization, "focusAreas"> & {
   focusAreas: string[];
 };
 
+export type PaginationSimpleOrganization = {
+  organizations: SimpleOrganization[];
+  pages: number;
+};
+
+export type PaginationSimpleVolunteer = {
+  volunteers: SimpleVolunteer[];
+  pages: number;
+};
+
 export interface IdName {
   _id: string;
   name: string;
@@ -64,7 +74,7 @@ export interface Tag {
 
 export interface GeneralCardProps {
   name: string;
-  imageUrl: string;
+  imageUrl?: string;
   description: string;
   tags: Tag[];
   linkText?: string;
@@ -144,6 +154,11 @@ type GeneralResponse = {
 export type RefreshResponse = {
   accessToken: string;
   refreshToken: string;
+};
+
+export type ImageUploadResponse = {
+  originalName: string;
+  serverFilename: string;
 };
 
 export type SigninResponse = GeneralResponse;

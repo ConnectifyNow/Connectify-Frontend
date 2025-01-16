@@ -4,7 +4,7 @@ import {
   GoogleSignInResponse,
   RefreshResponse,
   SigninResponse,
-  SignupResponse
+  SignupResponse,
 } from "../types/index";
 import apiClient from "./apiClient";
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "@/utils/constants";
@@ -13,7 +13,7 @@ export const headers = () => {
   const tokens = getTokens();
   if (tokens.accessToken) {
     return {
-      Authorization: `Bearer ${tokens.accessToken}`
+      Authorization: `Bearer ${tokens.accessToken}`,
     };
   }
   return {};
@@ -23,7 +23,7 @@ export const refreshTokenHeaders = () => {
   const tokens = getTokens();
   if (tokens.refreshToken) {
     return {
-      Authorization: `Bearer ${tokens.refreshToken}`
+      Authorization: `Bearer ${tokens.refreshToken}`,
     };
   }
   return {};
@@ -32,13 +32,13 @@ export const refreshTokenHeaders = () => {
 export const getTokens = () => {
   return {
     accessToken: localStorage.getItem(ACCESS_TOKEN_KEY),
-    refreshToken: localStorage.getItem(REFRESH_TOKEN_KEY)
+    refreshToken: localStorage.getItem(REFRESH_TOKEN_KEY),
   };
 };
 
 export const saveTokens = ({
   accessToken,
-  refreshToken
+  refreshToken,
 }: {
   accessToken: string;
   refreshToken: string;
@@ -77,7 +77,7 @@ export const signup = async (
     email,
     password,
     role,
-    withCreation
+    withCreation,
   });
 };
 
@@ -85,7 +85,7 @@ export const googleSignIn = async (
   credentialResponse: CredentialResponse
 ): Promise<AxiosResponse<GoogleSignInResponse>> => {
   return await apiClient.post("/auth/google", {
-    credentialResponse
+    credentialResponse,
   });
 };
 
@@ -94,7 +94,7 @@ export const refresh = async (): Promise<AxiosResponse<RefreshResponse>> => {
     "/auth/refresh",
     {},
     {
-      headers: refreshTokenHeaders()
+      headers: refreshTokenHeaders(),
     }
   );
 };

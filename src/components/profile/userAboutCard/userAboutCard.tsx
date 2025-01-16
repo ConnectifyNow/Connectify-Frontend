@@ -25,7 +25,7 @@ export default function UserAboutCard({
   handleChange,
   handleSkillsChange,
   saveProfile,
-  handleLogout
+  handleLogout,
 }: UserAboutProps) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [coolDownTime, setCoolDownTime] = useState(0);
@@ -104,7 +104,7 @@ export default function UserAboutCard({
             <p>{profileData.about}</p>
             <div>
               <div className="flex flex-wrap gap-2 mt-2">
-                {(profileData.skills ?? []).map((skill) => (
+                {(profileData.skills ?? [])?.map((skill) => (
                   <span
                     key={skill._id}
                     className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-sm"

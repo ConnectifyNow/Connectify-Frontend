@@ -1,31 +1,33 @@
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { ImageUpload } from "@/components/home/imageUpload";
+import CustomSelect from "@/components/shared/customSelect";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import useUserStore from "@/stores/setUserStore";
-import CustomSelect from "@/components/shared/customSelect";
-import { Role, Volunteer } from "@/types";
+import { Textarea } from "@/components/ui/textarea";
 import { saveTokens, signin, signup } from "@/services/authService";
 import { createVolunteer } from "@/services/volunteerService";
-import { useMutation } from "react-query";
-import useSkillsStore from "@/stores/setSkillsStore";
 import useCitiesStore from "@/stores/setCitiesStore";
+import useSkillsStore from "@/stores/setSkillsStore";
+import useUserStore from "@/stores/setUserStore";
+import { Role, Volunteer } from "@/types";
+import { useState } from "react";
+import { useMutation } from "react-query";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function UserSignUpPage() {
   const location = useLocation();
   const cities = useCitiesStore((state) => state.cities);
   const skills = useSkillsStore((state) => state.skills);
+  const [image, setImage] = useState("");
 
   const [formData, setFormData] = useState({
     email: location.state.email,
@@ -37,7 +39,7 @@ export default function UserSignUpPage() {
     skills: [] as string[],
     imageUrl: "",
     about: "",
-    phone: ""
+    phone: "",
   });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +62,7 @@ export default function UserSignUpPage() {
       ...previous,
       skills: previous.skills.includes(value)
         ? previous.skills.filter((o) => o !== value)
-        : [...previous.skills, value]
+        : [...previous.skills, value],
     }));
   };
 
@@ -68,7 +70,7 @@ export default function UserSignUpPage() {
     ({
       email,
       password,
-      role
+      role,
     }: {
       email: string;
       password: string;
@@ -92,24 +94,25 @@ export default function UserSignUpPage() {
       const signUpResponse = await signUpMutation.mutateAsync({
         email: formData.email,
         password: formData.password,
-        role: Role.Volunteer
+        role: Role.Volunteer,
       });
       const createdUser = signUpResponse.data;
 
       const loginResponse = await signinMutation.mutateAsync({
         email: formData.email,
-        password: formData.password
+        password: formData.password,
       });
 
       if (loginResponse.data.accessToken !== "") {
         saveTokens({
           accessToken: loginResponse.data.accessToken,
-          refreshToken: loginResponse.data.refreshToken
+          refreshToken: loginResponse.data.refreshToken,
         });
 
         const volunteerResponse = await createVolunteerMutation.mutateAsync({
           ...formData,
-          userId: loginResponse.data.user._id
+          imageUrl: image,
+          userId: loginResponse.data.user._id,
         });
 
         const simpleVolunteer = volunteerResponse.data;
@@ -117,7 +120,7 @@ export default function UserSignUpPage() {
           ...simpleVolunteer,
           skills: skills.filter((skill) =>
             simpleVolunteer.skills.includes(skill._id)
-          )
+          ),
         };
 
         createdUser.volunteer = volunteer;
@@ -180,7 +183,7 @@ export default function UserSignUpPage() {
                   <SelectValue placeholder="Select a city" />
                 </SelectTrigger>
                 <SelectContent>
-                  {cities.map((city) => (
+                  {cities?.map((city) => (
                     <SelectItem key={city._id} value={city._id}>
                       {city.name}
                     </SelectItem>
@@ -205,17 +208,10 @@ export default function UserSignUpPage() {
               selectedOptions={formData.skills}
               onChange={handleSkillChange}
             />
-
-            <div className="space-y-2">
-              <Label htmlFor="imageUrl">Profile Image URL</Label>
-              <Input
-                id="imageUrl"
-                name="imageUrl"
-                type="url"
-                value={formData.imageUrl}
-                onChange={handleChange}
-              />
-            </div>
+            <Label style={{ marginTop: "30px" }} htmlFor="websiteLink">
+              Image
+            </Label>
+            <ImageUpload preview={image} setPreview={setImage} />
             <div className="space-y-2">
               <Label htmlFor="about">About</Label>
               <Textarea
