@@ -158,47 +158,53 @@ export default function PostCard({
       </div>
       {showComments && (
         <div className="mt-4 space-y-4">
-          {post.comments?.map((comment) => (
-            console.log("comment: ", comment),
-            console.log("comment likes: ", comment.likes.keys()),
-            <div key={comment._id} className="bg-blue-50 p-3 rounded">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center">
-                  <img
-                    src={
-                      post.author.role === Role.Volunteer
-                        ? post.author.volunteer?.imageUrl
-                        : post.author.organization?.imageUrl
-                    }
-                    alt={comment.user.username}
-                    width={24}
-                    height={24}
-                    className="rounded-full mr-2"
-                  />
-                  <span className="font-semibold text-sm">
-                    {comment.user.username}
-                  </span>
+          {post.comments?.map(
+            (comment) => (
+              console.log("comment: ", comment),
+              console.log("comment likes: ", comment.likes.keys()),
+              (
+                <div key={comment._id} className="bg-gray-100 p-3 rounded">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center">
+                      <img
+                        src={
+                          post.author.role === Role.Volunteer
+                            ? post.author.volunteer?.imageUrl
+                            : post.author.organization?.imageUrl
+                        }
+                        alt={comment.user.username}
+                        width={24}
+                        height={24}
+                        className="rounded-full mr-2"
+                      />
+                      <span className="font-semibold text-sm">
+                        {comment.user.username}
+                      </span>
+                    </div>
+                    <span className="text-xs text-gray-500">
+                      {new Date(comment.date).toLocaleString()}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-700 mb-2">{comment.text}</p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleCommentLike(comment._id)}
+                    className="flex items-center space-x-1"
+                  >
+                    <Heart
+                      className={`w-4 h-4 ${
+                        comment.likes.length > 0
+                          ? "fill-red-500 text-red-500"
+                          : ""
+                      }`}
+                    />
+                    <span className="text-xs">{comment.likes.length}</span>
+                  </Button>
                 </div>
-                <span className="text-xs text-gray-500">
-                  {new Date(comment.date).toLocaleString()}
-                </span>
-              </div>
-              <p className="text-sm text-gray-700 mb-2">{comment.text}</p>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => handleCommentLike(comment._id)}
-                className="flex items-center space-x-1"
-              >
-                <Heart
-                  className={`w-4 h-4 ${
-                    comment.likes.length > 0 ? "fill-red-500 text-red-500" : ""
-                  }`}
-                />
-                <span className="text-xs">{comment.likes.length}</span>
-              </Button>
-            </div>
-          ))}
+              )
+            )
+          )}
         </div>
       )}
       <form onSubmit={handleAddComment} className="mt-2">
