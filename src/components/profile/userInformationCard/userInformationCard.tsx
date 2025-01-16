@@ -2,9 +2,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { randomAvatarUrl } from "@/utils/functions";
-import { ProfileData, Role, User } from "../../../types/index";
+import { City, ProfileData, Role, User } from "../../../types/index";
 import { ImageUpload } from "@/components/home/imageUpload";
 import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import useCitiesStore from "@/stores/setCitiesStore";
 
 type UserInformationProps = {
   profileData: ProfileData;
@@ -19,6 +27,8 @@ export default function UserInformation({
   handleChange,
 }: UserInformationProps) {
   const [image, setImage] = useState("");
+  const cities = useCitiesStore((state) => state.cities);
+  const ProfileDataCity = cities.find((city) => city._id === profileData.city);
 
   return (
     <Card>
@@ -62,13 +72,29 @@ export default function UserInformation({
                   }
                 />
               </div>
-              <div>
-                <Label htmlFor="location">City</Label>
-                <Input
-                  id="location"
-                  value={profileData.city}
-                  onChange={(event) => handleChange("city", event.target.value)}
-                />
+              <div className="space-y-2">
+                <Label htmlFor="city">City</Label>
+                <Select
+                  onValueChange={(event) => handleChange("city", event)}
+                  required
+                >
+                  <SelectTrigger>
+                    <SelectValue
+                      placeholder={
+                        ProfileDataCity
+                          ? `${ProfileDataCity?.name}`
+                          : "Select A City"
+                      }
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cities?.map((city: City) => (
+                      <SelectItem key={city._id} value={city._id}>
+                        {city.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
             <div>
