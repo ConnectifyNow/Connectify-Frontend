@@ -5,14 +5,14 @@ import { Textarea } from "@/components/ui/textarea";
 import useUserStore from "@/stores/setUserStore";
 import { Edit, Heart, MessageCircle, Trash2, User } from "lucide-react";
 import { useState } from "react";
-import { Comment, Post, Role } from "../../../types";
+import { ApiComment, ApiPost, Comment, Post, Role } from "../../../types";
 import { randomAvatarUrl } from "@/utils/functions";
 import img from "../../../assets/hilaAndYoav.jpg";
 
 interface PostProps {
   post: Post;
   onLike: (postId: string, userId: string) => void;
-  onComment: (postId: string, comment: Comment) => void;
+  onComment: (comment: ApiComment) => void;
   onEdit: (updatedPost: Post) => void;
   onDelete: (postId: string) => void;
   onCommentLike: (postId: string, commentId: string) => void;
@@ -35,7 +35,6 @@ export default function PostCard({
 
   const currentUser = useUserStore();
 
-  console.log(post);
   const handleLike = () => {
     onLike(post._id, currentUser._id);
   };
@@ -43,22 +42,15 @@ export default function PostCard({
   const handleAddComment = (e: React.FormEvent) => {
     e.preventDefault();
     if (newComment.trim()) {
-      const comment: Comment = {
+      const comment: ApiComment = {
         _id: Date.now().toString(),
-        author: {
-          _id: currentUser._id,
-          name: currentUser.username,
-          avatar:
-            currentUser.role === Role.Volunteer
-              ? currentUser.volunteer?.imageUrl ?? randomAvatarUrl()
-              : currentUser.organization?.imageUrl ?? randomAvatarUrl(),
-          type: currentUser.role === Role.Volunteer ? "user" : "organization",
-        },
+        user: currentUser._id,
         content: newComment.trim(),
+        post: post._id,
         createdAt: new Date().toISOString(),
         likes: 0,
       };
-      onComment(post._id, comment);
+      onComment(comment);
       setNewComment("");
     }
   };
@@ -72,9 +64,6 @@ export default function PostCard({
     onCommentLike(post._id, commentId);
   };
 
-  console.log(post);
-  console.log(currentUser);
-
   const isCurrentUserPost = post.author._id === currentUser._id;
 
   return (
@@ -84,17 +73,25 @@ export default function PostCard({
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <img
-                src={post.author.avatar ?? randomAvatarUrl()}
-                alt={post.author.name}
+                src={
+                  post.author.role === Role.Volunteer
+                    ? post.author.volunteer?.imageUrl
+                    : post.author.organization?.imageUrl
+                }
+                alt={post.author.username}
                 width={40}
                 height={40}
                 className="rounded-full mr-4"
               />
               <div>
-                <h3 className="font-semibold text-lg">{post.author.name}</h3>
+                <h3 className="font-semibold text-lg">
+                  {post.author.username}
+                </h3>
                 <h4 className="text-gray-600">{post.title}</h4>
                 <span className="text-sm text-gray-500">
-                  {post.author.type}
+                  {post.author.role === Role.Volunteer
+                    ? "Volunteer"
+                    : "Organization"}
                 </span>
               </div>
             </div>
@@ -175,7 +172,7 @@ export default function PostCard({
         <div style={{ width: "40%" }}>
           <img
             src={img}
-            alt={post.author.name}
+            alt={post.author.username}
             style={{ width: "100%", height: "100%" }}
           />
         </div>
@@ -187,14 +184,18 @@ export default function PostCard({
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center">
                   <img
-                    src={comment.author.avatar}
-                    alt={comment.author.name}
+                    src={
+                      post.author.role === Role.Volunteer
+                        ? post.author.volunteer?.imageUrl
+                        : post.author.organization?.imageUrl
+                    }
+                    alt={comment.user.username}
                     width={24}
                     height={24}
                     className="rounded-full mr-2"
                   />
                   <span className="font-semibold text-sm">
-                    {comment.author.name}
+                    {comment.user.username}
                   </span>
                 </div>
                 <span className="text-xs text-gray-500">

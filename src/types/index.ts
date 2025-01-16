@@ -92,17 +92,35 @@ export interface Post {
   likes: number;
 }
 
-export interface ApiPost {
-  id?: string;
-  userId: string;
+export interface reqApiPost{
+  user: string;
   title: string;
   content: string;
   requiredSkills: string[];
 }
 
+export interface ApiPost {
+  _id: string;
+  user: User;
+  title: string;
+  content: string;
+  requiredSkills: string[];
+  likes: string[];
+  comments: Comment[];
+}
+
+export interface ApiComment {
+  _id: string;
+  user: string;
+  post: string;
+  content: string;
+  createdAt: string;
+  likes: number;
+}
+
 export interface Comment {
   _id: string;
-  userId: User;
+  user: User;
   content: string;
   createdAt: string;
   likes: number;

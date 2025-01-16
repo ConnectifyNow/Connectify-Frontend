@@ -12,9 +12,14 @@ import {
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/home/sidebar";
 import usePostsStore from "../../stores/setPostsStore";
-import { Post as PostType, Role } from "../../types";
+import { ApiComment, ApiPost, Post, Post as PostType, Role } from "../../types";
 import { Toaster } from "@/components/ui/toaster";
-import { createPost, getPosts, likePostApi } from "@/services/postService";
+import {
+  addCommentToPost,
+  createPost,
+  getPosts,
+  likePostApi,
+} from "@/services/postService";
 
 const POSTS_PER_PAGE = 3;
 
@@ -22,14 +27,13 @@ export default function Home() {
   const {
     posts,
     likePost,
+    setPosts,
     addComment,
     addPost,
     updatePost,
     deletePost,
     likeComment,
   } = usePostsStore();
-
-  const { toast } = useToast();
 
   const [filters, setFilters] = useState({
     postType: "all",
@@ -44,9 +48,9 @@ export default function Home() {
         const response = await getPosts();
         if (response.status === 200) {
           const fetchedPosts = await response.data;
-          console.log(fetchedPosts);
-
-          usePostsStore.setState({ posts: fetchedPosts });
+          console.log("fetchedPosts", fetchedPosts);
+          setPosts(fetchedPosts);
+          // setState({ posts: fetchedPosts });
         } else {
           console.error("Failed to fetch posts:", response.statusText);
         }
@@ -57,8 +61,8 @@ export default function Home() {
 
     fetchPosts();
   }, []);
+
   const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
-  console.log("SORETD: ", sortedPosts);
 
   const handleAddPost = async (post: PostType) => {
     addPost(post); // add to State
@@ -66,25 +70,35 @@ export default function Home() {
     const response = await createPost({
       title: post.title,
       content: post.content,
-      userId: post.author._id,
+      user: post.author._id,
       requiredSkills: post.skills.map((skill) => skill._id),
     }); // add to API
 
     if (response.status === 201) {
-      toast({
-        description: "Post created successfully!",
-      });
+      // toast({
+      //   description: "Post created successfully!",
+      // });
     } else {
       console.error("Failed to create post:", response.statusText);
     }
   };
 
+  const handleAddComment = async (comment: ApiComment) => {
+    const postId = comment.post;
+
+    addComment(postId, comment);
+
+    const response = await addCommentToPost(postId, comment);
+
+    if (response.status !== 201) {
+      console.error("Failed to add comment:", response.statusText);
+    }
+  };
   const handleLikePost = async (postId: string, userId: string) => {
     likePost(postId);
 
     const response = await likePostApi(postId, userId);
 
-    console.log(response);
     if (response.status !== 200) {
       console.error("Failed to like post:", response.statusText);
     }
@@ -119,12 +133,12 @@ export default function Home() {
           </div>
           <div className="w-3/4">
             <div className="space-y-6">
-              {paginatedPosts?.map((post: PostType) => (
+              {paginatedPosts?.map((post: Post) => (
                 <PostCard
                   key={post._id}
                   post={post}
                   onLike={handleLikePost}
-                  onComment={addComment}
+                  onComment={handleAddComment}
                   onEdit={updatePost}
                   onDelete={deletePost}
                   onCommentLike={likeComment}
@@ -181,7 +195,3 @@ export default function Home() {
     </main>
   );
 }
-function useToast(): { toast: any; } {
-  throw new Error("Function not implemented.");
-}
-

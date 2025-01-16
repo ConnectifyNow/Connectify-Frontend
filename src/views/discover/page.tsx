@@ -40,7 +40,6 @@ export default function Directory() {
     } else {
       fetchVolunteers(currentPage, ITEMS_PER_PAGE);
     }
-    console.log(organizations);
   }, [currentPage, filters]);
 
   const filteredOrganizations = organizations.filter((organization) =>

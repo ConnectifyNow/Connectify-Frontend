@@ -1,19 +1,42 @@
 import { create } from "zustand";
 import { posts as initialPosts } from "../data/posts";
-import { Post, Comment, User } from "../types";
+import { Post, Comment, User, ApiComment, ApiPost } from "../types";
+import useSkillsStore from "./setSkillsStore";
 
 interface PostsStore {
   posts: Post[];
+  apiPosts: ApiPost[];
+  setPosts: (posts: ApiPost[]) => void;
   addPost: (post: Post) => void;
   updatePost: (updatedPost: Post) => void;
   deletePost: (postId: string) => void;
   likePost: (postId: string) => void;
-  addComment: (postId: string, comment: Comment) => void;
+  addComment: (postId: string, comment: ApiComment) => void;
   likeComment: (postId: string, commentId: string) => void;
 }
 
 const usePostsStore = create<PostsStore>((set) => ({
-  posts: initialPosts,
+  posts: [],
+  apiPosts: [],
+  setPosts: (apiPosts) => {
+    const { getSkillById } = useSkillsStore.getState();
+    const posts = apiPosts.map((apiPost) => {
+      const skills = apiPost.requiredSkills.map((skill) => getSkillById(skill));
+      const filteredSkills = skills.filter((skill) => skill !== undefined);
+
+      return {
+        _id: apiPost._id,
+        author: apiPost.user,
+        content: apiPost.content,
+        title: apiPost.title,
+        likes: apiPost.likes.length,
+        skills: filteredSkills,
+        comments: apiPost.comments,
+      };
+    });
+    console.log("posts", posts);
+    set(() => ({ apiPosts, posts }));
+  },
   addPost: (post) => set((state) => ({ posts: [post, ...state.posts] })),
   updatePost: (updatedPost) =>
     set((state) => ({
@@ -35,7 +58,10 @@ const usePostsStore = create<PostsStore>((set) => ({
     set((state) => ({
       posts: state.posts?.map((post) =>
         post._id === postId
-          ? { ...post, comments: [...post.comments, comment] }
+          ? {
+              ...post,
+              comments: [...post.comments],
+            }
           : post
       ),
     })),

@@ -19,7 +19,6 @@ const useOrganizationsStore = create<OrganizationsStore>((set) => ({
       const response = await getOrganizations(page, limit);
 
       const simpleOrganizations = response.data.organizations;
-      console.log(simpleOrganizations);
 
       const organizations = simpleOrganizations?.map((simpleOrganization) => {
         const organizationFocusAreas = simpleOrganization.focusAreas?.map(
