@@ -15,7 +15,6 @@ export interface Volunteer {
   lastName: string;
   phone?: string;
   city?: string;
-  age?: number;
   skills?: Skill[];
   imageUrl?: string;
   about?: string;
@@ -102,12 +101,12 @@ export interface Comment {
 
 export enum Role {
   Volunteer = 0,
-  Organization = 1,
+  Organization = 1
 }
 
 export enum tagType {
   skill = "skill",
-  focusArea = "focus-area",
+  focusArea = "focus-area"
 }
 
 export interface ProfileData {

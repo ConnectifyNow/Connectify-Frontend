@@ -1,33 +1,8 @@
 import { isAuthenticated } from "@/services/authService";
-import { Role, Skill, User, Volunteer } from "@/types";
+import { Skill, User, Volunteer } from "@/types";
 import { create } from "zustand";
 
-const initialState: User = {
-  _id: "6784162109ecc3c0bec051d1",
-  username: "hilaohana",
-  email: "hila.ohana@gamil.com",
-  password: "1234",
-  role: Role.Volunteer,
-  volunteer: {
-    phone: "1234567890",
-    firstName: "Hila",
-    lastName: "Ohana",
-    city: "Tel Aviv",
-    age: 30,
-    skills: [],
-    userId: "",
-    about: "I am a software developer",
-  },
-  organization: {
-    userId: "123",
-    city: "Tel Aviv",
-    name: "Hila Ohana",
-    description: "Software Developer",
-    focusAreas: [],
-    websiteLink: "",
-  },
-  isLoggedIn: false,
-};
+const initialState: User = {} as User;
 
 type State = User;
 
@@ -41,9 +16,18 @@ type Action = {
 const useUserStore = create<State & Action>((set, get) => ({
   ...initialState,
   updateIsLoggedIn: (isLoggedIn) => set(() => ({ isLoggedIn })),
-  setUser: (user: User) => set(() => ({ ...user })),
+  setUser: (user: User) => {
+    set(() => ({ ...user }));
+    localStorage.setItem("user", JSON.stringify(user));
+  },
   resetUser: () => {
-    set(() => ({ ...initialState }));
+    const user = localStorage.getItem("user");
+
+    if (user) {
+      set(() => JSON.parse(user));
+    } else {
+      set(() => ({ ...initialState }));
+    }
     set(() => ({ isLoggedIn: isAuthenticated() }));
   },
   toggleSkill: (skill) => {
@@ -63,8 +47,8 @@ const useUserStore = create<State & Action>((set, get) => ({
       set(() => ({
         volunteer: {
           ...currentVolunteer,
-          skills: updatedSkills,
-        } as Volunteer,
+          skills: updatedSkills
+        } as Volunteer
       }));
     } else {
       const updatedSkills = currentSkills ? [...currentSkills, skill] : [skill];
@@ -72,11 +56,11 @@ const useUserStore = create<State & Action>((set, get) => ({
       set(() => ({
         volunteer: {
           ...currentVolunteer,
-          skills: updatedSkills,
-        } as Volunteer,
+          skills: updatedSkills
+        } as Volunteer
       }));
     }
-  },
+  }
 }));
 
 export default useUserStore;
