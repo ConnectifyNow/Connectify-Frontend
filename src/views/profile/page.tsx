@@ -44,7 +44,6 @@ export default function ProfilePage() {
   };
 
   const saveProfile = () => {
-    console.log("Saving profile:", profile);
     setIsEditing(false);
   };
 
