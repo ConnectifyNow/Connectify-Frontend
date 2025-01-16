@@ -7,7 +7,6 @@ import { Edit, Heart, MessageCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Comment, Post, Role } from "../../../types";
 import { randomAvatarUrl } from "@/utils/functions";
-import img from "../../../assets/hilaAndYoav.jpg";
 
 interface PostProps {
   post: Post;
@@ -26,7 +25,7 @@ export default function PostCard({
   onEdit,
   onDelete,
   onCommentLike,
-  showEditDelete = false,
+  showEditDelete = false
 }: PostProps) {
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -52,11 +51,11 @@ export default function PostCard({
               ? currentUser.volunteer?.imageUrl ?? randomAvatarUrl()
               : currentUser.organization?.imageUrl ?? randomAvatarUrl(),
           type:
-            currentUser.role === Role.Volunteer ? "volunteer" : "organization",
+            currentUser.role === Role.Volunteer ? "volunteer" : "organization"
         },
         content: newComment.trim(),
         createdAt: new Date().toISOString(),
-        likes: 0,
+        likes: 0
       };
       onComment(post._id, comment);
       setNewComment("");
@@ -161,7 +160,7 @@ export default function PostCard({
       {showComments && (
         <div className="mt-4 space-y-4">
           {post.comments?.map((comment) => (
-            <div key={comment._id} className="bg-gray-50 p-3 rounded">
+            <div key={comment._id} className="bg-blue-50 p-3 rounded">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center">
                   <img
@@ -205,7 +204,7 @@ export default function PostCard({
           className="mb-2"
         />
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Button type="submit" size="sm">
+          <Button type="submit" size="sm" className="bg-blue-200">
             Add Comment
           </Button>
           {showEditDelete && isCurrentUserPost && (

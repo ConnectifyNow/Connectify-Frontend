@@ -4,7 +4,7 @@ import {
   DialogTrigger,
   DialogContent,
   DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -59,15 +59,14 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
           currentUser.role === Role.Volunteer
             ? currentUser.volunteer?.imageUrl
             : currentUser.organization?.imageUrl,
-        type:
-          currentUser.role === Role.Volunteer ? "volunteer" : "organization",
+        type: currentUser.role === Role.Volunteer ? "volunteer" : "organization"
       },
       imageUrl: image,
       title,
       content,
       skills: filteredSelectedSkills,
       comments: [],
-      likes: 0,
+      likes: 0
     };
     onAddPost(newPost);
     setImage("");
@@ -85,7 +84,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button
-          className="fixed bottom-8 right-8 rounded-full w-16 h-16 shadow-lg"
+          className="fixed bottom-8 right-8 rounded-full w-16 h-16 shadow-lg bg-blue-300"
           onClick={() => setIsOpen(true)}
         >
           <Plus className="w-8 h-8" />
