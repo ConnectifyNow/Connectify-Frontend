@@ -93,6 +93,7 @@ export interface Post {
 }
 
 export interface reqApiPost {
+  _id?: string;
   user: string;
   title: string;
   content: string;

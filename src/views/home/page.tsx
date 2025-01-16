@@ -28,6 +28,7 @@ import {
   getPosts,
   likeCommentApi,
   likePostApi,
+  updatePostApi,
 } from "@/services/postService";
 
 const POSTS_PER_PAGE = 3;
@@ -91,10 +92,28 @@ export default function Home() {
     }
   };
 
+  const handleEditPost = async (post: Post) => {
+    const postToUpdate = {
+      _id: post._id,
+      user: post.author._id,
+      title: post.title,
+      content: post.content,
+      requiredSkills: post.skills.map((skill) => skill._id),
+      imageUrl: post.imageUrl,
+    };
+
+    const response = await updatePostApi(postToUpdate);
+
+    if (response.status === 200) {
+      updatePost(post); // update state
+    } else {
+      console.error("Failed to update post:", response.statusText);
+    }
+  };
   const handleAddComment = async (comment: ApiComment) => {
     const postId = comment.post;
 
-    addComment(postId, comment);
+    // addComment(postId, comment);
     console.log(comment);
 
     const response = await addCommentToPost(postId, comment);
@@ -173,7 +192,7 @@ export default function Home() {
                   post={post}
                   onLike={handleLikePost}
                   onComment={handleAddComment}
-                  onEdit={updatePost}
+                  onEdit={handleEditPost}
                   onDelete={handleDeletePost}
                   onCommentLike={handleLikeComment}
                   showEditDelete={true}
