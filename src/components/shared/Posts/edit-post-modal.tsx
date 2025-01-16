@@ -30,9 +30,9 @@ export function EditPostModal({
 }: EditPostModalProps) {
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
-  const skills = useSkillsStore((state) => state.skills);
   const [selectedSkills, setSelectedSkills] = useState<Skill[]>([]);
   const [image, setImage] = useState("");
+  const skills = useSkillsStore((state) => state.skills);
 
   useEffect(() => {
     setTitle(post.title);
