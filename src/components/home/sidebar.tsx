@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useSkillsStore from "@/stores/setSkillsStore";
+import { Post } from "@/types";
 
 interface SidebarProps {
+  allPosts: Post[];
   onFilterChange: (filters: { postType: string; skillsIds: string[] }) => void;
 }
 
-export default function Sidebar({ onFilterChange }: SidebarProps) {
+export default function Sidebar({ allPosts, onFilterChange }: SidebarProps) {
   const skills = useSkillsStore((state) => state.skills);
   const [postType, setPostType] = useState("all");
   const [selectedSkillsIds, setSelectedSkillsIds] = useState<string[]>([]);
@@ -30,7 +32,7 @@ export default function Sidebar({ onFilterChange }: SidebarProps) {
       <div className="mb-4">
         <h3 className="font-semibold mb-2">Post Type</h3>
         <div className="space-y-2">
-          {["all", "user", "organization"]?.map((type) => (
+          {["all", "volunteer", "organization"]?.map((type) => (
             <label key={type} className="flex items-center">
               <input
                 type="radio"

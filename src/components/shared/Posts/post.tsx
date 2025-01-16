@@ -51,7 +51,8 @@ export default function PostCard({
             currentUser.role === Role.Volunteer
               ? currentUser.volunteer?.imageUrl ?? randomAvatarUrl()
               : currentUser.organization?.imageUrl ?? randomAvatarUrl(),
-          type: currentUser.role === Role.Volunteer ? "user" : "organization",
+          type:
+            currentUser.role === Role.Volunteer ? "volunteer" : "organization",
         },
         content: newComment.trim(),
         createdAt: new Date().toISOString(),
@@ -94,26 +95,6 @@ export default function PostCard({
                 </span>
               </div>
             </div>
-            {showEditDelete && isCurrentUserPost && (
-              <div className="flex space-x-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setIsEditModalOpen(true)}
-                >
-                  <Edit className="w-4 h-4 mr-2" />
-                  Edit
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setIsDeleteDialogOpen(true)}
-                >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Delete
-                </Button>
-              </div>
-            )}
           </div>
           <p className="text-gray-800 mb-4">{post.content}</p>
           <div className="flex flex-wrap gap-2 mb-4">
@@ -150,6 +131,7 @@ export default function PostCard({
               <span>{post.comments.length}</span>
             </Button>
           </div>
+
           {showEditDelete && (
             <>
               <EditPostModal
@@ -170,7 +152,7 @@ export default function PostCard({
         </div>
         <div style={{ width: "40%" }}>
           <img
-            src={img}
+            src={post.imageUrl ?? img}
             alt={post.author.name}
             style={{ width: "100%", height: "100%" }}
           />
@@ -222,9 +204,31 @@ export default function PostCard({
           placeholder="Add a comment..."
           className="mb-2"
         />
-        <Button type="submit" size="sm">
-          Add Comment
-        </Button>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Button type="submit" size="sm">
+            Add Comment
+          </Button>
+          {showEditDelete && isCurrentUserPost && (
+            <div className="flex space-x-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsEditModalOpen(true)}
+              >
+                <Edit className="w-4 h-4 mr-2" />
+                Edit
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsDeleteDialogOpen(true)}
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </Button>
+            </div>
+          )}
+        </div>
       </form>
     </div>
   );

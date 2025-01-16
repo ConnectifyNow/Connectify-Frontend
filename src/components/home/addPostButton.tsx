@@ -4,7 +4,7 @@ import {
   DialogTrigger,
   DialogContent,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -59,15 +59,18 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
           currentUser.role === Role.Volunteer
             ? currentUser.volunteer?.imageUrl
             : currentUser.organization?.imageUrl,
-        type: currentUser.role === Role.Volunteer ? "user" : "organization"
+        type:
+          currentUser.role === Role.Volunteer ? "volunteer" : "organization",
       },
+      imageUrl: image,
       title,
       content,
       skills: filteredSelectedSkills,
       comments: [],
-      likes: 0
+      likes: 0,
     };
     onAddPost(newPost);
+    setImage("");
     setIsOpen(false);
     resetForm();
   };
