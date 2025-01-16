@@ -119,6 +119,8 @@ export default function OrganizationSignUpPage() {
             userId: loginResponse.data.user._id,
           });
 
+        setLogo("");
+
         const simpleOrganization = organizationResponse.data;
         const organization: Organization = {
           ...simpleOrganization,

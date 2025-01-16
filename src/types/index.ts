@@ -61,7 +61,7 @@ export interface Author {
   _id: string;
   name: string;
   avatar?: string;
-  type: "user" | "organization";
+  type: "volunteer" | "organization";
 }
 
 export interface Tag {
@@ -86,6 +86,7 @@ export interface Post {
   author: Author;
   title: string;
   content: string;
+  imageUrl: string;
   skills: Skill[] | FocusArea[];
   comments: Comment[];
   likes: number;
@@ -101,12 +102,12 @@ export interface Comment {
 
 export enum Role {
   Volunteer = 0,
-  Organization = 1
+  Organization = 1,
 }
 
 export enum tagType {
   skill = "skill",
-  focusArea = "focus-area"
+  focusArea = "focus-area",
 }
 
 export interface ProfileData {

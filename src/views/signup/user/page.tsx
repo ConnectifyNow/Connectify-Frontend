@@ -10,7 +10,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { saveTokens, signin, signup } from "@/services/authService";
@@ -39,7 +39,7 @@ export default function UserSignUpPage() {
     skills: [] as string[],
     imageUrl: "",
     about: "",
-    phone: ""
+    phone: "",
   });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -62,7 +62,7 @@ export default function UserSignUpPage() {
       ...previous,
       skills: previous.skills.includes(value)
         ? previous.skills.filter((o) => o !== value)
-        : [...previous.skills, value]
+        : [...previous.skills, value],
     }));
   };
 
@@ -70,7 +70,7 @@ export default function UserSignUpPage() {
     ({
       email,
       password,
-      role
+      role,
     }: {
       email: string;
       password: string;
@@ -94,33 +94,34 @@ export default function UserSignUpPage() {
       const signUpResponse = await signUpMutation.mutateAsync({
         email: formData.email,
         password: formData.password,
-        role: Role.Volunteer
+        role: Role.Volunteer,
       });
       const createdUser = signUpResponse.data;
 
       const loginResponse = await signinMutation.mutateAsync({
         email: formData.email,
-        password: formData.password
+        password: formData.password,
       });
 
       if (loginResponse.data.accessToken !== "") {
         saveTokens({
           accessToken: loginResponse.data.accessToken,
-          refreshToken: loginResponse.data.refreshToken
+          refreshToken: loginResponse.data.refreshToken,
         });
 
         const volunteerResponse = await createVolunteerMutation.mutateAsync({
           ...formData,
           imageUrl: image,
-          userId: loginResponse.data.user._id
+          userId: loginResponse.data.user._id,
         });
 
+        setImage("");
         const simpleVolunteer = volunteerResponse.data;
         const volunteer: Volunteer = {
           ...simpleVolunteer,
           skills: skills.filter((skill) =>
             simpleVolunteer.skills.includes(skill._id)
-          )
+          ),
         };
 
         createdUser.volunteer = volunteer;
@@ -192,15 +193,22 @@ export default function UserSignUpPage() {
               </Select>
             </div>
 
-            <CustomSelect
-              options={skills}
-              selectedOptions={formData.skills}
-              onChange={handleSkillChange}
-            />
-            <Label style={{ marginTop: "30px" }} htmlFor="websiteLink">
-              Image
-            </Label>
-            <ImageUpload preview={image} setPreview={setImage} />
+            <div>
+              <Label htmlFor="skills" style={{ marginTop: "30px" }}>
+                Skills
+              </Label>
+              <CustomSelect
+                options={skills}
+                selectedOptions={formData.skills}
+                onChange={handleSkillChange}
+              />
+            </div>
+            <div>
+              <Label style={{ marginTop: "30px" }} htmlFor="websiteLink">
+                Image
+              </Label>
+              <ImageUpload preview={image} setPreview={setImage} />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="about">About</Label>
               <Textarea
