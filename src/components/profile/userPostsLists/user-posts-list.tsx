@@ -11,11 +11,7 @@ export default function PostsList() {
   const userPosts = posts.filter((post) => post.author._id === currentUser._id);
 
   return (
-<<<<<<< HEAD
     <main className="min-h-screen bg-sky-50 py-12">
-=======
-    <main className="min-h-screen bg-blue-50 py-12">
->>>>>>> 175ce73cd01fad6f7b091e0026f43c8e149eb504
       <div className="max-w-2xl mx-auto px-4">
         <h1 className="text-3xl font-bold text-center mb-8">My Posts</h1>
         <div className="space-y-6">
