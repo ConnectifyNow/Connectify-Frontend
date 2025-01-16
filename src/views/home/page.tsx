@@ -81,6 +81,8 @@ export default function Home() {
     }); // add to API
 
     if (response.status === 201) {
+
+      window.location.reload();
       // toast({
       //   description: "Post created successfully!",
       // });
