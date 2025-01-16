@@ -12,15 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/home/sidebar";
 import usePostsStore from "../../stores/setPostsStore";
-import {
-  ApiComment,
-  ApiPost,
-  Post,
-  Post as PostType,
-  reqApiPost,
-  Role
-} from "../../types";
-import useUserStore from "@/stores/setUserStore";
+import { ApiComment, Post, reqApiPost, Role } from "../../types";
 import { Toaster } from "@/components/ui/toaster";
 import {
   addCommentToPost,
@@ -35,18 +27,7 @@ import {
 const POSTS_PER_PAGE = 3;
 
 export default function Home() {
-  const {
-    posts,
-    likePost,
-    setPosts,
-    addComment,
-    addPost,
-    updatePost,
-    deletePost,
-    likeComment
-  } = usePostsStore();
-  const userId = useUserStore((state) => state._id);
-
+  const { posts, likePost, setPosts, updatePost, deletePost } = usePostsStore();
   const [filters, setFilters] = useState({
     postType: "all",
     skillsIds: [] as string[]
@@ -184,7 +165,7 @@ export default function Home() {
         <h1 className="text-3xl font-bold text-center mb-8">Feed</h1>
         <div className="flex gap-8">
           <div className="w-1/4">
-            <Sidebar onFilterChange={setFilters} allPosts={sortedPosts} />
+            <Sidebar onFilterChange={setFilters} />
           </div>
           <div className="w-3/4">
             <div className="space-y-6">
