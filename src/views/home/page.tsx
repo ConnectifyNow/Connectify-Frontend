@@ -74,12 +74,12 @@ export default function Home() {
       title: post.title,
       content: post.content,
       user: post.user,
-      requiredSkills: post.requiredSkills,
+      skills: post.skills,
       imageUrl: post.imageUrl
     });
 
     if (response.status === 201) {
-      const skills = post.requiredSkills
+      const skills = post.skills
         .map((skillId) => getSkillById(skillId))
         .filter((skill) => skill !== undefined) as IdName[];
 
@@ -106,7 +106,7 @@ export default function Home() {
       user: post.author._id,
       title: post.title,
       content: post.content,
-      requiredSkills: post.skills.map((skill) => skill._id),
+      skills: post.skills.map((skill) => skill._id),
       imageUrl: post.imageUrl
     };
 

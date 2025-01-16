@@ -97,7 +97,7 @@ export interface reqApiPost {
   user: string;
   title: string;
   content: string;
-  requiredSkills: string[];
+  skills: string[];
   imageUrl: string;
 }
 
@@ -106,7 +106,7 @@ export interface ApiPost {
   user: User;
   title: string;
   content: string;
-  requiredSkills: string[];
+  skills: string[];
   likes: string[];
   comments: Comment[];
   imageUrl: string;

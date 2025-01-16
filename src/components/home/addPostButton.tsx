@@ -55,7 +55,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
       user: currentUser._id,
       title,
       content,
-      requiredSkills: filteredSelectedSkills.map((skill) => skill?._id ?? ""),
+      skills: filteredSelectedSkills.map((skill) => skill?._id ?? ""),
       imageUrl: image
     };
     onAddPost(newPost);

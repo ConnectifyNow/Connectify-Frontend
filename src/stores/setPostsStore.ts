@@ -21,7 +21,7 @@ const usePostsStore = create<PostsStore>((set) => ({
   setPosts: (apiPosts) => {
     const { getSkillById } = useSkillsStore.getState();
     const posts = apiPosts.map((apiPost) => {
-      const skills = apiPost.requiredSkills.map((skill) => getSkillById(skill));
+      const skills = apiPost.skills.map((skill) => getSkillById(skill));
       const filteredSkills = skills.filter((skill) => skill !== undefined);
 
       return {
