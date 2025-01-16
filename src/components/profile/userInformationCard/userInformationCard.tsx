@@ -17,7 +17,6 @@ import useCitiesStore from "@/stores/setCitiesStore";
 type UserInformationProps = {
   profileData: ProfileData;
   isEditing: boolean;
-  changeProfile: (profile: User) => void;
   handleChange: (key: keyof ProfileData, value: string) => void;
 };
 

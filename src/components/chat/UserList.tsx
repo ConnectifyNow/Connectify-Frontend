@@ -27,7 +27,6 @@ export default function UserList({ users, onSelectUser }: UserListProps) {
         <div className="flex space-x-2">
           <Button
             size="sm"
-            className={filter === "all" ? "bg-blue-200 hover:bg-blue-300" : ""}
             variant={filter === "all" ? "default" : "outline"}
             onClick={() => setFilter("all")}
           >
@@ -35,9 +34,6 @@ export default function UserList({ users, onSelectUser }: UserListProps) {
           </Button>
           <Button
             size="sm"
-            className={
-              filter === "volunteers" ? "bg-blue-200 hover:bg-blue-300" : ""
-            }
             variant={filter === "volunteers" ? "default" : "outline"}
             onClick={() => setFilter("volunteers")}
           >
@@ -45,9 +41,6 @@ export default function UserList({ users, onSelectUser }: UserListProps) {
           </Button>
           <Button
             size="sm"
-            className={
-              filter === "organizations" ? "bg-blue-200 hover:bg-blue-300" : ""
-            }
             variant={filter === "organizations" ? "default" : "outline"}
             onClick={() => setFilter("organizations")}
           >
@@ -60,7 +53,7 @@ export default function UserList({ users, onSelectUser }: UserListProps) {
           <li key={user._id} className="border-b last:border-b-0 ">
             <Button
               variant="ghost"
-              className="w-full justify-start p-4 space-x-2 hover:bg-blue-300 "
+              className="w-full justify-start p-4 space-x-2  "
               onClick={() => onSelectUser(user)}
             >
               {user.role ? (

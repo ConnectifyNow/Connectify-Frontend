@@ -120,9 +120,7 @@ export default function UserAboutCard({
           {isEditing ? (
             <Button onClick={saveProfile}>Save Profile</Button>
           ) : (
-            <Button className="bg-blue-200" onClick={() => setIsEditing(true)}>
-              Edit Profile
-            </Button>
+            <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
           )}
           <Button variant="destructive" onClick={handleLogout}>
             Logout
