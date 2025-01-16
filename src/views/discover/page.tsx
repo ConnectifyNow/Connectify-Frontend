@@ -10,7 +10,7 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious,
+  PaginationPrevious
 } from "@/components/ui/pagination";
 import useOrganizationsStore from "@/stores/setOrganizationsStore";
 import useVolunteersStore from "@/stores/setVolunteersStore";
@@ -20,7 +20,7 @@ const ITEMS_PER_PAGE = 3;
 export default function Directory() {
   const [filters, setFilters] = useState({
     mode: "organizations" as "organizations" | "volunteers",
-    searchTerm: "",
+    searchTerm: ""
   });
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -40,7 +40,6 @@ export default function Directory() {
     } else {
       fetchVolunteers(currentPage, ITEMS_PER_PAGE);
     }
-    console.log(organizations);
   }, [currentPage, filters]);
 
   const filteredOrganizations = organizations.filter((organization) =>

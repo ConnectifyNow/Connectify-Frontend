@@ -3,7 +3,6 @@
 import { Input } from "@/components/ui/input";
 import { uploadImage } from "@/services/fileUploadService";
 import { ImageIcon } from "lucide-react";
-import { useRef } from "react";
 
 interface ImageUploadProps {
   preview: string;
@@ -11,20 +10,16 @@ interface ImageUploadProps {
 }
 
 export function ImageUpload({ preview, setPreview }: ImageUploadProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const handleFileChange = async ({ target }: { target: HTMLInputElement }) => {
+    if (target.files?.length) {
+      const [file] = target.files;
 
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
+      const maxSize = 10 * 1024 * 1024;
+      if (file.size > maxSize) {
+        return;
+      }
       const image = await uploadImage(file);
-
       setPreview(image.data.serverFilename);
-    } else {
-      setPreview("");
     }
   };
 
@@ -62,7 +57,6 @@ export function ImageUpload({ preview, setPreview }: ImageUploadProps) {
           accept="image/*"
           className="hidden"
           onChange={handleFileChange}
-          ref={fileInputRef}
         />
       </div>
     </div>

@@ -14,10 +14,10 @@ import CustomSelect from "@/components/shared/customSelect";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useUserStore from "@/stores/setUserStore";
 import { Post, Role } from "@/types";
-import { skills } from "@/data/posts";
 import { Plus } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { ImageUpload } from "./imageUpload";
+import useSkillsStore from "@/stores/setSkillsStore";
 
 interface AddPostButtonProps {
   onAddPost: (post: Post) => void;
@@ -29,6 +29,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
   const [content, setContent] = useState("");
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [image, setImage] = useState("");
+  const skills = useSkillsStore((state) => state.skills);
 
   const currentUser = useUserStore();
 
@@ -58,8 +59,10 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
           currentUser.role === Role.Volunteer
             ? currentUser.volunteer?.imageUrl
             : currentUser.organization?.imageUrl,
-        type: currentUser.role === Role.Volunteer ? "user" : "organization",
+        type:
+          currentUser.role === Role.Volunteer ? "volunteer" : "organization",
       },
+      imageUrl: image,
       title,
       content,
       skills: filteredSelectedSkills,
@@ -67,6 +70,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
       likes: 0,
     };
     onAddPost(newPost);
+    setImage("");
     setIsOpen(false);
     resetForm();
   };

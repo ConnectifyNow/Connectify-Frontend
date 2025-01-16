@@ -9,7 +9,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Post } from "@/types/index";
+import { Post, Skill } from "@/types/index";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import CustomSelect from "@/components/shared/customSelect";
+import useSkillsStore from "@/stores/setSkillsStore";
 
 interface EditPostModalProps {
   post: Post;
@@ -26,15 +29,22 @@ export function EditPostModal({
 }: EditPostModalProps) {
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
-  const [skills, setSkills] = useState(
-    post.skills?.map((skill) => skill.name).join(", ")
-  );
+  const skills = useSkillsStore((state) => state.skills);
+  const [selectedSkills, setSelectedSkills] = useState<Skill[]>([]);
 
   useEffect(() => {
     setTitle(post.title);
     setContent(post.content);
-    setSkills(post.skills?.map((skill) => skill.name).join(", "));
+    setSelectedSkills(post.skills);
   }, [post]);
+
+  const handleSkillsChange = (skill: Skill) => {
+    setSelectedSkills(
+      selectedSkills.includes(skill)
+        ? selectedSkills.filter((selectedskill) => selectedskill !== skill)
+        : [...selectedSkills, skill]
+    );
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,10 +52,7 @@ export function EditPostModal({
       ...post,
       title,
       content,
-      skills: skills.split(",")?.map((name, index) => ({
-        _id: (index + 1).toString(),
-        name: name.trim(),
-      })),
+      skills: selectedSkills,
     };
     onSave(updatedPost);
     onClose();
@@ -76,16 +83,26 @@ export function EditPostModal({
               required
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="edit-skills">
-              Skills/Requirements (comma-separated)
-            </Label>
-            <Input
-              id="edit-skills"
-              value={skills}
-              onChange={(e) => setSkills(e.target.value)}
-              required
-            />
+          <div>
+            <Label htmlFor="edit-skills">Skills</Label>
+            <ScrollArea className="h-32 rounded-md ">
+              <div className="space-y-2">
+                <div className="flex flex-wrap gap-2">
+                  {skills?.map((skill: { _id: string; name: string }) => (
+                    <Button
+                      key={skill._id}
+                      type="button"
+                      variant={
+                        selectedSkills.includes(skill) ? "default" : "outline"
+                      }
+                      onClick={() => handleSkillsChange(skill)}
+                    >
+                      {skill.name}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            </ScrollArea>
           </div>
           <Button type="submit">Save Changes</Button>
         </form>
