@@ -10,10 +10,10 @@ interface DirectorySidebarProps {
 
 const filters = [
   { id: 1, name: "organizations", icon: <Building2 /> },
-  { id: 2, name: "volunteers", icon: <User /> },
+  { id: 2, name: "volunteers", icon: <User /> }
 ];
 export default function DirectorySidebar({
-  onFilterChange,
+  onFilterChange
 }: DirectorySidebarProps) {
   const [mode, setMode] = useState<"organizations" | "volunteers">(
     "organizations"
@@ -52,7 +52,9 @@ export default function DirectorySidebar({
               />
               {filter.icon}
 
-              {filter.name.charAt(0).toUpperCase() + filter.name.slice(1)}
+              <span className="ml-2">
+                {filter.name.charAt(0).toUpperCase() + filter.name.slice(1)}
+              </span>
             </label>
           ))}
         </div>

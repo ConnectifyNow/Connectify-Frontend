@@ -13,6 +13,7 @@ import { useState } from "react";
 import Sidebar from "../../components/home/sidebar";
 import usePostsStore from "../../stores/setPostsStore";
 import { Post as PostType } from "../../types";
+import useUserStore from "@/stores/setUserStore";
 
 const POSTS_PER_PAGE = 3;
 
@@ -26,6 +27,7 @@ export default function Home() {
     deletePost,
     likeComment
   } = usePostsStore();
+  const userId = useUserStore((state) => state._id);
 
   const [filters, setFilters] = useState({
     postType: "all",
@@ -36,9 +38,18 @@ export default function Home() {
 
   const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
 
-  const filteredPosts = sortedPosts.filter((post) => {
-    const typeMatch =
-      filters.postType === "all" || post.author.type === filters.postType;
+  const filteredPosts = sortedPosts.filter((post: PostType) => {
+    const isOrganization = filters.postType === "organization";
+    const isVolunteer = filters.postType === "volunteer";
+    const isMyPost = filters.postType === "my";
+    const isAll = filters.postType === "all";
+
+    // const typeMatch =
+    //   isAll ||
+    //   (isOrganization && post.author.organization) ||
+    //   (isVolunteer && post.author.volunteer) ||
+    //   (isMyPost && post.author._id === userId);
+
     const skillsMatch: boolean =
       filters.skillsIds.length === 0 ||
       filters.skillsIds.some((skillId: string) =>

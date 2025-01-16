@@ -60,10 +60,10 @@ export default function Directory() {
     filters.mode === "organizations" ? organizationPages : volunteerPages;
 
   return (
-    <main className="min-h-screen bg-sky-50 py-12">
+    <main className="min-h-screen bg-gray-100 py-12">
       <div className="max-w-6xl mx-auto px-4">
         <h1 className="text-3xl font-bold text-center mb-8">
-          Find
+          Find{" "}
           {filters.mode === "organizations" ? "Organizations" : "Volunteers"}
         </h1>
         <div className="flex gap-8">
