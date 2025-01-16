@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { ImageUpload } from "@/components/home/imageUpload";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -8,11 +10,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import useSkillsStore from "@/stores/setSkillsStore";
 import { Post, Skill } from "@/types/index";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import CustomSelect from "@/components/shared/customSelect";
-import useSkillsStore from "@/stores/setSkillsStore";
+import { useEffect, useState } from "react";
 
 interface EditPostModalProps {
   post: Post;
@@ -31,11 +32,13 @@ export function EditPostModal({
   const [content, setContent] = useState(post.content);
   const skills = useSkillsStore((state) => state.skills);
   const [selectedSkills, setSelectedSkills] = useState<Skill[]>([]);
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     setTitle(post.title);
     setContent(post.content);
     setSelectedSkills(post.skills);
+    setImage(post.imageUrl);
   }, [post]);
 
   const handleSkillsChange = (skill: Skill) => {
@@ -85,7 +88,7 @@ export function EditPostModal({
           </div>
           <div>
             <Label htmlFor="edit-skills">Skills</Label>
-            <ScrollArea className="h-32 rounded-md ">
+            <ScrollArea className="rounded-md ">
               <div className="space-y-2">
                 <div className="flex flex-wrap gap-2">
                   {skills?.map((skill: { _id: string; name: string }) => (
@@ -103,6 +106,14 @@ export function EditPostModal({
                 </div>
               </div>
             </ScrollArea>
+          </div>
+          <div>
+            <Label htmlFor="edit-image">image</Label>
+            <Card>
+              <CardContent className="pt-6">
+                <ImageUpload preview={image} setPreview={setImage} />
+              </CardContent>
+            </Card>
           </div>
           <Button type="submit">Save Changes</Button>
         </form>
