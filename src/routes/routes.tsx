@@ -2,7 +2,6 @@ import Layout from "@/components/layout/layout";
 import ProfilePage from "@/views/profile/page";
 import Chat from "@/views/chat/page";
 import DiscoverPage from "@/views/discover/page";
-import Filter from "@/views/filter/page";
 import Home from "@/views/home/page";
 import Onboarding from "@/views/onboarding/page";
 import SignInPage from "@/views/signIn/page";
@@ -41,10 +40,6 @@ export const router = createBrowserRouter([
         path: "/",
         element: <Onboarding />,
         loader: redirectIfAuthenticated
-      },
-      {
-        path: "/filter",
-        element: <Filter />
       },
       {
         path: "/chat",

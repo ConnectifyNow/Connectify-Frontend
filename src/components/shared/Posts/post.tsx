@@ -204,7 +204,7 @@ export default function PostCard({
           className="mb-2"
         />
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Button type="submit" size="sm" className="bg-blue-200">
+          <Button type="submit" size="sm">
             Add Comment
           </Button>
           {showEditDelete && isCurrentUserPost && (
