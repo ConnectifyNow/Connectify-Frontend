@@ -24,7 +24,7 @@ export default function UserInformation({
   isEditing,
 }: UserInformationProps) {
   const cities = useCitiesStore((state) => state.cities);
-  // const ProfileDataCity = cities?.find((city) => city._id === profileData.city);
+  const ProfileDataCity = cities?.find((city) => city._id === profile.city);
 
   return (
     <Card>
@@ -83,9 +83,6 @@ export default function UserInformation({
                 <Label htmlFor="city">City</Label>
                 <Select
                   onValueChange={(e) => {
-                    // const selectedCity = cities?.find(
-                    //   (city) => city.name === e
-                    // );
                     setProfile({
                       ...profile,
                       city: e,
@@ -96,7 +93,9 @@ export default function UserInformation({
                   <SelectTrigger>
                     <SelectValue
                       placeholder={
-                        profile.city ? `${profile.city}` : "Select A City"
+                        ProfileDataCity?.name
+                          ? `${ProfileDataCity.name}`
+                          : "Select A City"
                       }
                     />
                   </SelectTrigger>
@@ -137,7 +136,7 @@ export default function UserInformation({
                 <strong>Email:</strong> {profile.email}
               </p>
               <p>
-                <strong>City:</strong> {profile.city}
+                <strong>City:</strong> {ProfileDataCity?.name}
               </p>
             </div>
             <div className="flex justify-center">

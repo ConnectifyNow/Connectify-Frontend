@@ -2,12 +2,11 @@ import UserAboutCard from "@/components/profile/userAboutCard/userAboutCard";
 import UserInformation from "@/components/profile/userInformationCard/userInformationCard";
 import PostsList from "@/components/profile/userPostsLists/user-posts-list";
 import { logout, resetTokens } from "@/services/authService";
-import useSkillsStore from "@/stores/setSkillsStore";
 import useUserStore from "@/stores/setUserStore";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { ProfileData, Role, User } from "../../types/index";
+import { ProfileData, Role } from "../../types/index";
 
 export default function ProfilePage() {
   const user = useUserStore();
@@ -17,10 +16,9 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<ProfileData>({} as ProfileData);
   const [isEditing, setIsEditing] = useState(false);
 
-  let myProfile = {} as ProfileData;
   useEffect(() => {
     if (user?.role === Role.Volunteer && user.volunteer) {
-      myProfile = {
+      setProfile({
         ...user.volunteer,
         name: `${user.volunteer?.firstName} ${user.volunteer?.lastName}`,
         role: Role.Volunteer,
@@ -29,9 +27,9 @@ export default function ProfilePage() {
         city: user?.volunteer.city,
         imageUrl: user?.volunteer.imageUrl,
         about: user.volunteer.about,
-      };
+      });
     } else if (user?.role === Role.Organization && user.organization) {
-      myProfile = {
+      setProfile({
         ...user.organization,
         name: user.organization.name,
         role: Role.Organization,
@@ -40,11 +38,9 @@ export default function ProfilePage() {
         username: user.username,
         city: user?.organization.city,
         imageUrl: user?.organization.imageUrl,
-      };
+      });
     }
-    setProfile(myProfile);
-  }),
-    [];
+  }, []);
 
   const handleLogout = async () => {
     if (user.isLoggedIn) {
@@ -56,6 +52,7 @@ export default function ProfilePage() {
   };
 
   const saveProfile = () => {
+    //do query to DB
     // const handleEditProfile = async (profile: ProfileData) => {
     //   const profileToUpdate = {
     //     ...profileData,
