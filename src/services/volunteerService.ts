@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import {
   CreateVolunteerResponse,
   PaginationSimpleVolunteer,
+  reqApiVolunteer,
   SimpleVolunteer,
 } from "../types/index";
 import apiClient from "./apiClient";
@@ -20,6 +21,12 @@ export const getVolunteers = async (
   limit = 10
 ): Promise<AxiosResponse<PaginationSimpleVolunteer>> => {
   return await apiClient.get(`/volunteers?page=${page}&limit=${limit}`, {
+    headers: headers(),
+  });
+};
+
+export const updateVolunteerApi = async (volunteer: reqApiVolunteer) => {
+  return await apiClient.put(`/volunteers/${volunteer._id}`, volunteer, {
     headers: headers(),
   });
 };

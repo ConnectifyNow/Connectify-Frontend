@@ -8,7 +8,7 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious
+  PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/home/sidebar";
@@ -22,7 +22,7 @@ import {
   getPosts,
   likeCommentApi,
   likePostApi,
-  updatePostApi
+  updatePostApi,
 } from "@/services/postService";
 import useUserStore from "@/stores/setUserStore";
 import useSkillsStore from "@/stores/setSkillsStore";
@@ -38,11 +38,11 @@ export default function Home() {
     deletePost,
     addComment,
     likeComment,
-    addPost
+    addPost,
   } = usePostsStore();
   const [filters, setFilters] = useState({
     postType: "all",
-    skillsIds: [] as string[]
+    skillsIds: [] as string[],
   });
   const user = useUserStore();
   const getSkillById = useSkillsStore((state) => state.getSkillById);
@@ -63,7 +63,6 @@ export default function Home() {
         console.error("Error fetching posts:", error);
       }
     };
-
     fetchPosts();
   }, []);
 
@@ -75,7 +74,7 @@ export default function Home() {
       content: post.content,
       user: post.user,
       skills: post.skills,
-      imageUrl: post.imageUrl
+      imageUrl: post.imageUrl,
     });
 
     if (response.status === 201) {
@@ -91,7 +90,7 @@ export default function Home() {
         imageUrl: post.imageUrl,
         skills,
         comments: [],
-        likes: 0
+        likes: 0,
       };
 
       addPost(newPost);
@@ -107,7 +106,7 @@ export default function Home() {
       title: post.title,
       content: post.content,
       skills: post.skills.map((skill) => skill._id),
-      imageUrl: post.imageUrl
+      imageUrl: post.imageUrl,
     };
 
     const response = await updatePostApi(postToUpdate);
@@ -118,6 +117,7 @@ export default function Home() {
       console.error("Failed to update post:", response.statusText);
     }
   };
+
   const handleAddComment = async (postId: string, comment: ApiComment) => {
     const response = await addCommentToPost(postId, comment);
     comment._id = response.data._id;
