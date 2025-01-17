@@ -24,7 +24,7 @@ export default function PostCard({
   onEdit,
   onDelete,
   onCommentLike,
-  showEditDelete = false
+  showEditDelete = false,
 }: PostProps) {
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -45,7 +45,7 @@ export default function PostCard({
         text: newComment.trim(),
         post: post._id,
         date: new Date().toISOString(),
-        likes: 0
+        likes: 0,
       };
       onComment(post._id, comment);
       setNewComment("");
@@ -177,8 +177,9 @@ export default function PostCard({
                     className="rounded-full mr-2"
                   />
                   <span className="font-semibold text-sm">
-                    {comment.user.role}
-                    {comment.user.username}
+                    {comment.user.role === Role.Volunteer
+                      ? `${comment.user.volunteer?.firstName} ${comment.user.volunteer?.lastName}`
+                      : comment.user.organization?.name}
                   </span>
                 </div>
                 <span className="text-xs text-gray-500">
