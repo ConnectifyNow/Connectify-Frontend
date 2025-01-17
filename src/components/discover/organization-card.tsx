@@ -1,11 +1,13 @@
-import { Organization } from "@/types";
+import { Organization, User } from "@/types";
 import { tagType } from "@/types";
 import GeneralCard from "../shared/generic-card";
 
 export default function OrganizationCard({
-  organization
+  organization,
+  userId
 }: {
   organization: Organization;
+  userId: User["_id"];
 }) {
   const tags = organization.focusAreas?.map((area) => ({
     type: tagType.focusArea,
@@ -22,6 +24,7 @@ export default function OrganizationCard({
       tags={tags}
       linkText="Visit Website"
       linkUrl={organization.websiteLink}
+      userId={userId}
     />
   );
 }

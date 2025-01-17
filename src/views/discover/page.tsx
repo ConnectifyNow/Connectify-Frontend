@@ -75,13 +75,15 @@ export default function Directory() {
               {currentItems?.map((item: Volunteer | Organization) =>
                 filters.mode === "organizations" ? (
                   <OrganizationCard
-                    key={(item as Organization).userId}
+                    key={item.userId}
                     organization={item as Organization}
+                    userId={item.userId}
                   />
                 ) : (
                   <VolunteerCard
-                    key={(item as Volunteer).userId}
+                    key={item.userId}
                     volunteer={item as Volunteer}
+                    userId={item.userId}
                   />
                 )
               )}

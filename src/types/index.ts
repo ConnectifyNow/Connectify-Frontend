@@ -79,6 +79,7 @@ export interface GeneralCardProps {
   linkText?: string;
   linkUrl?: string;
   additionalInfo?: string;
+  userId: string;
 }
 
 export interface Post {
@@ -200,7 +201,7 @@ export interface ApiChat {
 
 export type ReceiveNewMessageResponse = {
   conversationId: Chat["_id"];
-  senderId: User["_id"];
+  sender: ApiChatUser;
 } & Pick<Message, "_id" | "content" | "createdAt">;
 
 export type SigninResponse = GeneralResponse;

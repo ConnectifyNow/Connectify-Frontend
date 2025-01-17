@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { User, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { User as UserItem } from "@/types";
+import { Role, User as UserItem } from "@/types";
 import "./UserList.css";
 
 interface UserListProps {
@@ -62,7 +62,7 @@ export default function UserList({ users, onSelectUser }: UserListProps) {
                 <User className="h-5 w-5" />
               )}
               <span className="ellipsis">{user.username}</span>
-              {user.role && (
+              {user.role === Role.Organization && (
                 <span className="ml-auto bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
                   Org
                 </span>

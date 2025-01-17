@@ -1,23 +1,49 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChatProps, Message, ReceiveNewMessageResponse } from "@/types";
+import {
+  ChatProps,
+  Message,
+  ReceiveNewMessageResponse,
+  Role,
+  User
+} from "@/types";
 import { Building2, UserCircle } from "lucide-react";
 import { useCallback, useState } from "react";
 import useChatSocket from "@/hooks/useChatSocket";
 import { ScrollArea } from "../ui/scroll-area";
+import useChatStore from "@/stores/setChatStore";
 
 export default function Chat({
   currentUser,
   selectedUser,
   conversationId
 }: ChatProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const chats = useChatStore();
+  const currentMessages = useChatStore((state) => state.currentMessages);
+  const addMessage = useChatStore((state) => state.addMessage);
   const [input, setInput] = useState("");
   const onNewMessage = useCallback((data: ReceiveNewMessageResponse) => {
-    console.log(data);
+    const senderUser: User = {
+      _id: data.sender._id,
+      username: data.sender.username,
+      role: data.sender.role,
+      email: "",
+      password: ""
+    };
+
+    const newMessage: Message = {
+      _id: data._id,
+      content: data.content,
+      sender: senderUser,
+      createdAt: new Date(data.createdAt)
+    };
+    chats.addMessageToConversation(data.conversationId, newMessage);
   }, []);
 
-  const { sendMessage } = useChatSocket(onNewMessage);
+  const chatIds = chats.chats.map((chat) => chat._id);
+  const { sendMessage, listenToConversations } = useChatSocket(onNewMessage);
+
+  listenToConversations(chatIds);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -28,15 +54,12 @@ export default function Chat({
       content: input
     });
 
-    setMessages((prev) => [
-      ...prev,
-      {
-        _id: Date.now().toString(),
-        content: input,
-        sender: currentUser,
-        createdAt: new Date()
-      }
-    ]);
+    addMessage({
+      _id: Date.now().toString(),
+      content: input,
+      sender: currentUser,
+      createdAt: new Date()
+    });
 
     setInput("");
   };
@@ -52,20 +75,16 @@ export default function Chat({
   return (
     <div className="w-full h-full">
       <div className="p-4 flex items-center space-x-2">
-        {selectedUser?.role == 0 ? (
+        {selectedUser?.role == Role.Organization ? (
           <Building2 className="h-6 w-6" />
         ) : (
           <UserCircle className="h-6 w-6" />
         )}
-        <span className="font-semibold">
-          {selectedUser.role
-            ? selectedUser.organization?.name
-            : `${selectedUser.volunteer?.firstName} ${selectedUser.volunteer?.lastName}`}
-        </span>
+        <span className="font-semibold">{selectedUser.username}</span>
       </div>
       <ScrollArea className="h-[700px] rounded-md p-4 ">
         <div className=" p-4 space-y-4">
-          {messages?.map((message) => (
+          {currentMessages?.map((message) => (
             <div
               key={message._id}
               className={`flex ${
@@ -78,7 +97,7 @@ export default function Chat({
                 className={`rounded-lg p-2 max-w-sm ${
                   message.sender._id === currentUser._id
                     ? "bg-gray-500 text-white"
-                    : "bg-gray-100"
+                    : "bg-gray-300"
                 }`}
               >
                 <div>{message.content}</div>
