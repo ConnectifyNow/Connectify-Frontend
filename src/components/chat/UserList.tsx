@@ -61,11 +61,7 @@ export default function UserList({ users, onSelectUser }: UserListProps) {
               ) : (
                 <User className="h-5 w-5" />
               )}
-              <span className="ellipsis">
-                {user.role
-                  ? user.organization?.name
-                  : `${user.volunteer?.firstName} ${user.volunteer?.lastName}`}
-              </span>
+              <span className="ellipsis">{user.username}</span>
               {user.role && (
                 <span className="ml-auto bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
                   Org

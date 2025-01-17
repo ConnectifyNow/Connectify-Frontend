@@ -1,10 +1,10 @@
 import { AxiosResponse } from "axios";
 import { headers } from "./authService";
 import apiClient from "./apiClient";
-import { Chat, Message, User } from "@/types";
+import { ApiChat, Chat, Message, User } from "@/types";
 
-export const getConversations = async (): Promise<AxiosResponse<Chat[]>> => {
-  return await apiClient.get(`/chat/conversation`, { headers: headers() });
+export const getConversations = async (): Promise<AxiosResponse<ApiChat[]>> => {
+  return await apiClient.get(`/chats/conversation`, { headers: headers() });
 };
 
 export const getConversationWith = async (

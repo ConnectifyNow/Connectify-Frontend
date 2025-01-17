@@ -188,6 +188,16 @@ export interface Chat {
   users: User[];
 }
 
+interface ApiChatUser {
+  _id: string;
+  username: string;
+  role: Role;
+}
+export interface ApiChat {
+  _id: string;
+  users: ApiChatUser[];
+}
+
 export type ReceiveNewMessageResponse = {
   conversationId: Chat["_id"];
   senderId: User["_id"];

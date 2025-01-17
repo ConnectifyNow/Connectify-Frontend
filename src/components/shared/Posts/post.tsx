@@ -24,7 +24,7 @@ export default function PostCard({
   onEdit,
   onDelete,
   onCommentLike,
-  showEditDelete = false,
+  showEditDelete = false
 }: PostProps) {
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -44,7 +44,7 @@ export default function PostCard({
         text: newComment.trim(),
         post: post._id,
         date: new Date().toISOString(),
-        likes: 0,
+        likes: 0
       };
       onComment(post._id, comment);
       setNewComment("");
@@ -73,7 +73,7 @@ export default function PostCard({
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <img
-                src={`${import.meta.env.VITE_REACT_APP_API_URL}/${imagePath}`}
+                src={imagePath}
                 alt={post.author.username}
                 width={40}
                 height={40}
