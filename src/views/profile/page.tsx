@@ -47,7 +47,7 @@ export default function ProfilePage() {
     if (user.isLoggedIn) {
       await logoutMutation.mutateAsync();
       resetTokens();
-      user.resetUser();
+      myUser.resetUser();
       navigate("/");
     }
   };

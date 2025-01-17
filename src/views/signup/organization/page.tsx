@@ -9,7 +9,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { getAiDescription } from "@/services/aiService";
@@ -38,7 +38,7 @@ export default function OrganizationSignUpPage() {
     description: "",
     imageUrl: "",
     websiteLink: "",
-    focusAreas: [] as string[]
+    focusAreas: [] as string[],
   });
   const router = useNavigate();
   const user = useUserStore();
@@ -75,7 +75,7 @@ export default function OrganizationSignUpPage() {
       username,
       password,
       role,
-      email
+      email,
     }: {
       username: string;
       password: string;
@@ -101,26 +101,26 @@ export default function OrganizationSignUpPage() {
         username: formData.username,
         password: formData.password,
         role: Role.Organization,
-        email: formData.email
+        email: formData.email,
       });
       const createdUser = signUpResponse.data;
 
       const loginResponse = await signinMutation.mutateAsync({
         username: formData.username,
-        password: formData.password
+        password: formData.password,
       });
 
       if (loginResponse.data.accessToken !== "") {
         saveTokens({
           accessToken: loginResponse.data.accessToken,
-          refreshToken: loginResponse.data.refreshToken
+          refreshToken: loginResponse.data.refreshToken,
         });
 
         const organizationResponse =
           await createOrganizationMutation.mutateAsync({
             ...formData,
             imageUrl: logo,
-            userId: loginResponse.data.user._id
+            userId: loginResponse.data.user._id,
           });
 
         setLogo("");
@@ -130,7 +130,7 @@ export default function OrganizationSignUpPage() {
           ...simpleOrganization,
           focusAreas: areas.filter((focusArea) =>
             simpleOrganization.focusAreas.includes(focusArea._id)
-          )
+          ),
         };
 
         createdUser.organization = organization;
