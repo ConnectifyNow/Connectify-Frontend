@@ -20,10 +20,10 @@ const mockUsers: User[] = [
       skills: [
         { _id: "1", name: "React" },
         { _id: "2", name: "Node.js" },
-        { _id: "3", name: "TypeScript" }
+        { _id: "3", name: "TypeScript" },
       ],
-      userId: ""
-    }
+      userId: "",
+    },
   },
   {
     _id: "2",
@@ -39,10 +39,10 @@ const mockUsers: User[] = [
       skills: [
         { _id: "1", name: "React" },
         { _id: "2", name: "Node.js" },
-        { _id: "3", name: "TypeScript" }
+        { _id: "3", name: "TypeScript" },
       ],
-      userId: ""
-    }
+      userId: "",
+    },
   },
   {
     _id: "3",
@@ -56,8 +56,8 @@ const mockUsers: User[] = [
       city: "Tel Aviv",
       description: "Software Developer",
       focusAreas: [],
-      websiteLink: ""
-    }
+      websiteLink: "",
+    },
   },
   {
     _id: "4",
@@ -71,8 +71,8 @@ const mockUsers: User[] = [
       city: "Tel Aviv",
       description: "Software Developer",
       focusAreas: [],
-      websiteLink: ""
-    }
+      websiteLink: "",
+    },
   },
   {
     _id: "5",
@@ -88,11 +88,11 @@ const mockUsers: User[] = [
       skills: [
         { _id: "1", name: "React" },
         { _id: "2", name: "Node.js" },
-        { _id: "3", name: "TypeScript" }
+        { _id: "3", name: "TypeScript" },
       ],
-      userId: ""
-    }
-  }
+      userId: "",
+    },
+  },
 ];
 
 export default function ChatPage() {
@@ -100,9 +100,9 @@ export default function ChatPage() {
   const user = useUserStore();
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-blue-50">
       <UserList users={mockUsers} onSelectUser={setSelectedUser} />
-      <div className="flex-1">
+      <div className="flex-1 h-full">
         <Chat currentUser={user} selectedUser={selectedUser} />
       </div>
     </div>

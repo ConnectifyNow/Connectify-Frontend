@@ -34,7 +34,7 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
     const messageData = {
       message: input,
       currentUser,
-      selectedUser
+      selectedUser,
     };
 
     socket.emit("send-message", messageData);
@@ -45,8 +45,8 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
         _id: Date.now().toString(),
         content: input,
         sender: currentUser,
-        timestamp: new Date()
-      }
+        timestamp: new Date(),
+      },
     ]);
 
     setInput("");
@@ -61,7 +61,7 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
   }
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full min-h-100">
       <div className="p-4 flex items-center space-x-2">
         {selectedUser?.role == 0 ? (
           <Building2 className="h-6 w-6" />
@@ -83,15 +83,13 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
                 message.sender._id === currentUser._id
                   ? "justify-end"
                   : "justify-start"
-              }`}
-            >
+              }`}>
               <div
                 className={`rounded-lg p-2 max-w-sm ${
                   message.sender._id === currentUser._id
                     ? "bg-gray-500 text-white"
                     : "bg-gray-100"
-                }`}
-              >
+                }`}>
                 <div>{message.content}</div>
                 <div className="text-xs mt-1 opacity-70">
                   {new Date(message.timestamp).toLocaleTimeString()}
@@ -109,7 +107,9 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
           placeholder="Type your message here..."
           className="flex-1"
         />
-        <Button type="submit">Send</Button>
+        <Button type="submit" className="bg-blue-900">
+          Send
+        </Button>
       </form>
     </div>
   );
