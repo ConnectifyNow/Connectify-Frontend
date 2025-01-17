@@ -1,43 +1,32 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChatProps, Message } from "@/types";
+import { ChatProps, Message, ReceiveNewMessageResponse } from "@/types";
 import { Building2, UserCircle } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useSocket } from "../../hooks/useSocket";
+import { useCallback, useState } from "react";
+import useChatSocket from "@/hooks/useChatSocket";
 import { ScrollArea } from "../ui/scroll-area";
 
-export default function Chat({ currentUser, selectedUser }: ChatProps) {
+export default function Chat({
+  currentUser,
+  selectedUser,
+  conversationId
+}: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
+  const onNewMessage = useCallback((data: ReceiveNewMessageResponse) => {
+    console.log(data);
+  }, []);
 
-  const socket = useSocket(currentUser._id);
+  const { sendMessage } = useChatSocket(onNewMessage);
 
-  useEffect(() => {
-    if (!socket) {
-      console.log("error");
-      return;
-    }
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!sendMessage || !selectedUser || !input.trim()) return;
 
-    socket.on("new-message", (message: Message) => {
-      setMessages((prev) => [...prev, message]);
+    sendMessage({
+      conversationId,
+      content: input
     });
-
-    return () => {
-      socket.off("new-message");
-    };
-  }, [socket]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!socket || !selectedUser || !input.trim()) return;
-
-    const messageData = {
-      message: input,
-      currentUser,
-      selectedUser
-    };
-
-    socket.emit("send-message", messageData);
 
     setMessages((prev) => [
       ...prev,
@@ -45,7 +34,7 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
         _id: Date.now().toString(),
         content: input,
         sender: currentUser,
-        timestamp: new Date()
+        createdAt: new Date()
       }
     ]);
 
@@ -94,7 +83,7 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
               >
                 <div>{message.content}</div>
                 <div className="text-xs mt-1 opacity-70">
-                  {new Date(message.timestamp).toLocaleTimeString()}
+                  {new Date(message.createdAt).toLocaleTimeString()}
                 </div>
               </div>
             </div>

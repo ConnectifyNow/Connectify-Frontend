@@ -3,6 +3,7 @@ import UserList from "@/components/chat/UserList";
 import Chat from "@/components/chat/chat";
 import { User } from "@/types";
 import useUserStore from "@/stores/setUserStore";
+import { addConversation } from "@/services/chatService";
 
 // This is mock data. In a real application, you'd fetch this from an API.
 const mockUsers: User[] = [
@@ -98,12 +99,17 @@ const mockUsers: User[] = [
 export default function ChatPage() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const user = useUserStore();
+  addConversation("678a1e6d0b54e42b21696d6a");
 
   return (
     <div className="flex h-screen bg-gray-100">
       <UserList users={mockUsers} onSelectUser={setSelectedUser} />
       <div className="flex-1">
-        <Chat currentUser={user} selectedUser={selectedUser} />
+        <Chat
+          currentUser={user}
+          selectedUser={selectedUser}
+          conversationId=""
+        />
       </div>
     </div>
   );

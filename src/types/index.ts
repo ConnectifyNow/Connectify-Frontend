@@ -154,12 +154,13 @@ export interface Message {
   _id: string;
   content: string;
   sender: User;
-  timestamp: Date;
+  createdAt: Date;
 }
 
 export interface ChatProps {
   currentUser: User;
   selectedUser: User | null;
+  conversationId: string;
 }
 
 export interface AiDescription {
@@ -182,6 +183,16 @@ export type ImageUploadResponse = {
   serverFilename: string;
 };
 
+export interface Chat {
+  _id: string;
+  users: User[];
+}
+
+export type ReceiveNewMessageResponse = {
+  conversationId: Chat["_id"];
+  senderId: User["_id"];
+} & Pick<Message, "_id" | "content" | "createdAt">;
+
 export type SigninResponse = GeneralResponse;
 
 export type GoogleSignInResponse = GeneralResponse;
@@ -193,3 +204,22 @@ export type CreateVolunteerResponse = SimpleVolunteer;
 export type CreateOrganizationResponse = SimpleOrganization;
 
 export type GetIdNameResponse = IdName[];
+
+export type SendNewMessageInput = {
+  conversationId: Chat["_id"];
+  content: string;
+};
+
+export type ServerToClientEvents = {
+  receiveMessage: (data: ReceiveNewMessageResponse) => void;
+};
+
+export type ClientToServerEvents = {
+  joinRoom: (roomId: string) => void;
+  sendMessage: (data: SendNewMessageInput) => void;
+};
+
+export type SendMessageInput = Pick<Message, "content"> & {
+  userId: User["_id"];
+  conversationId: Chat["_id"];
+};
