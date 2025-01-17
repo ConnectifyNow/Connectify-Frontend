@@ -10,10 +10,10 @@ import { ApiComment, Post, Role } from "../../../types";
 interface PostProps {
   post: Post;
   onLike: (postId: string, userId: string) => void;
-  onComment: (comment: ApiComment) => void;
+  onComment: (postId: string, comment: ApiComment) => void;
   onEdit: (updatedPost: Post) => void;
   onDelete: (postId: string) => void;
-  onCommentLike: (postId: string, commentId: string) => void;
+  onCommentLike: (postId: string, userId: string, commentId: string) => void;
   showEditDelete?: boolean;
 }
 
@@ -33,12 +33,11 @@ export default function PostCard({
 
   const currentUser = useUserStore();
   const handleLike = () => {
-    onLike(currentUser._id, currentUser._id);
+    onLike(post._id, currentUser._id);
   };
 
-  const handleAddComment = (e: React.FormEvent) => {
-    console.log("current User: ", currentUser);
-    e.preventDefault();
+  const handleAddComment = (event: React.FormEvent) => {
+    event.preventDefault();
     if (newComment.trim()) {
       const comment: ApiComment = {
         _id: Date.now().toString(),
@@ -48,7 +47,7 @@ export default function PostCard({
         date: new Date().toISOString(),
         likes: 0
       };
-      onComment(comment);
+      onComment(post._id, comment);
       setNewComment("");
     }
   };
@@ -59,10 +58,14 @@ export default function PostCard({
   };
 
   const handleCommentLike = (commentId: string) => {
-    onCommentLike(post._id, commentId);
+    onCommentLike(post._id, currentUser._id, commentId);
   };
 
   const isCurrentUserPost = post.author._id === currentUser._id;
+  const imagePath =
+    post.author.role === Role.Volunteer
+      ? post.author.volunteer?.imageUrl
+      : post.author.organization?.imageUrl;
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
@@ -71,11 +74,7 @@ export default function PostCard({
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <img
-                src={
-                  post.author.role === Role.Volunteer
-                    ? post.author.volunteer?.imageUrl
-                    : post.author.organization?.imageUrl
-                }
+                src={`${import.meta.env.VITE_REACT_APP_API_URL}/${imagePath}`}
                 alt={post.author.username}
                 width={40}
                 height={40}
@@ -150,7 +149,7 @@ export default function PostCard({
         </div>
         <div style={{ width: "40%" }}>
           <img
-            src={post.imageUrl}
+            src={`${import.meta.env.VITE_REACT_APP_API_URL}/${post.imageUrl}`}
             alt={post.author.username}
             style={{ width: "100%", height: "100%" }}
           />
@@ -159,16 +158,18 @@ export default function PostCard({
       {showComments && (
         <div className="mt-4 space-y-4">
           {post.comments?.map((comment) => (
-            console.log("comment: ", comment),
-            console.log("comment likes: ", comment.likes.keys()),
-            <div key={comment._id} className="bg-blue-50 p-3 rounded">
+            <div key={comment._id} className="bg-gray-100 p-3 rounded">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center">
                   <img
                     src={
-                      post.author.role === Role.Volunteer
-                        ? post.author.volunteer?.imageUrl
-                        : post.author.organization?.imageUrl
+                      comment.user.role === Role.Volunteer
+                        ? `${import.meta.env.VITE_REACT_APP_API_URL}/${
+                            comment.user.volunteer?.imageUrl
+                          }`
+                        : `${import.meta.env.VITE_REACT_APP_API_URL}/${
+                            comment.user.organization?.imageUrl
+                          }`
                     }
                     alt={comment.user.username}
                     width={24}
@@ -176,6 +177,7 @@ export default function PostCard({
                     className="rounded-full mr-2"
                   />
                   <span className="font-semibold text-sm">
+                    {comment.user.role}
                     {comment.user.username}
                   </span>
                 </div>

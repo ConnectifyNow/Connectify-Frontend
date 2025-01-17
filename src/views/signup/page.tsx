@@ -9,7 +9,7 @@ import { signup } from "@/services/authService";
 import { Role } from "@/types";
 
 export default function SignUpPage() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -21,12 +21,18 @@ export default function SignUpPage() {
     setIsLoading(true);
 
     try {
-      const response = await signup(email, password, Role.Volunteer, false); // The role doesn't matter here
+      const response = await signup(
+        username,
+        password,
+        Role.Volunteer,
+        undefined,
+        false
+      );
 
       if (response.status === 406) {
-        setError("Email already exists. Please sign in.");
+        setError("Username already exists. Please sign in.");
       } else {
-        router("/signup/mode", { state: { email, password } });
+        router("/signup/mode", { state: { username, password } });
       }
     } catch {
       setError("Failed to proceed. Please try again.");
@@ -51,13 +57,13 @@ export default function SignUpPage() {
           )}
           <form onSubmit={handleContinue} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="username">Username</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
+                id="username"
+                type="text"
+                placeholder="Enter your username"
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
                 required
               />
             </div>

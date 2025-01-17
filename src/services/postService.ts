@@ -1,10 +1,10 @@
-import { ApiComment, ApiPost, reqApiPost } from "../types/index";
+import { ApiComment, reqApiPost } from "../types/index";
 import { headers } from "./authService";
 import apiClient from "./apiClient";
 
 export const createPost = async (post: reqApiPost) => {
   return await apiClient.post(`/posts`, post, {
-    headers: headers(),
+    headers: headers()
   });
 };
 
@@ -13,20 +13,20 @@ export const likePostApi = async (postId: string, userId: string) => {
     `/posts/${postId}/like`,
     { userId },
     {
-      headers: headers(),
+      headers: headers()
     }
   );
 };
 
 export const getPosts = async () => {
   return await apiClient.get(`/posts`, {
-    headers: headers(),
+    headers: headers()
   });
 };
 
 export const deletePostApi = async (postId: string) => {
   return await apiClient.delete(`/posts/${postId}`, {
-    headers: headers(),
+    headers: headers()
   });
 };
 
@@ -35,24 +35,23 @@ export const likeCommentApi = async (userId: string, commentId: string) => {
     `/comments/${commentId}/like`,
     { userId },
     {
-      headers: headers(),
+      headers: headers()
     }
   );
 };
 
 export const addCommentToPost = async (postId: string, comment: ApiComment) => {
-  console.log("comment User: ", comment.user);
   return await apiClient.post(
     `/posts/${postId}/comment`,
     { text: comment.text, userId: comment.user },
     {
-      headers: headers(),
+      headers: headers()
     }
   );
 };
 
 export const updatePostApi = async (post: reqApiPost) => {
   return await apiClient.put(`/posts/${post._id}`, post, {
-    headers: headers(),
+    headers: headers()
   });
 };

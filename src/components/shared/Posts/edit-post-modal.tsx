@@ -5,7 +5,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,7 +26,7 @@ export function EditPostModal({
   post,
   isOpen,
   onClose,
-  onSave,
+  onSave
 }: EditPostModalProps) {
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
@@ -49,13 +49,14 @@ export function EditPostModal({
     );
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
     const updatedPost: Post = {
       ...post,
       title,
       content,
       skills: selectedSkills,
+      imageUrl: image
     };
     onSave(updatedPost);
     onClose();

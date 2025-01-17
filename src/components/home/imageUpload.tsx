@@ -29,7 +29,7 @@ export function ImageUpload({ preview, setPreview }: ImageUploadProps) {
         <label htmlFor="image" className="w-full h-full cursor-pointer">
           {preview ? (
             <div
-              className="w-full aspect-video bg-blue-50 rounded-lg overflow-hidden"
+              className="w-full aspect-video bg-gray-100 rounded-lg overflow-hidden"
               style={{ maxHeight: "128px" }}
             >
               <img
@@ -40,7 +40,7 @@ export function ImageUpload({ preview, setPreview }: ImageUploadProps) {
               />
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-blue-50 hover:bg-blue-50">
+            <div className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-100 hover:bg-gray-200">
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
                 <ImageIcon className="w-8 h-8 mb-4 text-gray-500" />
                 <p className="mb-2 text-sm text-gray-500">

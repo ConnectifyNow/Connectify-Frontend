@@ -97,7 +97,7 @@ export interface reqApiPost {
   user: string;
   title: string;
   content: string;
-  requiredSkills: string[];
+  skills: string[];
   imageUrl: string;
 }
 
@@ -106,7 +106,7 @@ export interface ApiPost {
   user: User;
   title: string;
   content: string;
-  requiredSkills: string[];
+  skills: string[];
   likes: string[];
   comments: Comment[];
   imageUrl: string;
@@ -131,12 +131,12 @@ export interface Comment {
 
 export enum Role {
   Volunteer = 0,
-  Organization = 1,
+  Organization = 1
 }
 
 export enum tagType {
   skill = "skill",
-  focusArea = "focus-area",
+  focusArea = "focus-area"
 }
 
 export interface ProfileData {

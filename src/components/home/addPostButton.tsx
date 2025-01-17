@@ -13,8 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import CustomSelect from "@/components/shared/customSelect";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useUserStore from "@/stores/setUserStore";
-import { Post, reqApiPost, Role } from "@/types";
-import { skills } from "@/data/posts";
+import { reqApiPost, Role } from "@/types";
 import { Plus } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { ImageUpload } from "./imageUpload";
@@ -51,12 +50,12 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
     );
 
     event.preventDefault();
-    
+
     const newPost: reqApiPost = {
       user: currentUser._id,
       title,
       content,
-      requiredSkills: filteredSelectedSkills.map(skill => skill?._id ?? ""),
+      skills: filteredSelectedSkills.map((skill) => skill?._id ?? ""),
       imageUrl: image
     };
     onAddPost(newPost);

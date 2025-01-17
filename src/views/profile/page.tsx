@@ -20,6 +20,7 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleChange = (key: keyof ProfileData, value: string) => {
+    console.log(profile);
     setProfile((prev) => ({
       ...prev,
       [key]: value
@@ -68,13 +69,12 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="bg-sky-50 px-4 py-8">
+    <div className="bg-gray-100 px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Profile</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <UserInformation
           profileData={profileData}
           isEditing={isEditing}
-          changeProfile={setProfile}
           handleChange={handleChange}
         />
         <UserAboutCard
