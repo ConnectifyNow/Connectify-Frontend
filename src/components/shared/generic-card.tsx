@@ -3,10 +3,11 @@ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger,
+  TooltipTrigger
 } from "@radix-ui/react-tooltip";
 import { MessageSquareText } from "lucide-react";
 import { GeneralCardProps } from "@/types";
+import useChatStore from "@/stores/setChatStore";
 
 export default function GeneralCard({
   name,
@@ -16,7 +17,10 @@ export default function GeneralCard({
   linkText,
   linkUrl,
   additionalInfo,
+  userId
 }: GeneralCardProps) {
+  const addConversation = useChatStore((state) => state.addConversation);
+
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6 flex flex-col">
       <div className="flex-grow">
@@ -35,7 +39,8 @@ export default function GeneralCard({
                 href={linkUrl}
                 className="text-blue-600 hover:underline"
                 target="_blank"
-                rel="noopener noreferrer">
+                rel="noopener noreferrer"
+              >
                 {linkText}
               </a>
             )}
@@ -58,7 +63,8 @@ export default function GeneralCard({
           {tags?.map((tag, index) => (
             <span
               key={index}
-              className={`${tag.bgColor} ${tag.textColor} text-xs font-semibold px-2.5 py-0.5 rounded`}>
+              className={`${tag.bgColor} ${tag.textColor} text-xs font-semibold px-2.5 py-0.5 rounded`}
+            >
               {tag.text.name}
             </span>
           ))}
@@ -68,7 +74,10 @@ export default function GeneralCard({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <button className="bg-blue-900 text-white font-bold py-2 px-4 rounded hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 ">
+              <button
+                onClick={async () => await addConversation(userId)}
+                className="bg-black text-white font-bold py-2 px-4 rounded hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 "
+              >
                 <MessageSquareText></MessageSquareText>
               </button>
             </TooltipTrigger>

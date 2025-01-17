@@ -1,53 +1,56 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChatProps, Message } from "@/types";
+import {
+  ChatProps,
+  Message,
+  ReceiveNewMessageResponse,
+  Role,
+  User
+} from "@/types";
 import { Building2, UserCircle } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useSocket } from "../../hooks/useSocket";
+import { useCallback, useState } from "react";
+import useChatSocket from "@/hooks/useChatSocket";
 import { ScrollArea } from "../ui/scroll-area";
+import useChatStore from "@/stores/setChatStore";
 
 export default function Chat({ currentUser, selectedUser }: ChatProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const chats = useChatStore();
+  const currentMessages = useChatStore((state) => state.currentMessages);
+  const addMessage = useChatStore((state) => state.addMessage);
   const [input, setInput] = useState("");
+  const onNewMessage = useCallback((data: ReceiveNewMessageResponse) => {
+    const senderUser: User = {
+      _id: data.sender._id,
+      username: data.sender.username,
+      role: data.sender.role,
+      email: "",
+      password: ""
+    };
 
-  const socket = useSocket(currentUser._id);
+    const newMessage: Message = {
+      _id: data._id,
+      content: data.content,
+      sender: senderUser,
+      createdAt: new Date(data.createdAt)
+    };
+    chats.addMessageToConversation(data.conversationId, newMessage);
+  }, []);
 
-  useEffect(() => {
-    if (!socket) {
-      console.log("error");
-      return;
-    }
+  const chatIds = chats.chats.map((chat) => chat._id);
+  const { sendMessage, listenToConversations } = useChatSocket(onNewMessage);
 
-    socket.on("new-message", (message: Message) => {
-      setMessages((prev) => [...prev, message]);
+  listenToConversations(chatIds);
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!sendMessage || !selectedUser || !input.trim()) return;
+
+    addMessage({
+      _id: Date.now().toString(),
+      content: input,
+      sender: currentUser,
+      createdAt: new Date()
     });
-
-    return () => {
-      socket.off("new-message");
-    };
-  }, [socket]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!socket || !selectedUser || !input.trim()) return;
-
-    const messageData = {
-      message: input,
-      currentUser,
-      selectedUser,
-    };
-
-    socket.emit("send-message", messageData);
-
-    setMessages((prev) => [
-      ...prev,
-      {
-        _id: Date.now().toString(),
-        content: input,
-        sender: currentUser,
-        timestamp: new Date(),
-      },
-    ]);
 
     setInput("");
   };
@@ -63,36 +66,34 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
   return (
     <div className="w-full h-full min-h-100">
       <div className="p-4 flex items-center space-x-2">
-        {selectedUser?.role == 0 ? (
+        {selectedUser?.role == Role.Organization ? (
           <Building2 className="h-6 w-6" />
         ) : (
           <UserCircle className="h-6 w-6" />
         )}
-        <span className="font-semibold">
-          {selectedUser.role
-            ? selectedUser.organization?.name
-            : `${selectedUser.volunteer?.firstName} ${selectedUser.volunteer?.lastName}`}
-        </span>
+        <span className="font-semibold">{selectedUser.username}</span>
       </div>
       <ScrollArea className="h-[700px] rounded-md p-4 ">
         <div className=" p-4 space-y-4">
-          {messages?.map((message) => (
+          {currentMessages?.map((message) => (
             <div
               key={message._id}
               className={`flex ${
                 message.sender._id === currentUser._id
                   ? "justify-end"
                   : "justify-start"
-              }`}>
+              }`}
+            >
               <div
                 className={`rounded-lg p-2 max-w-sm ${
                   message.sender._id === currentUser._id
                     ? "bg-gray-500 text-white"
-                    : "bg-gray-100"
-                }`}>
+                    : "bg-gray-300"
+                }`}
+              >
                 <div>{message.content}</div>
                 <div className="text-xs mt-1 opacity-70">
-                  {new Date(message.timestamp).toLocaleTimeString()}
+                  {new Date(message.createdAt).toLocaleTimeString()}
                 </div>
               </div>
             </div>
@@ -109,7 +110,8 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
         />
         <Button
           type="submit"
-          className="bg-blue-900 hover:bg-blue-900 hover:shadow-md">
+          className="bg-blue-900 hover:bg-blue-900 hover:shadow-md"
+        >
           Send
         </Button>
       </form>

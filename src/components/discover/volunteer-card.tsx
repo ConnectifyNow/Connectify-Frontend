@@ -1,8 +1,14 @@
-import { Volunteer } from "@/types";
+import { User, Volunteer } from "@/types";
 import GeneralCard from "../shared/generic-card";
 import { tagType } from "@/types";
 
-export default function VolunteerCard({ volunteer }: { volunteer: Volunteer }) {
+export default function VolunteerCard({
+  volunteer,
+  userId
+}: {
+  volunteer: Volunteer;
+  userId: User["_id"];
+}) {
   const tags = (volunteer.skills ?? [])?.map((skill) => ({
     type: tagType.skill,
     text: skill,
@@ -17,6 +23,7 @@ export default function VolunteerCard({ volunteer }: { volunteer: Volunteer }) {
       description={volunteer.about ?? ""}
       tags={tags}
       additionalInfo={volunteer.city}
+      userId={userId}
     />
   );
 }
