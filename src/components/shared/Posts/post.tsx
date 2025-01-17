@@ -153,7 +153,7 @@ export default function PostCard({
           )}
         </div>
       </div>
-      {showComments && (
+      {post.comments.length != 0 && showComments && (
         <div className="mt-4 space-y-4">
           {post.comments?.map((comment) => (
             <div key={comment._id} className="bg-gray-100 p-3 rounded">
@@ -209,7 +209,7 @@ export default function PostCard({
           className="mb-2 bg-blue-50"
         />
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Button type="submit" size="sm">
+          <Button type="submit" size="sm" className="bg-blue-900">
             Add Comment
           </Button>
           {showEditDelete && isCurrentUserPost && (
