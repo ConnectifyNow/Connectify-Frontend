@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import {
   CreateOrganizationResponse,
   PaginationSimpleOrganization,
+  reqApiOrganization,
   SimpleOrganization,
 } from "../types/index";
 import apiClient from "./apiClient";
@@ -22,4 +23,16 @@ export const getOrganizations = async (
   return await apiClient.get(`/organizations?page=${page}&limit=${limit}`, {
     headers: headers(),
   });
+};
+
+export const updateOrganizationApi = async (
+  organization: reqApiOrganization
+) => {
+  return await apiClient.put(
+    `/organizations/${organization._id}`,
+    organization,
+    {
+      headers: headers(),
+    }
+  );
 };

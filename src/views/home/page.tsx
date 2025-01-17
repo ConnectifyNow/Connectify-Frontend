@@ -63,7 +63,6 @@ export default function Home() {
         console.error("Error fetching posts:", error);
       }
     };
-
     fetchPosts();
   }, []);
 
@@ -118,6 +117,7 @@ export default function Home() {
       console.error("Failed to update post:", response.statusText);
     }
   };
+
   const handleAddComment = async (postId: string, comment: ApiComment) => {
     const response = await addCommentToPost(postId, comment);
     comment._id = response.data._id;
