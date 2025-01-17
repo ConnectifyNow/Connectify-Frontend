@@ -9,7 +9,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { getAiDescription } from "@/services/aiService";
@@ -38,7 +38,7 @@ export default function OrganizationSignUpPage() {
     description: "",
     imageUrl: "",
     websiteLink: "",
-    focusAreas: [] as string[],
+    focusAreas: [] as string[]
   });
   const router = useNavigate();
   const user = useUserStore();
@@ -75,7 +75,7 @@ export default function OrganizationSignUpPage() {
       username,
       password,
       role,
-      email,
+      email
     }: {
       username: string;
       password: string;
@@ -101,26 +101,27 @@ export default function OrganizationSignUpPage() {
         username: formData.username,
         password: formData.password,
         role: Role.Organization,
-        email: formData.email,
+        email: formData.email
       });
       const createdUser = signUpResponse.data;
 
       const loginResponse = await signinMutation.mutateAsync({
         username: formData.username,
-        password: formData.password,
+        password: formData.password
       });
 
       if (loginResponse.data.accessToken !== "") {
         saveTokens({
           accessToken: loginResponse.data.accessToken,
-          refreshToken: loginResponse.data.refreshToken,
+          refreshToken: loginResponse.data.refreshToken
         });
 
         const organizationResponse =
           await createOrganizationMutation.mutateAsync({
+            _id: createdUser._id,
             ...formData,
             imageUrl: logo,
-            userId: loginResponse.data.user._id,
+            userId: loginResponse.data.user._id
           });
 
         setLogo("");
@@ -130,7 +131,7 @@ export default function OrganizationSignUpPage() {
           ...simpleOrganization,
           focusAreas: areas.filter((focusArea) =>
             simpleOrganization.focusAreas.includes(focusArea._id)
-          ),
+          )
         };
 
         createdUser.organization = organization;
@@ -175,7 +176,7 @@ export default function OrganizationSignUpPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-blue-50 ">
+    <div className="px-4 py-8 bg-blue-50 ">
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl text-center">
@@ -191,7 +192,8 @@ export default function OrganizationSignUpPage() {
           <form
             onSubmit={handleSubmit}
             className="space-y-4"
-            style={{ display: "flex", flexDirection: "column" }}>
+            style={{ display: "flex", flexDirection: "column" }}
+          >
             <div className="space-y-2">
               <Label htmlFor="email">Organization Email</Label>
               <Input
@@ -229,7 +231,8 @@ export default function OrganizationSignUpPage() {
               <Label htmlFor="city">City</Label>
               <Select
                 onValueChange={(value) => handleSelectChange("city", value)}
-                required>
+                required
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a city" />
                 </SelectTrigger>
@@ -262,7 +265,8 @@ export default function OrganizationSignUpPage() {
               onClick={() => handleGenerateClick()}
               disabled={isDisabled}
               className="w-55 bg-blue-900 hover:bg-blue-900 hover:shadow-md"
-              style={{ width: "35%" }}>
+              style={{ width: "35%" }}
+            >
               {isDisabled
                 ? `Wait ${coolDownTime}s`
                 : "Generate Description using AI"}
@@ -276,7 +280,8 @@ export default function OrganizationSignUpPage() {
             <Button
               type="submit"
               className="w-full bg-blue-900 hover:bg-blue-900 hover:shadow-md"
-              disabled={isLoading}>
+              disabled={isLoading}
+            >
               {isLoading ? "Completing Sign Up..." : "Complete Sign Up"}
             </Button>
           </form>

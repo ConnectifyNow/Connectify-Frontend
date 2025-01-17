@@ -32,7 +32,7 @@ export default function SignInPage() {
 
       saveTokens({
         accessToken: loginGoogleRes.accessToken,
-        refreshToken: loginGoogleRes.refreshToken,
+        refreshToken: loginGoogleRes.refreshToken
       });
       user.setUser(loginGoogleRes.user);
       updateIsLoggedIn(true);
@@ -50,7 +50,7 @@ export default function SignInPage() {
         <ToastAction altText="Sorry, we have an issue logging in via Google">
           login error
         </ToastAction>
-      ),
+      )
     });
   };
 
@@ -67,13 +67,13 @@ export default function SignInPage() {
     try {
       const response = await signinMutation.mutateAsync({
         username,
-        password,
+        password
       });
 
       if (response.data.accessToken !== "") {
         saveTokens({
           accessToken: response.data.accessToken,
-          refreshToken: response.data.refreshToken,
+          refreshToken: response.data.refreshToken
         });
         user.setUser(response.data.user);
         updateIsLoggedIn(true);
@@ -83,7 +83,7 @@ export default function SignInPage() {
         title: "Logged in successfully",
         action: (
           <ToastAction altText="Logged in successfully">login</ToastAction>
-        ),
+        )
       });
 
       router("/home");
@@ -95,7 +95,7 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 flex justify-center items-center min-h-screen bg-blue-50">
+    <div className="px-4 py-8 flex justify-center items-center min-h-screen bg-blue-50">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl text-center">
@@ -134,7 +134,8 @@ export default function SignInPage() {
             <Button
               type="submit"
               className="w-full bg-green-700 hover:bg-green-800 hover:shadow-md"
-              disabled={isLoading}>
+              disabled={isLoading}
+            >
               {isLoading ? "Signing In..." : "Sign In"}
             </Button>
             <GoogleLogin

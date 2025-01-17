@@ -8,7 +8,7 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious,
+  PaginationPrevious
 } from "@/components/ui/pagination";
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/home/sidebar";
@@ -22,10 +22,11 @@ import {
   getPosts,
   likeCommentApi,
   likePostApi,
-  updatePostApi,
+  updatePostApi
 } from "@/services/postService";
 import useUserStore from "@/stores/setUserStore";
 import useSkillsStore from "@/stores/setSkillsStore";
+import useChatStore from "@/stores/setChatStore";
 
 const POSTS_PER_PAGE = 3;
 
@@ -38,16 +39,22 @@ export default function Home() {
     deletePost,
     addComment,
     likeComment,
-    addPost,
+    addPost
   } = usePostsStore();
   const [filters, setFilters] = useState({
     postType: "all",
-    skillsIds: [] as string[],
+    skillsIds: [] as string[]
   });
   const user = useUserStore();
+  const chats = useChatStore();
+
   const getSkillById = useSkillsStore((state) => state.getSkillById);
 
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    chats.fetchChats();
+  }, []);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -74,7 +81,7 @@ export default function Home() {
       content: post.content,
       user: post.user,
       skills: post.skills,
-      imageUrl: post.imageUrl,
+      imageUrl: post.imageUrl
     });
 
     if (response.status === 201) {
@@ -90,7 +97,7 @@ export default function Home() {
         imageUrl: post.imageUrl,
         skills,
         comments: [],
-        likes: 0,
+        likes: 0
       };
 
       addPost(newPost);
@@ -106,7 +113,7 @@ export default function Home() {
       title: post.title,
       content: post.content,
       skills: post.skills.map((skill) => skill._id),
-      imageUrl: post.imageUrl,
+      imageUrl: post.imageUrl
     };
 
     const response = await updatePostApi(postToUpdate);
@@ -216,7 +223,8 @@ export default function Home() {
             {paginatedPosts.length > 0 ? (
               <div
                 className="mt-8 flex justify-center"
-                style={{ cursor: "pointer" }}>
+                style={{ cursor: "pointer" }}
+              >
                 <Pagination>
                   <PaginationContent>
                     <PaginationItem>
@@ -231,7 +239,8 @@ export default function Home() {
                       <PaginationItem key={index}>
                         <PaginationLink
                           isActive={currentPage === index + 1}
-                          onClick={() => setCurrentPage(index + 1)}>
+                          onClick={() => setCurrentPage(index + 1)}
+                        >
                           {index + 1}
                         </PaginationLink>
                       </PaginationItem>
