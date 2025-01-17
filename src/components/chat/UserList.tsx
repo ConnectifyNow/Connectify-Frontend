@@ -27,20 +27,20 @@ export default function UserList({ users, onSelectUser }: UserListProps) {
         <div className="flex space-x-2">
           <Button
             size="sm"
-            className="bg-blue-700"
+            className="bg-blue-700 hover:bg-blue-900 hover:shadow-md"
             variant={filter === "all" ? "default" : "outline"}
             onClick={() => setFilter("all")}>
             All
           </Button>
           <Button
-            className="bg-blue-700"
+            className="bg-blue-700 hover:bg-blue-900 hover:shadow-md"
             size="sm"
             variant={filter === "volunteers" ? "default" : "outline"}
             onClick={() => setFilter("volunteers")}>
             Volunteers
           </Button>
           <Button
-            className="bg-blue-700"
+            className="bg-blue-700 hover:bg-blue-900 hover:shadow-md"
             size="sm"
             variant={filter === "organizations" ? "default" : "outline"}
             onClick={() => setFilter("organizations")}>

@@ -209,7 +209,10 @@ export default function PostCard({
           className="mb-2 bg-blue-50"
         />
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Button type="submit" size="sm" className="bg-blue-900">
+          <Button
+            type="submit"
+            size="sm"
+            className="bg-blue-900 hover:bg-blue-900 hover:shadow-md">
             Add Comment
           </Button>
           {showEditDelete && isCurrentUserPost && (

@@ -116,11 +116,15 @@ export default function UserAboutCard({
         )}
         <div className="flex justify-end space-x-2">
           {isEditing ? (
-            <Button className="bg-blue-900" onClick={saveProfile}>
+            <Button
+              className="bg-blue-900 hover:bg-blue-900 hover:shadow-md"
+              onClick={saveProfile}>
               Save Profile
             </Button>
           ) : (
-            <Button className="bg-blue-900" onClick={() => setIsEditing(true)}>
+            <Button
+              className="bg-blue-900 hover:bg-blue-900 hover:shadow-md"
+              onClick={() => setIsEditing(true)}>
               Edit Profile
             </Button>
           )}

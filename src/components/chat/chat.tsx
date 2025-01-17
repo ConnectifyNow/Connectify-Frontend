@@ -107,7 +107,9 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
           placeholder="Type your message here..."
           className="flex-1 bg-blue-50"
         />
-        <Button type="submit" className="bg-blue-900">
+        <Button
+          type="submit"
+          className="bg-blue-900 hover:bg-blue-900 hover:shadow-md">
           Send
         </Button>
       </form>

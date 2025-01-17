@@ -4,7 +4,7 @@ import {
   DialogTrigger,
   DialogContent,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,7 +56,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
       title,
       content,
       skills: filteredSelectedSkills.map((skill) => skill?._id ?? ""),
-      imageUrl: image
+      imageUrl: image,
     };
     onAddPost(newPost);
     setImage("");
@@ -74,9 +74,8 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button
-          className="fixed bottom-8 right-8 rounded-full w-16 h-16 shadow-lg"
-          onClick={() => setIsOpen(true)}
-        >
+          className="fixed bottom-8 right-8 bg-green-600 hover:bg-green-700 hover:shadow-md rounded-full w-16 h-16 shadow-lg"
+          onClick={() => setIsOpen(true)}>
           <Plus className="w-8 h-8" />
         </Button>
       </DialogTrigger>
@@ -125,7 +124,11 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
               </CardContent>
             </Card>
           </div>
-          <Button type="submit">Create Post</Button>
+          <Button
+            className="bg-blue-900 hover:bg-blue-900 hover:shadow-md"
+            type="submit">
+            Create Post
+          </Button>
         </form>
       </DialogContent>
     </Dialog>
