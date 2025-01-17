@@ -13,11 +13,7 @@ import useChatSocket from "@/hooks/useChatSocket";
 import { ScrollArea } from "../ui/scroll-area";
 import useChatStore from "@/stores/setChatStore";
 
-export default function Chat({
-  currentUser,
-  selectedUser,
-  conversationId
-}: ChatProps) {
+export default function Chat({ currentUser, selectedUser }: ChatProps) {
   const chats = useChatStore();
   const currentMessages = useChatStore((state) => state.currentMessages);
   const addMessage = useChatStore((state) => state.addMessage);
@@ -48,12 +44,6 @@ export default function Chat({
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (!sendMessage || !selectedUser || !input.trim()) return;
-
-    const messageData = {
-      message: input,
-      currentUser,
-      selectedUser
-    };
 
     addMessage({
       _id: Date.now().toString(),
