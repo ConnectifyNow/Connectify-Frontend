@@ -1,9 +1,7 @@
+import { ImageUpload } from "@/components/home/imageUpload";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { City, ProfileData, Role } from "../../../types/index";
-import { ImageUpload } from "@/components/home/imageUpload";
-import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -12,40 +10,27 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useCitiesStore from "@/stores/setCitiesStore";
+import { City, ProfileData, Role } from "../../../types/index";
 
 type UserInformationProps = {
-  profileData: ProfileData;
+  profile: ProfileData;
+  setProfile: (profile: ProfileData) => void;
   isEditing: boolean;
-  handleSubmit: (updatedProfileData: ProfileData) => void;
 };
 
 export default function UserInformation({
-  profileData,
+  profile,
+  setProfile,
   isEditing,
-  handleSubmit,
 }: UserInformationProps) {
-  const [image, setImage] = useState("");
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [city, setCity] = useState<City | undefined>(undefined);
-  const [email, setEmail] = useState("");
-
   const cities = useCitiesStore((state) => state.cities);
-  const ProfileDataCity = cities?.find((city) => city._id === profileData.city);
-
-  useEffect(() => {
-    setName(profileData.name);
-    setUsername(profileData.username);
-    setCity(ProfileDataCity);
-    setImage(profileData.imageUrl ?? "");
-    setEmail(profileData.email);
-  }, [profileData]);
+  // const ProfileDataCity = cities?.find((city) => city._id === profileData.city);
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>
-          {profileData.role == Role.Volunteer
+          {profile.role == Role.Volunteer
             ? "User Information"
             : "Organization Information"}
         </CardTitle>
@@ -58,16 +43,26 @@ export default function UserInformation({
                 <Label htmlFor="name">Name</Label>
                 <Input
                   id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={profile.name}
+                  onChange={(e) =>
+                    setProfile({
+                      ...profile,
+                      name: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div>
                 <Label htmlFor="username">Username</Label>
                 <Input
                   id="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={profile.username}
+                  onChange={(e) =>
+                    setProfile({
+                      ...profile,
+                      username: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div>
@@ -75,24 +70,34 @@ export default function UserInformation({
                 <Input
                   id="email"
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={profile.email}
+                  onChange={(e) =>
+                    setProfile({
+                      ...profile,
+                      email: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="city">City</Label>
                 <Select
                   onValueChange={(e) => {
-                    const selectedCity = cities?.find(
-                      (city) => city.name === e
-                    );
-                    setCity(selectedCity);
+                    // const selectedCity = cities?.find(
+                    //   (city) => city.name === e
+                    // );
+                    setProfile({
+                      ...profile,
+                      city: e,
+                    });
                   }}
                   required
                 >
                   <SelectTrigger>
                     <SelectValue
-                      placeholder={city ? `${city?.name}` : "Select A City"}
+                      placeholder={
+                        profile.city ? `${profile.city}` : "Select A City"
+                      }
                     />
                   </SelectTrigger>
                   <SelectContent>
@@ -107,7 +112,15 @@ export default function UserInformation({
             </div>
             <div>
               <CardContent className="pt-6">
-                <ImageUpload preview={image} setPreview={setImage} />
+                <ImageUpload
+                  preview={profile.imageUrl ?? ""}
+                  setPreview={(e) => {
+                    setProfile({
+                      ...profile,
+                      imageUrl: e,
+                    });
+                  }}
+                />
               </CardContent>
             </div>
           </>
@@ -115,24 +128,24 @@ export default function UserInformation({
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div>
               <p>
-                <strong>Name:</strong> {name}
+                <strong>Name:</strong> {profile.name}
               </p>
               <p>
-                <strong>Username:</strong> {username}
+                <strong>Username:</strong> {profile.username}
               </p>
               <p>
-                <strong>Email:</strong> {email}
+                <strong>Email:</strong> {profile.email}
               </p>
               <p>
-                <strong>City:</strong> {city?.name}
+                <strong>City:</strong> {profile.city}
               </p>
             </div>
             <div className="flex justify-center">
               <img
                 src={`${import.meta.env.VITE_REACT_APP_API_URL}/${
-                  profileData.imageUrl
+                  profile.imageUrl
                 }`}
-                alt={profileData.username}
+                alt={profile.username}
                 width={"60%"}
                 height={"60%"}
                 className="rounded-full mr-4"

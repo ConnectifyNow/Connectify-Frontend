@@ -7,29 +7,30 @@ import CustomSelect from "@/components/shared/customSelect";
 import { useEffect, useState } from "react";
 import { getAiDescription } from "@/services/aiService";
 import useSkillsStore from "@/stores/setSkillsStore";
+import useUserStore from "@/stores/setUserStore";
 
 type UserAboutProps = {
-  profileData: ProfileData;
+  profile: ProfileData;
+  setProfile: (profile: ProfileData) => void;
   isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
-  handleSubmit: (updatedProfileData: ProfileData) => void;
-  handleSkillsChange: (value: string) => void;
   saveProfile: () => void;
   handleLogout: () => void;
 };
 
 export default function UserAboutCard({
-  profileData,
+  profile,
+  setProfile,
   isEditing,
   setIsEditing,
-  handleSubmit,
-  handleSkillsChange,
   saveProfile,
   handleLogout,
 }: UserAboutProps) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [coolDownTime, setCoolDownTime] = useState(0);
   const skills = useSkillsStore((state) => state.skills);
+  const getSkillById = useSkillsStore((state) => state.getSkillById);
+  const toggleSkill = useUserStore((state) => state.toggleSkill);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -48,9 +49,17 @@ export default function UserAboutCard({
     };
   }, [isDisabled, coolDownTime]);
 
-  const handleClick = async (profileData: ProfileData) => {
-    const response = await getAiDescription(profileData.username);
-    profileData.about = response.data.description;
+  const handleSkillsChange = (value: string) => {
+    const skill = getSkillById(value);
+
+    if (skill !== undefined) {
+      toggleSkill(skill);
+    }
+  };
+
+  const handleClick = async (profile: ProfileData) => {
+    const response = await getAiDescription(profile.username);
+    profile.about = response.data.description;
     setIsDisabled(true);
     setCoolDownTime(20);
   };
@@ -59,7 +68,7 @@ export default function UserAboutCard({
     <Card className="md:col-span-2">
       <CardHeader>
         <CardTitle>
-          {profileData.role === Role.Volunteer
+          {profile?.role === Role.Volunteer
             ? "About Me"
             : "About The Organization"}
         </CardTitle>
@@ -71,13 +80,18 @@ export default function UserAboutCard({
               <Label htmlFor="about">Description</Label>
               <Textarea
                 id="about"
-                value={profileData.about}
-                // onChange={(event) => handleChange("about", event.target.value)}
+                value={profile?.about}
+                onChange={(event) =>
+                  setProfile({ ...profile, about: event.target.value })
+                }
               />
             </div>
-            {profileData.role === Role.Organization && (
+            {profile?.role === Role.Organization && (
               <Button
-                onClick={() => handleClick(profileData)}
+                onClick={() => {
+                  const fromAI = "Generate Description";
+                  setProfile({ ...profile, about: fromAI });
+                }}
                 disabled={isDisabled}
                 className="w-55"
               >
@@ -87,12 +101,12 @@ export default function UserAboutCard({
               </Button>
             )}
 
-            {profileData.role === Role.Volunteer && (
+            {profile?.role === Role.Volunteer && (
               <div>
                 <CustomSelect
                   options={skills}
                   selectedOptions={
-                    profileData.skills?.map((skill) => skill._id) ?? []
+                    profile.skills?.map((skill) => skill._id) ?? []
                   }
                   onChange={handleSkillsChange}
                 />
@@ -101,10 +115,10 @@ export default function UserAboutCard({
           </>
         ) : (
           <>
-            <div style={{ wordWrap: "break-word" }}>{profileData.about}</div>
+            <div style={{ wordWrap: "break-word" }}>{profile.about}</div>
             <div>
               <div className="flex flex-wrap gap-2 mt-2">
-                {(profileData.skills ?? [])?.map((skill) => (
+                {(profile.skills ?? [])?.map((skill) => (
                   <span
                     key={skill._id}
                     className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-sm"

@@ -23,3 +23,9 @@ export const getOrganizations = async (
     headers: headers(),
   });
 };
+
+// export const updateOrganization = async (post: reqApiPost) => {
+//   return await apiClient.put(`/posts/${post._id}`, post, {
+//     headers: headers(),
+//   });
+// };

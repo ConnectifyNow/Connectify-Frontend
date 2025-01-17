@@ -4,7 +4,7 @@ import PostsList from "@/components/profile/userPostsLists/user-posts-list";
 import { logout, resetTokens } from "@/services/authService";
 import useSkillsStore from "@/stores/setSkillsStore";
 import useUserStore from "@/stores/setUserStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { ProfileData, Role, User } from "../../types/index";
@@ -13,32 +13,38 @@ export default function ProfilePage() {
   const user = useUserStore();
   const navigate = useNavigate();
   const logoutMutation = useMutation(logout);
-  const getSkillById = useSkillsStore((state) => state.getSkillById);
-  const toggleSkill = useUserStore((state) => state.toggleSkill);
 
-  const [profile, setProfile] = useState<User>(user);
+  const [profile, setProfile] = useState<ProfileData>({} as ProfileData);
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleSubmit = (updatedProfileData: ProfileData) => {
-    const profileDataToSave: ProfileData = {
-      ...profileData,
-      name: updatedProfileData.name,
-      username: updatedProfileData.username,
-      city: updatedProfileData.city,
-      imageUrl: updatedProfileData.imageUrl,
-    };
-
-    console.log({ profileDataToSave });
-    // onSave(updatedProfileData);
-  };
-
-  const handleSkillsChange = (value: string) => {
-    const skill = getSkillById(value);
-
-    if (skill !== undefined) {
-      toggleSkill(skill);
+  let myProfile = {} as ProfileData;
+  useEffect(() => {
+    if (user?.role === Role.Volunteer && user.volunteer) {
+      myProfile = {
+        ...user.volunteer,
+        name: `${user.volunteer?.firstName} ${user.volunteer?.lastName}`,
+        role: Role.Volunteer,
+        email: user.email,
+        username: user.username,
+        city: user?.volunteer.city,
+        imageUrl: user?.volunteer.imageUrl,
+        about: user.volunteer.about,
+      };
+    } else if (user?.role === Role.Organization && user.organization) {
+      myProfile = {
+        ...user.organization,
+        name: user.organization.name,
+        role: Role.Organization,
+        email: user.email,
+        about: user.organization.description,
+        username: user.username,
+        city: user?.organization.city,
+        imageUrl: user?.organization.imageUrl,
+      };
     }
-  };
+    setProfile(myProfile);
+  }),
+    [];
 
   const handleLogout = async () => {
     if (user.isLoggedIn) {
@@ -50,44 +56,43 @@ export default function ProfilePage() {
   };
 
   const saveProfile = () => {
+    // const handleEditProfile = async (profile: ProfileData) => {
+    //   const profileToUpdate = {
+    //     ...profileData,
+    //     name: name,
+    //     username: username,
+    //     city: city?.name,
+    //     imageUrl: image,
+    //     email: email,
+    //   };
+
+    //   //   const response = await updatePostApi(postToUpdate);
+
+    //   //   if (response.status === 200) {
+    //   //     updatePost(post);
+    //   //   } else {
+    //   //     console.error("Failed to update post:", response.statusText);
+    //   //   }
+    //   // };
+
+    // };
     setIsEditing(false);
   };
-
-  let profileData = {} as ProfileData;
-
-  if (user?.role === Role.Volunteer && user.volunteer) {
-    profileData = {
-      ...user.volunteer,
-      name: `${user.volunteer?.firstName} ${user.volunteer?.lastName}`,
-      role: Role.Volunteer,
-      email: user.email,
-      username: user.username,
-    };
-  } else if (user?.role === Role.Organization && user.organization) {
-    profileData = {
-      ...user.organization,
-      role: Role.Organization,
-      email: user.email,
-      about: user.organization.description,
-      username: user.username,
-    };
-  }
 
   return (
     <div className="bg-gray-100 px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Profile</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <UserInformation
-          profileData={profileData}
+          profile={profile}
+          setProfile={setProfile}
           isEditing={isEditing}
-          handleSubmit={handleSubmit}
         />
         <UserAboutCard
-          profileData={profileData}
+          profile={profile}
+          setProfile={setProfile}
           isEditing={isEditing}
           setIsEditing={setIsEditing}
-          handleSubmit={handleSubmit}
-          handleSkillsChange={handleSkillsChange}
           handleLogout={handleLogout}
           saveProfile={saveProfile}
         />
