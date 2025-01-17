@@ -19,12 +19,17 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<User>(user);
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleChange = (key: keyof ProfileData, value: string) => {
-    console.log(profile);
-    setProfile((prev) => ({
-      ...prev,
-      [key]: value
-    }));
+  const handleSubmit = (updatedProfileData: ProfileData) => {
+    const profileDataToSave: ProfileData = {
+      ...profileData,
+      name: updatedProfileData.name,
+      username: updatedProfileData.username,
+      city: updatedProfileData.city,
+      imageUrl: updatedProfileData.imageUrl,
+    };
+
+    console.log({ profileDataToSave });
+    // onSave(updatedProfileData);
   };
 
   const handleSkillsChange = (value: string) => {
@@ -56,7 +61,7 @@ export default function ProfilePage() {
       name: `${user.volunteer?.firstName} ${user.volunteer?.lastName}`,
       role: Role.Volunteer,
       email: user.email,
-      username: user.username
+      username: user.username,
     };
   } else if (user?.role === Role.Organization && user.organization) {
     profileData = {
@@ -64,7 +69,7 @@ export default function ProfilePage() {
       role: Role.Organization,
       email: user.email,
       about: user.organization.description,
-      username: user.username
+      username: user.username,
     };
   }
 
@@ -75,13 +80,13 @@ export default function ProfilePage() {
         <UserInformation
           profileData={profileData}
           isEditing={isEditing}
-          handleChange={handleChange}
+          handleSubmit={handleSubmit}
         />
         <UserAboutCard
           profileData={profileData}
           isEditing={isEditing}
           setIsEditing={setIsEditing}
-          handleChange={handleChange}
+          handleSubmit={handleSubmit}
           handleSkillsChange={handleSkillsChange}
           handleLogout={handleLogout}
           saveProfile={saveProfile}

@@ -3,30 +3,43 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { City, ProfileData, Role } from "../../../types/index";
 import { ImageUpload } from "@/components/home/imageUpload";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
 import useCitiesStore from "@/stores/setCitiesStore";
 
 type UserInformationProps = {
   profileData: ProfileData;
   isEditing: boolean;
-  handleChange: (key: keyof ProfileData, value: string) => void;
+  handleSubmit: (updatedProfileData: ProfileData) => void;
 };
 
 export default function UserInformation({
   profileData,
   isEditing,
-  handleChange
+  handleSubmit,
 }: UserInformationProps) {
   const [image, setImage] = useState("");
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [city, setCity] = useState<City | undefined>(undefined);
+  const [email, setEmail] = useState("");
+
   const cities = useCitiesStore((state) => state.cities);
-  const ProfileDataCity = cities.find((city) => city._id === profileData.city);
+  const ProfileDataCity = cities?.find((city) => city._id === profileData.city);
+
+  useEffect(() => {
+    setName(profileData.name);
+    setUsername(profileData.username);
+    setCity(ProfileDataCity);
+    setImage(profileData.imageUrl ?? "");
+    setEmail(profileData.email);
+  }, [profileData]);
 
   return (
     <Card>
@@ -45,18 +58,16 @@ export default function UserInformation({
                 <Label htmlFor="name">Name</Label>
                 <Input
                   id="name"
-                  value={profileData.name}
-                  onChange={(event) => handleChange("name", event.target.value)}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </div>
               <div>
                 <Label htmlFor="username">Username</Label>
                 <Input
                   id="username"
-                  value={profileData.username}
-                  onChange={(event) =>
-                    handleChange("username", event.target.value)
-                  }
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
               <div>
@@ -64,25 +75,24 @@ export default function UserInformation({
                 <Input
                   id="email"
                   type="email"
-                  value={profileData.email}
-                  onChange={(event) =>
-                    handleChange("email", event.target.value)
-                  }
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="city">City</Label>
                 <Select
-                  onValueChange={(event) => handleChange("city", event)}
+                  onValueChange={(e) => {
+                    const selectedCity = cities?.find(
+                      (city) => city.name === e
+                    );
+                    setCity(selectedCity);
+                  }}
                   required
                 >
                   <SelectTrigger>
                     <SelectValue
-                      placeholder={
-                        ProfileDataCity
-                          ? `${ProfileDataCity?.name}`
-                          : "Select A City"
-                      }
+                      placeholder={city ? `${city?.name}` : "Select A City"}
                     />
                   </SelectTrigger>
                   <SelectContent>
@@ -105,16 +115,16 @@ export default function UserInformation({
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div>
               <p>
-                <strong>Name:</strong> {profileData.name}
+                <strong>Name:</strong> {name}
               </p>
               <p>
-                <strong>Username:</strong> {profileData.username}
+                <strong>Username:</strong> {username}
               </p>
               <p>
-                <strong>Email:</strong> {profileData.email}
+                <strong>Email:</strong> {email}
               </p>
               <p>
-                <strong>City:</strong> {profileData.city}
+                <strong>City:</strong> {city?.name}
               </p>
             </div>
             <div className="flex justify-center">

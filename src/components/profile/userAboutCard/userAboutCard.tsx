@@ -12,7 +12,7 @@ type UserAboutProps = {
   profileData: ProfileData;
   isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
-  handleChange: (key: keyof ProfileData, value: string) => void;
+  handleSubmit: (updatedProfileData: ProfileData) => void;
   handleSkillsChange: (value: string) => void;
   saveProfile: () => void;
   handleLogout: () => void;
@@ -22,7 +22,7 @@ export default function UserAboutCard({
   profileData,
   isEditing,
   setIsEditing,
-  handleChange,
+  handleSubmit,
   handleSkillsChange,
   saveProfile,
   handleLogout,
@@ -72,7 +72,7 @@ export default function UserAboutCard({
               <Textarea
                 id="about"
                 value={profileData.about}
-                onChange={(event) => handleChange("about", event.target.value)}
+                // onChange={(event) => handleChange("about", event.target.value)}
               />
             </div>
             {profileData.role === Role.Organization && (
