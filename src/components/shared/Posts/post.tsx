@@ -30,7 +30,6 @@ export default function PostCard({
   const [newComment, setNewComment] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-
   const currentUser = useUserStore();
   const handleLike = () => {
     onLike(post._id, currentUser._id);
@@ -148,11 +147,13 @@ export default function PostCard({
           )}
         </div>
         <div style={{ width: "40%" }}>
-          <img
-            src={`${import.meta.env.VITE_REACT_APP_API_URL}/${post.imageUrl}`}
-            alt={post.author.username}
-            style={{ width: "100%", height: "100%" }}
-          />
+          {post.imageUrl && (
+            <img
+              src={`${import.meta.env.VITE_REACT_APP_API_URL}/${post.imageUrl}`}
+              alt={post.author.username}
+              style={{ width: "100%", height: "100%" }}
+            />
+          )}
         </div>
       </div>
       {showComments && (
