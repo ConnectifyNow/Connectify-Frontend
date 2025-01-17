@@ -3,7 +3,7 @@ import {
   Card,
   CardHeader,
   CardTitle,
-  CardDescription
+  CardDescription,
 } from "@/components/ui/card";
 import { Users, MessageSquare, UserCheck } from "lucide-react";
 import { useRef } from "react";
@@ -22,7 +22,7 @@ export default function OnBoarding() {
   return (
     <div className="flex flex-col items-center">
       {}
-      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-primary">
+      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-blue-900">
         <div className="px-4 md:px-6">
           <div className="flex flex-col items-center space-y-4 text-center">
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none text-white">
@@ -37,16 +37,14 @@ export default function OnBoarding() {
               <Button
                 size="lg"
                 className="bg-white text-primary hover:bg-gray-100"
-                onClick={() => router("/signin")}
-              >
+                onClick={() => router("/signin")}>
                 Get Started
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                className="bg-primary text-white border-white hover:bg-primary-foreground"
-                onClick={handleLearnMoreClick}
-              >
+                className="bg-gray-700 text-white border-white hover:bg-primary-foreground "
+                onClick={handleLearnMoreClick}>
                 Learn More
               </Button>
             </div>
@@ -55,12 +53,11 @@ export default function OnBoarding() {
       </section>
 
       <section
-        className="w-full py-2 md:py-24 lg:py-32"
+        className="w-full py-2 md:py-24 lg:py-32 bg-blue-50"
         id="about"
-        ref={aboutRef}
-      >
+        ref={aboutRef}>
         <div className="px-4 md:px-6">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8  ">
             About The Platform
           </h2>
           <div className="px-4 md:px-6">
@@ -79,7 +76,7 @@ export default function OnBoarding() {
       </section>
 
       {/* Features Section */}
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-blue-100">
         <div className="px-4 md:px-6">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12">
             How Connectify Works
@@ -120,7 +117,7 @@ export default function OnBoarding() {
       </section>
 
       {}
-      <section className="w-full py-12 md:py-24 lg:py-32">
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-blue-50">
         <div className="px-4 md:px-6">
           <div className="flex flex-col items-center space-y-4 text-center">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
@@ -132,9 +129,8 @@ export default function OnBoarding() {
             </p>
             <Button
               size="lg"
-              className="mt-4"
-              onClick={() => router("/signup")}
-            >
+              className="mt-4 bg-blue-900 hover:bg-blue-900 hover:shadow-md"
+              onClick={() => router("/signup")}>
               Sign Up Now
             </Button>
           </div>

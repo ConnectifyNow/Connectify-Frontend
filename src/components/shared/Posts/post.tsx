@@ -97,8 +97,7 @@ export default function PostCard({
             {post.skills?.map((skill) => (
               <span
                 key={skill._id}
-                className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
-              >
+                className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
                 {skill.name}
               </span>
             ))}
@@ -108,8 +107,7 @@ export default function PostCard({
               variant="ghost"
               size="sm"
               onClick={handleLike}
-              className="flex items-center space-x-1"
-            >
+              className="flex items-center space-x-1">
               <Heart
                 className={`w-5 h-5 ${
                   post.likes > 0 ? "fill-red-500 text-red-500" : ""
@@ -121,8 +119,7 @@ export default function PostCard({
               variant="ghost"
               size="sm"
               onClick={() => setShowComments(!showComments)}
-              className="flex items-center space-x-1"
-            >
+              className="flex items-center space-x-1">
               <MessageCircle className="w-5 h-5" />
               <span>{post.comments.length}</span>
             </Button>
@@ -156,7 +153,7 @@ export default function PostCard({
           )}
         </div>
       </div>
-      {showComments && (
+      {post.comments.length != 0 && showComments && (
         <div className="mt-4 space-y-4">
           {post.comments?.map((comment) => (
             <div key={comment._id} className="bg-gray-100 p-3 rounded">
@@ -192,8 +189,7 @@ export default function PostCard({
                 variant="ghost"
                 size="sm"
                 onClick={() => handleCommentLike(comment._id)}
-                className="flex items-center space-x-1"
-              >
+                className="flex items-center space-x-1">
                 <Heart
                   className={`w-4 h-4 ${
                     comment.likes.length > 0 ? "fill-red-500 text-red-500" : ""
@@ -210,10 +206,13 @@ export default function PostCard({
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Add a comment..."
-          className="mb-2"
+          className="mb-2 bg-blue-50"
         />
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Button type="submit" size="sm">
+          <Button
+            type="submit"
+            size="sm"
+            className="bg-blue-900 hover:bg-blue-900 hover:shadow-md">
             Add Comment
           </Button>
           {showEditDelete && isCurrentUserPost && (
@@ -221,16 +220,14 @@ export default function PostCard({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setIsEditModalOpen(true)}
-              >
+                onClick={() => setIsEditModalOpen(true)}>
                 <Edit className="w-4 h-4 mr-2" />
                 Edit
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setIsDeleteDialogOpen(true)}
-              >
+                onClick={() => setIsDeleteDialogOpen(true)}>
                 <Trash2 className="w-4 h-4 mr-2" />
                 Delete
               </Button>

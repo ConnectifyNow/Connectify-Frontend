@@ -191,7 +191,7 @@ export default function Home() {
   );
 
   return (
-    <main className="min-h-screen bg-gray-100 py-12">
+    <main className="min-h-screen bg-blue-50 py-12">
       <div className="max-w-6xl mx-auto px-4">
         <h1 className="text-3xl font-bold text-center mb-8">Feed</h1>
         <div className="flex gap-8">
@@ -216,8 +216,7 @@ export default function Home() {
             {paginatedPosts.length > 0 ? (
               <div
                 className="mt-8 flex justify-center"
-                style={{ cursor: "pointer" }}
-              >
+                style={{ cursor: "pointer" }}>
                 <Pagination>
                   <PaginationContent>
                     <PaginationItem>
@@ -232,8 +231,7 @@ export default function Home() {
                       <PaginationItem key={index}>
                         <PaginationLink
                           isActive={currentPage === index + 1}
-                          onClick={() => setCurrentPage(index + 1)}
-                        >
+                          onClick={() => setCurrentPage(index + 1)}>
                           {index + 1}
                         </PaginationLink>
                       </PaginationItem>

@@ -49,10 +49,11 @@ export default function Chat({
     event.preventDefault();
     if (!sendMessage || !selectedUser || !input.trim()) return;
 
-    sendMessage({
-      conversationId,
-      content: input
-    });
+    const messageData = {
+      message: input,
+      currentUser,
+      selectedUser
+    };
 
     addMessage({
       _id: Date.now().toString(),
@@ -73,7 +74,7 @@ export default function Chat({
   }
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full min-h-100">
       <div className="p-4 flex items-center space-x-2">
         {selectedUser?.role == Role.Organization ? (
           <Building2 className="h-6 w-6" />
@@ -115,9 +116,14 @@ export default function Chat({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your message here..."
-          className="flex-1"
+          className="flex-1 bg-blue-50"
         />
-        <Button type="submit">Send</Button>
+        <Button
+          type="submit"
+          className="bg-blue-900 hover:bg-blue-900 hover:shadow-md"
+        >
+          Send
+        </Button>
       </form>
     </div>
   );

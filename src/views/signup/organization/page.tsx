@@ -175,7 +175,7 @@ export default function OrganizationSignUpPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 bg-blue-50 ">
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl text-center">
@@ -191,8 +191,7 @@ export default function OrganizationSignUpPage() {
           <form
             onSubmit={handleSubmit}
             className="space-y-4"
-            style={{ display: "flex", flexDirection: "column" }}
-          >
+            style={{ display: "flex", flexDirection: "column" }}>
             <div className="space-y-2">
               <Label htmlFor="email">Organization Email</Label>
               <Input
@@ -230,8 +229,7 @@ export default function OrganizationSignUpPage() {
               <Label htmlFor="city">City</Label>
               <Select
                 onValueChange={(value) => handleSelectChange("city", value)}
-                required
-              >
+                required>
                 <SelectTrigger>
                   <SelectValue placeholder="Select a city" />
                 </SelectTrigger>
@@ -263,9 +261,8 @@ export default function OrganizationSignUpPage() {
             <Button
               onClick={() => handleGenerateClick()}
               disabled={isDisabled}
-              className="w-55"
-              style={{ width: "35%" }}
-            >
+              className="w-55 bg-blue-900 hover:bg-blue-900 hover:shadow-md"
+              style={{ width: "35%" }}>
               {isDisabled
                 ? `Wait ${coolDownTime}s`
                 : "Generate Description using AI"}
@@ -276,7 +273,10 @@ export default function OrganizationSignUpPage() {
             </Label>
             <ImageUpload preview={logo} setPreview={setLogo} />
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button
+              type="submit"
+              className="w-full bg-blue-900 hover:bg-blue-900 hover:shadow-md"
+              disabled={isLoading}>
               {isLoading ? "Completing Sign Up..." : "Complete Sign Up"}
             </Button>
           </form>
