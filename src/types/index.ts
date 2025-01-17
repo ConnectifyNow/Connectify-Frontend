@@ -10,6 +10,7 @@ export interface User {
 }
 
 export interface Volunteer {
+  _id: string;
   userId: string;
   firstName: string;
   lastName: string;
@@ -25,13 +26,14 @@ export type SimpleVolunteer = Omit<Volunteer, "skills"> & {
 };
 
 export interface Organization {
+  _id: string;
   userId: string;
   city: string;
   name: string;
   description: string;
-  imageUrl?: string;
   focusAreas: FocusArea[];
   websiteLink: string;
+  imageUrl?: string;
 }
 
 export type SimpleOrganization = Omit<Organization, "focusAreas"> & {
@@ -101,6 +103,29 @@ export interface reqApiPost {
   imageUrl: string;
 }
 
+export interface reqApiOrganization {
+  _id: string;
+  name?: string;
+  city?: string;
+  description?: string;
+  email?: string;
+  imageUrl?: string;
+}
+
+export interface reqApiVolunteer {
+  _id: string;
+  firstname?: string;
+  city?: string;
+  about?: string;
+  email?: string;
+  imageUrl?: string;
+}
+
+export interface reqApiUser {
+  _id: string;
+  username?: string;
+}
+
 export interface ApiPost {
   _id: string;
   user: User;
@@ -131,12 +156,12 @@ export interface Comment {
 
 export enum Role {
   Volunteer = 0,
-  Organization = 1
+  Organization = 1,
 }
 
 export enum tagType {
   skill = "skill",
-  focusArea = "focus-area"
+  focusArea = "focus-area",
 }
 
 export interface ProfileData {
