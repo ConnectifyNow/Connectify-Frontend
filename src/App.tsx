@@ -23,7 +23,6 @@ export default function App() {
     focusAreas.fetchFocusArea();
 
     if (isAuthenticated()) {
-      console.log("fetching chats");
       chats.fetchChats();
     }
   }, []);
