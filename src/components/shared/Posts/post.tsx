@@ -74,7 +74,7 @@ export default function PostCard({
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <img
-                src={`${import.meta.env.VITE_REACT_APP_API_URL}/${imagePath}`}
+                src={imagePath}
                 alt={post.author.username}
                 width={40}
                 height={40}
@@ -149,7 +149,7 @@ export default function PostCard({
         </div>
         <div style={{ width: "40%" }}>
           <img
-            src={`${import.meta.env.VITE_REACT_APP_API_URL}/${post.imageUrl}`}
+            src={post.imageUrl}
             alt={post.author.username}
             style={{ width: "100%", height: "100%" }}
           />
@@ -164,12 +164,8 @@ export default function PostCard({
                   <img
                     src={
                       comment.user.role === Role.Volunteer
-                        ? `${import.meta.env.VITE_REACT_APP_API_URL}/${
-                            comment.user.volunteer?.imageUrl
-                          }`
-                        : `${import.meta.env.VITE_REACT_APP_API_URL}/${
-                            comment.user.organization?.imageUrl
-                          }`
+                        ? comment.user.volunteer?.imageUrl
+                        : comment.user.organization?.imageUrl
                     }
                     alt={comment.user.username}
                     width={24}
