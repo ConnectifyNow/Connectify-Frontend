@@ -146,7 +146,7 @@ export default function PostCard({
         <div style={{ width: "40%" }}>
           {post.imageUrl && (
             <img
-              src={`${import.meta.env.VITE_REACT_APP_API_URL}/${post.imageUrl}`}
+              src={post.imageUrl}
               alt={post.author.username}
               style={{ width: "100%", height: "100%" }}
             />
