@@ -26,7 +26,6 @@ import {
 } from "@/services/postService";
 import useUserStore from "@/stores/setUserStore";
 import useSkillsStore from "@/stores/setSkillsStore";
-import useChatStore from "@/stores/setChatStore";
 
 const POSTS_PER_PAGE = 3;
 
@@ -46,15 +45,8 @@ export default function Home() {
     skillsIds: [] as string[]
   });
   const user = useUserStore();
-  const chats = useChatStore();
-
   const getSkillById = useSkillsStore((state) => state.getSkillById);
-
   const [currentPage, setCurrentPage] = useState(1);
-
-  useEffect(() => {
-    chats.fetchChats();
-  }, []);
 
   useEffect(() => {
     const fetchPosts = async () => {
