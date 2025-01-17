@@ -100,7 +100,7 @@ export default function ChatPage() {
   const user = useUserStore();
 
   return (
-    <div className="flex h-screen bg-blue-50">
+    <div className="flex h-screen">
       <UserList users={mockUsers} onSelectUser={setSelectedUser} />
       <div className="flex-1 h-full">
         <Chat currentUser={user} selectedUser={selectedUser} />

@@ -21,7 +21,7 @@ export default function UserList({ users, onSelectUser }: UserListProps) {
   });
 
   return (
-    <div className="w-64 border-r h-full overflow-y-auto">
+    <div className="w-64 border-r h-full overflow-y-auto bg-blue-50">
       <div className="p-4 border-b">
         <h2 className="text-lg font-semibold mb-2">Users</h2>
         <div className="flex space-x-2">

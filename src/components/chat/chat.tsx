@@ -105,7 +105,7 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your message here..."
-          className="flex-1"
+          className="flex-1 bg-blue-50"
         />
         <Button type="submit" className="bg-blue-900">
           Send
