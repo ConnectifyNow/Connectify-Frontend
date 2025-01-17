@@ -62,6 +62,7 @@ export default function UserAboutCard({
     profile.about = response.data.description;
     setIsDisabled(true);
     setCoolDownTime(20);
+    return response.data.description;
   };
 
   return (
@@ -88,8 +89,8 @@ export default function UserAboutCard({
             </div>
             {profile?.role === Role.Organization && (
               <Button
-                onClick={() => {
-                  const fromAI = "Generate Description";
+                onClick={async () => {
+                  const fromAI = await handleClick(profile);
                   setProfile({ ...profile, about: fromAI });
                 }}
                 disabled={isDisabled}

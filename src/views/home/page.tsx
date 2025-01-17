@@ -45,7 +45,6 @@ export default function Home() {
     skillsIds: [] as string[],
   });
   const user = useUserStore();
-
   const getSkillById = useSkillsStore((state) => state.getSkillById);
 
   const [currentPage, setCurrentPage] = useState(1);

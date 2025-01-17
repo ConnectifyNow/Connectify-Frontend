@@ -2,11 +2,13 @@ import UserAboutCard from "@/components/profile/userAboutCard/userAboutCard";
 import UserInformation from "@/components/profile/userInformationCard/userInformationCard";
 import PostsList from "@/components/profile/userPostsLists/user-posts-list";
 import { logout, resetTokens } from "@/services/authService";
+import { updateOrganizationApi } from "@/services/organizationService";
 import useUserStore from "@/stores/setUserStore";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { ProfileData, Role, User } from "../../types/index";
+import { updateVolunteerApi } from "@/services/volunteerService";
 
 export default function ProfilePage() {
   const myUser = useUserStore.getState();
@@ -52,28 +54,45 @@ export default function ProfilePage() {
     }
   };
 
+  const handleEditProfile = async () => {
+    let response;
+    if (profile?.role === Role.Volunteer && user.volunteer) {
+      const profileToUpdate = {
+        _id: user.volunteer?._id,
+        city: profile?.city,
+        name: profile?.name,
+        about: profile?.about,
+        imageUrl: profile?.imageUrl,
+        email: profile?.email,
+        // username: profile.username,
+      };
+      response = await updateVolunteerApi(profileToUpdate);
+    } else if (user?.role === Role.Organization && user.organization) {
+      const profileToUpdate = {
+        _id: user.organization?._id,
+        city: profile?.city,
+        name: profile?.name,
+        description: profile?.about,
+        imageUrl: profile?.imageUrl,
+        email: profile?.email,
+        // username: profile.username,
+      };
+
+      response = await updateOrganizationApi(profileToUpdate);
+    }
+    if (response?.status === 200) {
+      // updatePost(post);
+    } else {
+      console.error(
+        "Failed to update user:",
+        response?.statusText,
+        response?.data
+      );
+    }
+  };
+
   const saveProfile = () => {
-    //do query to DB
-    // const handleEditProfile = async (profile: ProfileData) => {
-    //   const profileToUpdate = {
-    //     ...profileData,
-    //     name: name,
-    //     username: username,
-    //     city: city?.name,
-    //     imageUrl: image,
-    //     email: email,
-    //   };
-
-    //   //   const response = await updatePostApi(postToUpdate);
-
-    //   //   if (response.status === 200) {
-    //   //     updatePost(post);
-    //   //   } else {
-    //   //     console.error("Failed to update post:", response.statusText);
-    //   //   }
-    //   // };
-
-    // };
+    handleEditProfile();
     setIsEditing(false);
   };
 

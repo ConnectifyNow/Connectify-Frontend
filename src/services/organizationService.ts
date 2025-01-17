@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import {
   CreateOrganizationResponse,
   PaginationSimpleOrganization,
+  reqApiOrganization,
   SimpleOrganization,
 } from "../types/index";
 import apiClient from "./apiClient";
@@ -24,8 +25,14 @@ export const getOrganizations = async (
   });
 };
 
-// export const updateOrganization = async (post: reqApiPost) => {
-//   return await apiClient.put(`/posts/${post._id}`, post, {
-//     headers: headers(),
-//   });
-// };
+export const updateOrganizationApi = async (
+  organization: reqApiOrganization
+) => {
+  return await apiClient.put(
+    `/organizations/${organization._id}`,
+    organization,
+    {
+      headers: headers(),
+    }
+  );
+};
