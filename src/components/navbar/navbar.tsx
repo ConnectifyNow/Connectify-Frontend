@@ -7,7 +7,7 @@ import {
   Compass,
   House,
   UserPen,
-  LucideIcon
+  LucideIcon,
 } from "lucide-react";
 import useUserStore from "@/stores/setUserStore";
 
@@ -50,7 +50,9 @@ export function Navbar() {
                   </Button>
                 </Link>
                 <Link to="/signup">
-                  <Button className="ml-2">Sign Up</Button>
+                  <Button className="ml-2 bg-blue-900 hover:bg-blue-900 hover:shadow-md">
+                    Sign Up
+                  </Button>
                 </Link>
               </>
             )}
@@ -64,7 +66,7 @@ export function Navbar() {
 function NavLink({
   to,
   icon: Icon,
-  children
+  children,
 }: {
   to: string;
   icon: LucideIcon;
@@ -80,8 +82,7 @@ function NavLink({
         isActive
           ? "text-primary bg-primary/10"
           : "text-gray-700 hover:text-primary"
-      }`}
-    >
+      }`}>
       <Icon />
       {children}
     </Link>

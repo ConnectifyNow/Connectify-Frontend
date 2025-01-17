@@ -21,29 +21,29 @@ export default function UserList({ users, onSelectUser }: UserListProps) {
   });
 
   return (
-    <div className="w-64 border-r h-full overflow-y-auto">
+    <div className="w-64 border-r h-full overflow-y-auto bg-blue-50">
       <div className="p-4 border-b">
         <h2 className="text-lg font-semibold mb-2">Users</h2>
         <div className="flex space-x-2">
           <Button
             size="sm"
+            className="bg-blue-700 hover:bg-blue-900 hover:shadow-md"
             variant={filter === "all" ? "default" : "outline"}
-            onClick={() => setFilter("all")}
-          >
+            onClick={() => setFilter("all")}>
             All
           </Button>
           <Button
+            className="bg-blue-700 hover:bg-blue-900 hover:shadow-md"
             size="sm"
             variant={filter === "volunteers" ? "default" : "outline"}
-            onClick={() => setFilter("volunteers")}
-          >
+            onClick={() => setFilter("volunteers")}>
             Volunteers
           </Button>
           <Button
+            className="bg-blue-700 hover:bg-blue-900 hover:shadow-md"
             size="sm"
             variant={filter === "organizations" ? "default" : "outline"}
-            onClick={() => setFilter("organizations")}
-          >
+            onClick={() => setFilter("organizations")}>
             Orgs
           </Button>
         </div>
@@ -54,8 +54,7 @@ export default function UserList({ users, onSelectUser }: UserListProps) {
             <Button
               variant="ghost"
               className="w-full justify-start p-4 space-x-2  "
-              onClick={() => onSelectUser(user)}
-            >
+              onClick={() => onSelectUser(user)}>
               {user.role ? (
                 <Building2 className="h-5 w-5" />
               ) : (

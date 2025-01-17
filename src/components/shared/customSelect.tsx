@@ -21,13 +21,13 @@ const customSelect: React.FC<customSelectProps> = ({
       <div className="flex flex-wrap gap-2">
         {options?.map((option: { _id: string; name: string }) => (
           <Button
+            className="bg-green-600 hover:bg-green-700 hover:shadow-md"
             key={option._id}
             type="button"
             variant={
               selectedOptions.includes(option._id) ? "default" : "outline"
             }
-            onClick={() => handleSelectedChange(option._id)}
-          >
+            onClick={() => handleSelectedChange(option._id)}>
             {option.name}
           </Button>
         ))}

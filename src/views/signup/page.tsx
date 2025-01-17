@@ -42,7 +42,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 flex justify-center items-center min-h-screen">
+    <div className="container mx-auto px-4 py-8 flex justify-center items-center min-h-screen bg-blue-50">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl text-center">
@@ -78,7 +78,10 @@ export default function SignUpPage() {
                 required
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button
+              type="submit"
+              className="w-full bg-green-700 hover:bg-green-800 hover:shadow-md"
+              disabled={isLoading}>
               {isLoading ? "Processing..." : "Continue"}
             </Button>
           </form>
