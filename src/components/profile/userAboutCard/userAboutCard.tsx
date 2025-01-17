@@ -94,7 +94,7 @@ export default function UserAboutCard({
                   setProfile({ ...profile, about: fromAI });
                 }}
                 disabled={isDisabled}
-                className="w-55">
+                className="w-55 bg-blue-900 hover:bg-blue-900 hover:shadow-md">
                 {isDisabled
                   ? `Wait ${coolDownTime}s`
                   : "Generate Description using AI"}
