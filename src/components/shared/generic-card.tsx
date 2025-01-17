@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Tooltip,
   TooltipContent,
@@ -20,6 +20,13 @@ export default function GeneralCard({
   userId
 }: GeneralCardProps) {
   const addConversation = useChatStore((state) => state.addConversation);
+
+  const navigate = useNavigate();
+  const userClick = async () => {
+    await addConversation(userId);
+    localStorage.setItem("selectedUserId", userId);
+    navigate("/chat");
+  };
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6 flex flex-col">
@@ -70,12 +77,12 @@ export default function GeneralCard({
           ))}
         </div>
       </div>
-      <Link to={`/chat/`} className="self-end mt-4">
+      <div className="self-end mt-4">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <button
-                onClick={async () => await addConversation(userId)}
+                onClick={async () => await userClick()}
                 className="bg-black text-white font-bold py-2 px-4 rounded hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 "
               >
                 <MessageSquareText></MessageSquareText>
@@ -84,7 +91,7 @@ export default function GeneralCard({
             <TooltipContent side="top">Go to chat</TooltipContent>
           </Tooltip>
         </TooltipProvider>
-      </Link>
+      </div>
     </div>
   );
 }

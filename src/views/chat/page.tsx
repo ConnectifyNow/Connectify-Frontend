@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UserList from "@/components/chat/UserList";
 import Chat from "@/components/chat/chat";
 import { User } from "@/types";
 import useUserStore from "@/stores/setUserStore";
 import useChatStore from "@/stores/setChatStore";
+import { getUserById } from "@/services/userService";
 
 export default function ChatPage() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -12,13 +13,33 @@ export default function ChatPage() {
   const chat = useChatStore();
   const users = chat.getAllUsers();
 
+  useEffect(() => {
+    async function fetchData() {
+      const savedUserId = localStorage.getItem("selectedUserId");
+      if (savedUserId) {
+        const response = await getUserById(savedUserId);
+        if (response.data) {
+          console.log(response.data);
+          setSelectedUser(response.data);
+          initMessagesByUserId(response.data._id);
+        }
+      }
+      console.log(savedUserId);
+    }
+    fetchData();
+  }, []);
+
+  const initMessagesByUserId = (userId: string) => {
+    const chatId = chat.getChatId(userId);
+    setConversationId(chatId);
+    chat.setMessages(chatId);
+  };
+
   const chooseUser = (user: User) => {
+    localStorage.setItem("selectedUserId", user._id);
     setSelectedUser(user);
 
-    const chatId = chat.getChatId(user._id);
-    setConversationId(chatId);
-
-    chat.setMessages(chatId);
+    initMessagesByUserId(user._id);
   };
 
   return (
