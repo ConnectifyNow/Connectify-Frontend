@@ -24,13 +24,12 @@ export default function PostCard({
   onEdit,
   onDelete,
   onCommentLike,
-  showEditDelete = false
+  showEditDelete = false,
 }: PostProps) {
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-
   const currentUser = useUserStore();
   const handleLike = () => {
     onLike(post._id, currentUser._id);
@@ -45,7 +44,7 @@ export default function PostCard({
         text: newComment.trim(),
         post: post._id,
         date: new Date().toISOString(),
-        likes: 0
+        likes: 0,
       };
       onComment(post._id, comment);
       setNewComment("");
@@ -148,11 +147,13 @@ export default function PostCard({
           )}
         </div>
         <div style={{ width: "40%" }}>
-          <img
-            src={post.imageUrl}
-            alt={post.author.username}
-            style={{ width: "100%", height: "100%" }}
-          />
+          {post.imageUrl && (
+            <img
+              src={post.imageUrl}}
+              alt={post.author.username}
+              style={{ width: "100%", height: "100%" }}
+            />
+          )}
         </div>
       </div>
       {showComments && (
@@ -173,8 +174,9 @@ export default function PostCard({
                     className="rounded-full mr-2"
                   />
                   <span className="font-semibold text-sm">
-                    {comment.user.role}
-                    {comment.user.username}
+                    {comment.user.role === Role.Volunteer
+                      ? `${comment.user.volunteer?.firstName} ${comment.user.volunteer?.lastName}`
+                      : comment.user.organization?.name}
                   </span>
                 </div>
                 <span className="text-xs text-gray-500">
