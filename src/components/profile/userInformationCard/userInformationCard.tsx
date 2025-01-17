@@ -146,9 +146,7 @@ export default function UserInformation({
             </div>
             <div className="flex justify-center">
               <img
-                src={`${import.meta.env.VITE_REACT_APP_API_URL}/${
-                  profile.imageUrl
-                }`}
+                src={profile.imageUrl}
                 alt={profile.username}
                 width={"60%"}
                 height={"60%"}
