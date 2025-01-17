@@ -36,7 +36,7 @@ export default function UserInformation({
       <CardHeader>
         <CardTitle>
           {profile.role == Role.Volunteer
-            ? "User Information"
+            ? "Volunteer Information"
             : "Organization Information"}
         </CardTitle>
       </CardHeader>

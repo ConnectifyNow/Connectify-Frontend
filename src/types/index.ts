@@ -121,6 +121,11 @@ export interface reqApiVolunteer {
   imageUrl?: string;
 }
 
+export interface reqApiUser {
+  _id: string;
+  username?: string;
+}
+
 export interface ApiPost {
   _id: string;
   user: User;

@@ -25,8 +25,8 @@ export const getVolunteers = async (
   });
 };
 
-export const updateVolunteerApi = async (Volunteer: reqApiVolunteer) => {
-  return await apiClient.put(`/volunteers/${Volunteer._id}`, Volunteer, {
+export const updateVolunteerApi = async (volunteer: reqApiVolunteer) => {
+  return await apiClient.put(`/volunteers/${volunteer._id}`, volunteer, {
     headers: headers(),
   });
 };
