@@ -6,6 +6,7 @@ import useSkillsStore from "./stores/setSkillsStore";
 import useCitiesStore from "./stores/setCitiesStore";
 import useFocusAreaStore from "./stores/setFocusAreas";
 import useChatStore from "./stores/setChatStore";
+import { isAuthenticated } from "./services/authService";
 
 export default function App() {
   const user = useUserStore();
@@ -18,8 +19,12 @@ export default function App() {
     user.resetUser();
     skills.fetchSkills();
     cities.fetchCities();
-    chats.fetchChats();
+
     focusAreas.fetchFocusArea();
+
+    if (isAuthenticated()) {
+      chats.fetchChats();
+    }
   }, []);
 
   return <RouterProvider router={router} />;

@@ -10,7 +10,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { saveTokens, signin, signup } from "@/services/authService";
@@ -40,7 +40,7 @@ export default function UserSignUpPage() {
     skills: [] as string[],
     imageUrl: "",
     about: "",
-    phone: "",
+    phone: ""
   });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -63,7 +63,7 @@ export default function UserSignUpPage() {
       ...previous,
       skills: previous.skills.includes(value)
         ? previous.skills.filter((o) => o !== value)
-        : [...previous.skills, value],
+        : [...previous.skills, value]
     }));
   };
 
@@ -72,7 +72,7 @@ export default function UserSignUpPage() {
       username,
       password,
       role,
-      email,
+      email
     }: {
       username: string;
       password: string;
@@ -98,25 +98,26 @@ export default function UserSignUpPage() {
         username: formData.username,
         password: formData.password,
         role: Role.Volunteer,
-        email: formData.email,
+        email: formData.email
       });
       const createdUser = signUpResponse.data;
 
       const loginResponse = await signinMutation.mutateAsync({
         username: formData.username,
-        password: formData.password,
+        password: formData.password
       });
 
       if (loginResponse.data.accessToken !== "") {
         saveTokens({
           accessToken: loginResponse.data.accessToken,
-          refreshToken: loginResponse.data.refreshToken,
+          refreshToken: loginResponse.data.refreshToken
         });
 
         const volunteerResponse = await createVolunteerMutation.mutateAsync({
+          _id: createdUser._id,
           ...formData,
           imageUrl: image,
-          userId: loginResponse.data.user._id,
+          userId: loginResponse.data.user._id
         });
 
         setImage("");
@@ -125,7 +126,7 @@ export default function UserSignUpPage() {
           ...simpleVolunteer,
           skills: skills.filter((skill) =>
             simpleVolunteer.skills.includes(skill._id)
-          ),
+          )
         };
 
         createdUser.volunteer = volunteer;
@@ -142,7 +143,7 @@ export default function UserSignUpPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-blue-50 ">
+    <div className=" px-4 py-8 bg-blue-50 ">
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl text-center">
@@ -193,7 +194,8 @@ export default function UserSignUpPage() {
               <Label htmlFor="city">City</Label>
               <Select
                 onValueChange={(value) => handleSelectChange("city", value)}
-                required>
+                required
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a city" />
                 </SelectTrigger>
@@ -236,7 +238,8 @@ export default function UserSignUpPage() {
             <Button
               type="submit"
               className="w-full bg-blue-900 hover:bg-blue-900 hover:shadow-md"
-              disabled={isLoading}>
+              disabled={isLoading}
+            >
               {isLoading ? "Completing Sign Up..." : "Complete Sign Up"}
             </Button>
           </form>

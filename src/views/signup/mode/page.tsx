@@ -18,8 +18,8 @@ export default function SignUpModePage() {
       router(`/signup/${mode}`, {
         state: {
           username: location.state.username,
-          password: location.state.password,
-        },
+          password: location.state.password
+        }
       });
     } catch {
       setError("Failed to select mode. Please try again.");
@@ -29,7 +29,7 @@ export default function SignUpModePage() {
   };
 
   return (
-    <div className="container bg-blue-50 mx-auto px-4 py-8 flex justify-center items-center min-h-screen">
+    <div className="bg-blue-50 px-4 py-8 flex justify-center items-center min-h-screen">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl text-center">
@@ -45,13 +45,15 @@ export default function SignUpModePage() {
           <Button
             onClick={() => handleModeSelection("user")}
             className="w-full bg-blue-900 hover:bg-blue-900 hover:shadow-md"
-            disabled={isLoading}>
+            disabled={isLoading}
+          >
             Sign Up as a Volunteer
           </Button>
           <Button
             onClick={() => handleModeSelection("organization")}
             className="w-full bg-blue-900 hover:bg-blue-900 hover:shadow-md"
-            disabled={isLoading}>
+            disabled={isLoading}
+          >
             Sign Up as an Organization
           </Button>
         </CardContent>

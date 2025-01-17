@@ -8,12 +8,16 @@ import {
   User
 } from "@/types";
 import { Building2, UserCircle } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useChatSocket from "@/hooks/useChatSocket";
 import { ScrollArea } from "../ui/scroll-area";
 import useChatStore from "@/stores/setChatStore";
 
-export default function Chat({ currentUser, selectedUser }: ChatProps) {
+export default function Chat({
+  currentUser,
+  selectedUser,
+  conversationId
+}: ChatProps) {
   const chats = useChatStore();
   const currentMessages = useChatStore((state) => state.currentMessages);
   const addMessage = useChatStore((state) => state.addMessage);
@@ -36,6 +40,14 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
     chats.addMessageToConversation(data.conversationId, newMessage);
   }, []);
 
+  const lastMessageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [currentMessages]);
+
   const chatIds = chats.chats.map((chat) => chat._id);
   const { sendMessage, listenToConversations } = useChatSocket(onNewMessage);
 
@@ -44,6 +56,11 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (!sendMessage || !selectedUser || !input.trim()) return;
+
+    sendMessage({
+      conversationId,
+      content: input
+    });
 
     addMessage({
       _id: Date.now().toString(),
@@ -75,8 +92,9 @@ export default function Chat({ currentUser, selectedUser }: ChatProps) {
       </div>
       <ScrollArea className="h-[700px] rounded-md p-4 ">
         <div className=" p-4 space-y-4">
-          {currentMessages?.map((message) => (
+          {currentMessages?.map((message, index) => (
             <div
+              ref={index === currentMessages.length - 1 ? lastMessageRef : null}
               key={message._id}
               className={`flex ${
                 message.sender._id === currentUser._id
