@@ -23,7 +23,7 @@ export default function ProfilePage() {
     console.log(profile);
     setProfile((prev) => ({
       ...prev,
-      [key]: value
+      [key]: value,
     }));
   };
 
@@ -56,7 +56,7 @@ export default function ProfilePage() {
       name: `${user.volunteer?.firstName} ${user.volunteer?.lastName}`,
       role: Role.Volunteer,
       email: user.email,
-      username: user.username
+      username: user.username,
     };
   } else if (user?.role === Role.Organization && user.organization) {
     profileData = {
@@ -64,12 +64,12 @@ export default function ProfilePage() {
       role: Role.Organization,
       email: user.email,
       about: user.organization.description,
-      username: user.username
+      username: user.username,
     };
   }
 
   return (
-    <div className="bg-gray-100 px-4 py-8">
+    <div className="bg-blue-50 px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Profile</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <UserInformation

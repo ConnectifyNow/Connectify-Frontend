@@ -79,8 +79,7 @@ export default function UserAboutCard({
               <Button
                 onClick={() => handleClick(profileData)}
                 disabled={isDisabled}
-                className="w-55"
-              >
+                className="w-55">
                 {isDisabled
                   ? `Wait ${coolDownTime}s`
                   : "Generate Description using AI"}
@@ -107,8 +106,7 @@ export default function UserAboutCard({
                 {(profileData.skills ?? [])?.map((skill) => (
                   <span
                     key={skill._id}
-                    className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-sm"
-                  >
+                    className="text-primary-foreground px-2 py-1 rounded-full bg-green-600 text-sm">
                     {skill.name}
                   </span>
                 ))}
@@ -118,9 +116,13 @@ export default function UserAboutCard({
         )}
         <div className="flex justify-end space-x-2">
           {isEditing ? (
-            <Button onClick={saveProfile}>Save Profile</Button>
+            <Button className="bg-blue-900" onClick={saveProfile}>
+              Save Profile
+            </Button>
           ) : (
-            <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
+            <Button className="bg-blue-900" onClick={() => setIsEditing(true)}>
+              Edit Profile
+            </Button>
           )}
           <Button variant="destructive" onClick={handleLogout}>
             Logout
