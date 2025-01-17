@@ -10,21 +10,26 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useCitiesStore from "@/stores/setCitiesStore";
-import { City, ProfileData, Role } from "../../../types/index";
+import { City, ProfileData, Role, User } from "../../../types/index";
+import useUserStore from "@/stores/setUserStore";
 
 type UserInformationProps = {
   profile: ProfileData;
   setProfile: (profile: ProfileData) => void;
   isEditing: boolean;
+  setUser: (user: User) => void;
 };
 
 export default function UserInformation({
   profile,
   setProfile,
   isEditing,
+  setUser,
 }: UserInformationProps) {
   const cities = useCitiesStore((state) => state.cities);
   const ProfileDataCity = cities?.find((city) => city._id === profile.city);
+  const user = useUserStore.getState();
+  setUser(user);
 
   return (
     <Card>

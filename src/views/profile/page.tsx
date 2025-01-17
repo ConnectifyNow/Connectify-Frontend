@@ -6,13 +6,14 @@ import useUserStore from "@/stores/setUserStore";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { ProfileData, Role } from "../../types/index";
+import { ProfileData, Role, User } from "../../types/index";
 
 export default function ProfilePage() {
-  const user = useUserStore();
+  const myUser = useUserStore.getState();
   const navigate = useNavigate();
   const logoutMutation = useMutation(logout);
 
+  const [user, setUser] = useState<User>(myUser);
   const [profile, setProfile] = useState<ProfileData>({} as ProfileData);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -40,7 +41,7 @@ export default function ProfilePage() {
         imageUrl: user?.organization.imageUrl,
       });
     }
-  }, []);
+  }, [user]);
 
   const handleLogout = async () => {
     if (user.isLoggedIn) {
@@ -84,6 +85,7 @@ export default function ProfilePage() {
           profile={profile}
           setProfile={setProfile}
           isEditing={isEditing}
+          setUser={setUser}
         />
         <UserAboutCard
           profile={profile}
