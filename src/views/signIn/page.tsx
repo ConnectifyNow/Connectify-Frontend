@@ -32,7 +32,7 @@ export default function SignInPage() {
 
       saveTokens({
         accessToken: loginGoogleRes.accessToken,
-        refreshToken: loginGoogleRes.refreshToken
+        refreshToken: loginGoogleRes.refreshToken,
       });
       user.setUser(loginGoogleRes.user);
       updateIsLoggedIn(true);
@@ -50,7 +50,7 @@ export default function SignInPage() {
         <ToastAction altText="Sorry, we have an issue logging in via Google">
           login error
         </ToastAction>
-      )
+      ),
     });
   };
 
@@ -67,24 +67,17 @@ export default function SignInPage() {
     try {
       const response = await signinMutation.mutateAsync({
         username,
-        password
+        password,
       });
 
       if (response.data.accessToken !== "") {
         saveTokens({
           accessToken: response.data.accessToken,
-          refreshToken: response.data.refreshToken
+          refreshToken: response.data.refreshToken,
         });
         user.setUser(response.data.user);
         updateIsLoggedIn(true);
       }
-
-      toast({
-        title: "Logged in successfully",
-        action: (
-          <ToastAction altText="Logged in successfully">login</ToastAction>
-        )
-      });
 
       router("/home");
     } catch {

@@ -13,7 +13,6 @@ interface PostProps {
   onComment: (postId: string, comment: ApiComment) => void;
   onEdit: (updatedPost: Post) => void;
   onDelete: (postId: string) => void;
-  onCommentLike: (postId: string, userId: string, commentId: string) => void;
   showEditDelete?: boolean;
   setSelectedPost: (selectedPost: Post) => void;
 }
@@ -25,7 +24,7 @@ export default function PostCard({
   onEdit,
   onDelete,
   showEditDelete = false,
-  setSelectedPost
+  setSelectedPost,
 }: PostProps) {
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -45,7 +44,7 @@ export default function PostCard({
         text: newComment.trim(),
         post: post._id,
         date: new Date().toISOString(),
-        likes: 0
+        likes: 0,
       };
       onComment(post._id, comment);
       setNewComment("");
@@ -56,10 +55,6 @@ export default function PostCard({
     onDelete(post._id);
     setIsDeleteDialogOpen(false);
   };
-
-  // const handleCommentLike = (commentId: string) => {
-  //   onCommentLike(post._id, currentUser._id, commentId);
-  // };
 
   const isCurrentUserPost = post.author._id === currentUser._id;
   const imagePath =

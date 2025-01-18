@@ -32,7 +32,7 @@ const usePostsStore = create<PostsStore>((set) => ({
         likes: apiPost.likes.length,
         skills: filteredSkills,
         comments: apiPost.comments,
-        imageUrl: apiPost.imageUrl
+        imageUrl: apiPost.imageUrl,
       };
     });
     set(() => ({ apiPosts, posts }));
@@ -42,24 +42,25 @@ const usePostsStore = create<PostsStore>((set) => ({
     set((state) => ({
       posts: state.posts?.map((post) =>
         post._id === updatedPost._id ? updatedPost : post
-      )
+      ),
     })),
   deletePost: (postId) =>
     set((state) => ({
-      posts: state.posts.filter((post) => post._id !== postId)
+      posts: state.posts.filter((post) => post._id !== postId),
     })),
-  likePost: (postId) =>
+  likePost: (postId) => {
     set((state) => ({
       posts: state.posts?.map((post) =>
         post._id === postId ? { ...post, likes: post.likes + 1 } : post
-      )
-    })),
+      ),
+    }));
+  },
   addComment: (postId, apiComment) => {
     const user = useUserStore.getState();
     const comment: Comment = {
       ...apiComment,
       user,
-      likes: []
+      likes: [],
     };
 
     set((state) => ({
@@ -67,10 +68,10 @@ const usePostsStore = create<PostsStore>((set) => ({
         post._id === postId
           ? {
               ...post,
-              comments: [...post.comments, comment]
+              comments: [...post.comments, comment],
             }
           : post
-      )
+      ),
     }));
   },
   likeComment: (postId, commentId) => {
@@ -84,12 +85,12 @@ const usePostsStore = create<PostsStore>((set) => ({
                 comment._id === commentId
                   ? { ...comment, likes: [...comment.likes, userId] }
                   : comment
-              )
+              ),
             }
           : post
-      )
+      ),
     }));
-  }
+  },
 }));
 
 export default usePostsStore;
