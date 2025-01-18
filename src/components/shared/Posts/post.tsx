@@ -15,6 +15,7 @@ interface PostProps {
   onDelete: (postId: string) => void;
   onCommentLike: (postId: string, userId: string, commentId: string) => void;
   showEditDelete?: boolean;
+  setSelectedPost: (selectedPost: Post) => void;
 }
 
 export default function PostCard({
@@ -24,7 +25,8 @@ export default function PostCard({
   onEdit,
   onDelete,
   onCommentLike,
-  showEditDelete = false
+  showEditDelete = false,
+  setSelectedPost,
 }: PostProps) {
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -44,7 +46,7 @@ export default function PostCard({
         text: newComment.trim(),
         post: post._id,
         date: new Date().toISOString(),
-        likes: 0
+        likes: 0,
       };
       onComment(post._id, comment);
       setNewComment("");
@@ -97,7 +99,8 @@ export default function PostCard({
             {post.skills?.map((skill) => (
               <span
                 key={skill._id}
-                className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
+              >
                 {skill.name}
               </span>
             ))}
@@ -107,7 +110,8 @@ export default function PostCard({
               variant="ghost"
               size="sm"
               onClick={handleLike}
-              className="flex items-center space-x-1">
+              className="flex items-center space-x-1"
+            >
               <Heart
                 className={`w-5 h-5 ${
                   post.likes > 0 ? "fill-red-500 text-red-500" : ""
@@ -118,8 +122,12 @@ export default function PostCard({
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setShowComments(!showComments)}
-              className="flex items-center space-x-1">
+              onClick={() => {
+                setShowComments(!showComments);
+                setSelectedPost(post);
+              }}
+              className="flex items-center space-x-1"
+            >
               <MessageCircle className="w-5 h-5" />
               <span>{post.comments.length}</span>
             </Button>
@@ -153,54 +161,6 @@ export default function PostCard({
           )}
         </div>
       </div>
-      {post.comments.length != 0 && showComments && (
-        <div className="mt-4 space-y-4">
-          {post.comments?.map((comment) => (
-            <div key={comment._id} className="bg-gray-100 p-3 rounded">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center">
-                  <img
-                    src={
-                      comment.user.role === Role.Volunteer
-                        ? `${import.meta.env.VITE_REACT_APP_API_URL}/${
-                            comment.user.volunteer?.imageUrl
-                          }`
-                        : `${import.meta.env.VITE_REACT_APP_API_URL}/${
-                            comment.user.organization?.imageUrl
-                          }`
-                    }
-                    alt={comment.user.username}
-                    width={24}
-                    height={24}
-                    className="rounded-full mr-2"
-                  />
-                  <span className="font-semibold text-sm">
-                    {comment.user.role === Role.Volunteer
-                      ? `${comment.user.volunteer?.firstName} ${comment.user.volunteer?.lastName}`
-                      : comment.user.organization?.name}
-                  </span>
-                </div>
-                <span className="text-xs text-gray-500">
-                  {new Date(comment.date).toLocaleString()}
-                </span>
-              </div>
-              <p className="text-sm text-gray-700 mb-2">{comment.text}</p>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => handleCommentLike(comment._id)}
-                className="flex items-center space-x-1">
-                <Heart
-                  className={`w-4 h-4 ${
-                    comment.likes.length > 0 ? "fill-red-500 text-red-500" : ""
-                  }`}
-                />
-                <span className="text-xs">{comment.likes.length}</span>
-              </Button>
-            </div>
-          ))}
-        </div>
-      )}
       <form onSubmit={handleAddComment} className="mt-2">
         <Textarea
           value={newComment}
@@ -212,7 +172,8 @@ export default function PostCard({
           <Button
             type="submit"
             size="sm"
-            className="bg-blue-900 hover:bg-blue-900 hover:shadow-md">
+            className="bg-blue-900 hover:bg-blue-900 hover:shadow-md"
+          >
             Add Comment
           </Button>
           {showEditDelete && isCurrentUserPost && (
@@ -220,14 +181,16 @@ export default function PostCard({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setIsEditModalOpen(true)}>
+                onClick={() => setIsEditModalOpen(true)}
+              >
                 <Edit className="w-4 h-4 mr-2" />
                 Edit
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setIsDeleteDialogOpen(true)}>
+                onClick={() => setIsDeleteDialogOpen(true)}
+              >
                 <Trash2 className="w-4 h-4 mr-2" />
                 Delete
               </Button>
