@@ -1,13 +1,12 @@
 import OrganizationProfileDialog from "@/components/discover/organization-profile-dialog";
 import VolunteerProfileDialog from "@/components/discover/volunteer-profile-dialog";
-import { NoPostsScreen } from "@/components/noPosts/noPosts";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious,
+  PaginationPrevious
 } from "@/components/ui/pagination";
 import useChatStore from "@/stores/setChatStore";
 import useOrganizationsStore from "@/stores/setOrganizationsStore";
@@ -18,13 +17,14 @@ import { useNavigate } from "react-router-dom";
 import OrganizationCard from "../../components/discover/organization-card";
 import Sidebar from "../../components/discover/sidebar";
 import VolunteerCard from "../../components/discover/volunteer-card";
+import { NoUsersScreen } from "@/components/emptyState/noUser";
 
 const ITEMS_PER_PAGE = 3;
 
 export default function Directory() {
   const [filters, setFilters] = useState({
     mode: "organizations" as "organizations" | "volunteers",
-    searchTerm: "",
+    searchTerm: ""
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedVolunteer, setSelectedVolunteer] = useState<Volunteer | null>(
@@ -78,6 +78,14 @@ export default function Directory() {
   const currentPages =
     filters.mode === "organizations" ? organizationPages : volunteerPages;
 
+  const onFilterChange = (filters: {
+    mode: "organizations" | "volunteers";
+    searchTerm: string;
+  }) => {
+    setCurrentPage(1);
+    setFilters(filters);
+  };
+
   return (
     <main className="min-h-screen bg-blue-50 py-12">
       <div className="max-w-6xl mx-auto px-4">
@@ -87,7 +95,7 @@ export default function Directory() {
         </h1>
         <div className="flex gap-8">
           <div className="w-1/4">
-            <Sidebar onFilterChange={setFilters} />
+            <Sidebar onFilterChange={onFilterChange} />
           </div>
           <div className="w-3/4">
             <div className="space-y-6" style={{ cursor: "pointer" }}>
@@ -175,9 +183,9 @@ export default function Directory() {
                 </Pagination>
               </div>
             ) : filters.mode === "organizations" ? (
-              <NoPostsScreen role={"organizations"} />
+              <NoUsersScreen role={"Organizations"} />
             ) : (
-              <NoPostsScreen role={"volunteers"} />
+              <NoUsersScreen role={"Volunteers"} />
             )}
           </div>
         </div>

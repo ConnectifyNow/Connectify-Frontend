@@ -32,7 +32,7 @@ export default function DirectorySidebar({
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-      <h2 className="font-bold text-lg mb-4">Directory Filters</h2>
+      <h2 className="font-bold text-lg mb-4">Filters</h2>
       <div className="mb-4">
         <h3 className="font-semibold mb-2">View Mode</h3>
         <div className="space-y-2">

@@ -1,4 +1,4 @@
-import { NoPostsScreen } from "@/components/noPosts/noPosts";
+import { NoPostsScreen } from "@/components/emptyState/noPosts";
 import { useState } from "react";
 import usePostsStore from "../../../stores/setPostsStore";
 import useUserStore from "../../../stores/setUserStore";
@@ -46,7 +46,7 @@ export default function PostsList() {
         if (prevPost) {
           return {
             ...prevPost,
-            comments: updatedComments,
+            comments: updatedComments
           };
         }
         return prevPost;
