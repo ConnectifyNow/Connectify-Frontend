@@ -20,7 +20,6 @@ export default function ChatPage() {
         const response = await getUserById(savedUserId);
         if (response.data) {
           setSelectedUser(response.data);
-          console.log(response.data);
           initMessagesByUserId(response.data._id);
         }
       }
