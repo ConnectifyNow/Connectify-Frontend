@@ -148,9 +148,10 @@ export default function UserInformation({
               <img
                 src={profile.imageUrl}
                 alt={profile.username}
-                width={"60%"}
+                width={"100%"}
                 height={"60%"}
                 className="rounded-full mr-4"
+                style={{ marginRight: "0" }}
               />
             </div>
           </div>

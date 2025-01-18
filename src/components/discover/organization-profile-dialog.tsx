@@ -31,7 +31,7 @@ export default function OrganizationProfileDialog({
         </DialogHeader>
         <div className="mt-4 flex flex-col items-center">
           <img
-            src={user.imageUrl || "/placeholder.svg"}
+            src={user.imageUrl}
             alt={user.name}
             width={100}
             height={100}

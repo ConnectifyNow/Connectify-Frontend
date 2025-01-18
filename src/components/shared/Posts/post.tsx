@@ -79,7 +79,6 @@ export default function PostCard({
                 <h3 className="font-semibold text-lg">
                   {post.author.username}
                 </h3>
-                <h4 className="text-gray-600">{post.title}</h4>
                 <span className="text-sm text-gray-500">
                   {post.author.role === Role.Volunteer
                     ? "Volunteer"
