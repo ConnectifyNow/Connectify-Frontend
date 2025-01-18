@@ -24,9 +24,8 @@ export default function PostCard({
   onComment,
   onEdit,
   onDelete,
-  onCommentLike,
   showEditDelete = false,
-  setSelectedPost,
+  setSelectedPost
 }: PostProps) {
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -46,7 +45,7 @@ export default function PostCard({
         text: newComment.trim(),
         post: post._id,
         date: new Date().toISOString(),
-        likes: 0,
+        likes: 0
       };
       onComment(post._id, comment);
       setNewComment("");
@@ -58,9 +57,9 @@ export default function PostCard({
     setIsDeleteDialogOpen(false);
   };
 
-  const handleCommentLike = (commentId: string) => {
-    onCommentLike(post._id, currentUser._id, commentId);
-  };
+  // const handleCommentLike = (commentId: string) => {
+  //   onCommentLike(post._id, currentUser._id, commentId);
+  // };
 
   const isCurrentUserPost = post.author._id === currentUser._id;
   const imagePath =

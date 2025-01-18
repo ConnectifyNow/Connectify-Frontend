@@ -27,6 +27,7 @@ export default function PostsList() {
                   onDelete={deletePost}
                   onCommentLike={likeComment}
                   showEditDelete={true}
+                  setSelectedPost={() => {}}
                 />
               ))}
             </>
