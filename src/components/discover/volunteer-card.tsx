@@ -1,10 +1,11 @@
 import { User, Volunteer } from "@/types";
 import GeneralCard from "../shared/generic-card";
 import { tagType } from "@/types";
+import useCitiesStore from "@/stores/setCitiesStore";
 
 export default function VolunteerCard({
   volunteer,
-  userId
+  userId,
 }: {
   volunteer: Volunteer;
   userId: User["_id"];
@@ -13,8 +14,10 @@ export default function VolunteerCard({
     type: tagType.skill,
     text: skill,
     bgColor: "bg-blue-100",
-    textColor: "text-blue-800"
+    textColor: "text-blue-800",
   }));
+  const cities = useCitiesStore((state) => state.cities);
+  const ProfileDataCity = cities?.find((city) => city._id === volunteer.city);
 
   return (
     <GeneralCard
@@ -22,7 +25,7 @@ export default function VolunteerCard({
       imageUrl={volunteer.imageUrl}
       description={volunteer.about ?? ""}
       tags={tags}
-      additionalInfo={volunteer.city}
+      additionalInfo={ProfileDataCity?.name}
       userId={userId}
     />
   );

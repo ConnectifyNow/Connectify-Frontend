@@ -1,8 +1,5 @@
-import { useEffect, useState } from "react";
-import OrganizationCard from "../../components/discover/organization-card";
-import VolunteerCard from "../../components/discover/volunteer-card";
-import Sidebar from "../../components/discover/sidebar";
-import { Organization, Volunteer } from "@/types";
+import OrganizationProfileDialog from "@/components/discover/organization-profile-dialog";
+import VolunteerProfileDialog from "@/components/discover/volunteer-profile-dialog";
 import { NoPostsScreen } from "@/components/noPosts/noPosts";
 import {
   Pagination,
@@ -12,8 +9,15 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import useChatStore from "@/stores/setChatStore";
 import useOrganizationsStore from "@/stores/setOrganizationsStore";
 import useVolunteersStore from "@/stores/setVolunteersStore";
+import { Organization, Volunteer } from "@/types";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import OrganizationCard from "../../components/discover/organization-card";
+import Sidebar from "../../components/discover/sidebar";
+import VolunteerCard from "../../components/discover/volunteer-card";
 
 const ITEMS_PER_PAGE = 3;
 
@@ -23,6 +27,11 @@ export default function Directory() {
     searchTerm: "",
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedVolunteer, setSelectedVolunteer] = useState<Volunteer | null>(
+    null
+  );
+  const [selectedOrganization, setSelectedOrganization] =
+    useState<Organization | null>(null);
 
   const organizations = useOrganizationsStore((state) => state.organizations);
   const organizationPages = useOrganizationsStore((state) => state.pages);
@@ -33,6 +42,16 @@ export default function Directory() {
   const volunteers = useVolunteersStore((state) => state.volunteers);
   const volunteerPages = useVolunteersStore((state) => state.pages);
   const fetchVolunteers = useVolunteersStore((state) => state.fetchVolunteers);
+
+  const addConversation = useChatStore((state) => state.addConversation);
+
+  const navigate = useNavigate();
+
+  const onChatClick = async (userId: string) => {
+    await addConversation(userId);
+    localStorage.setItem("selectedUserId", userId);
+    navigate("/chat");
+  };
 
   useEffect(() => {
     if (filters.mode === "organizations") {
@@ -71,27 +90,55 @@ export default function Directory() {
             <Sidebar onFilterChange={setFilters} />
           </div>
           <div className="w-3/4">
-            <div className="space-y-6">
+            <div className="space-y-6" style={{ cursor: "pointer" }}>
               {currentItems?.map((item: Volunteer | Organization) =>
                 filters.mode === "organizations" ? (
-                  <OrganizationCard
-                    key={item.userId}
-                    organization={item as Organization}
-                    userId={item.userId}
-                  />
+                  <div
+                    onClick={() =>
+                      setSelectedOrganization(item as Organization)
+                    }
+                  >
+                    <OrganizationCard
+                      key={item.userId}
+                      organization={item as Organization}
+                      userId={item.userId}
+                    />
+                  </div>
                 ) : (
-                  <VolunteerCard
-                    key={item.userId}
-                    volunteer={item as Volunteer}
-                    userId={item.userId}
-                  />
+                  <div onClick={() => setSelectedVolunteer(item as Volunteer)}>
+                    <VolunteerCard
+                      key={item.userId}
+                      volunteer={item as Volunteer}
+                      userId={item.userId}
+                    />
+                  </div>
                 )
               )}
             </div>
+            {selectedVolunteer && (
+              <VolunteerProfileDialog
+                onChatClick={() => onChatClick(selectedVolunteer.userId)}
+                onClose={() => {
+                  setSelectedVolunteer(null);
+                }}
+                user={selectedVolunteer}
+              />
+            )}
+            {selectedOrganization && (
+              <OrganizationProfileDialog
+                onChatClick={() => onChatClick(selectedOrganization.userId)}
+                onClose={() => {
+                  setSelectedOrganization(null);
+                }}
+                user={selectedOrganization}
+              />
+            )}
+
             {currentItems.length > 0 ? (
               <div
                 className="mt-8 flex justify-center"
-                style={{ cursor: "pointer" }}>
+                style={{ cursor: "pointer" }}
+              >
                 <Pagination>
                   <PaginationContent>
                     <PaginationItem>
@@ -106,7 +153,8 @@ export default function Directory() {
                       <PaginationItem key={index}>
                         <PaginationLink
                           isActive={currentPage === index + 1}
-                          onClick={() => setCurrentPage(index + 1)}>
+                          onClick={() => setCurrentPage(index + 1)}
+                        >
                           {index + 1}
                         </PaginationLink>
                       </PaginationItem>
