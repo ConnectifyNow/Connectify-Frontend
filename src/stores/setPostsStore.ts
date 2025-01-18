@@ -75,8 +75,6 @@ const usePostsStore = create<PostsStore>((set) => ({
     }));
   },
   likeComment: (postId, commentId) => {
-    console.log({ postId });
-
     const userId = useUserStore.getState()._id;
     set((state) => ({
       posts: state.posts?.map((post) =>

@@ -3,9 +3,9 @@ import { useState } from "react";
 import usePostsStore from "../../../stores/setPostsStore";
 import useUserStore from "../../../stores/setUserStore";
 import Post from "../../shared/Posts/post";
-import { Post as PostType } from "@/types";
+import { ApiComment, Comment, Post as PostType } from "@/types";
 import PostDialog from "@/components/shared/Posts/comments-dialog";
-import { likeCommentApi } from "@/services/postService";
+import { addCommentToPost, likeCommentApi } from "@/services/postService";
 
 export default function PostsList() {
   const { posts, likePost, addComment, updatePost, deletePost, likeComment } =
@@ -14,6 +14,16 @@ export default function PostsList() {
   const [selectedPost, setSelectedPost] = useState<PostType | null>(null);
 
   const userPosts = posts.filter((post) => post.author._id === currentUser._id);
+
+  const handleAddComment = async (postId: string, comment: ApiComment) => {
+    const response = await addCommentToPost(postId, comment);
+    comment._id = response.data._id;
+    addComment(postId, comment);
+
+    if (response.status !== 201) {
+      console.error("Failed to add comment:", response.statusText);
+    }
+  };
 
   const handleLikeComment = async (
     postId: string,
@@ -24,7 +34,7 @@ export default function PostsList() {
 
     if (response.status === 200) {
       likeComment(postId, commentId);
-      const updatedComments: any =
+      const updatedComments: Comment[] =
         selectedPost?.comments.map((comment) => {
           if (comment._id === commentId) {
             return { ...comment, likes: response.data.likes };
@@ -32,7 +42,7 @@ export default function PostsList() {
           return comment;
         }) ?? [];
 
-      setSelectedPost((prevPost: any) => {
+      setSelectedPost((prevPost) => {
         if (prevPost) {
           return {
             ...prevPost,
@@ -58,7 +68,7 @@ export default function PostsList() {
                   key={post._id}
                   post={post}
                   onLike={likePost}
-                  onComment={addComment}
+                  onComment={handleAddComment}
                   onEdit={updatePost}
                   onDelete={deletePost}
                   showEditDelete={true}
