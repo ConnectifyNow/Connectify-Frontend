@@ -8,7 +8,7 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious
+  PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/home/sidebar";
@@ -22,10 +22,11 @@ import {
   getPosts,
   likeCommentApi,
   likePostApi,
-  updatePostApi
+  updatePostApi,
 } from "@/services/postService";
 import useUserStore from "@/stores/setUserStore";
 import useSkillsStore from "@/stores/setSkillsStore";
+import PostDialog from "@/components/shared/Posts/comments-dialog";
 
 const POSTS_PER_PAGE = 3;
 
@@ -38,15 +39,16 @@ export default function Home() {
     deletePost,
     addComment,
     likeComment,
-    addPost
+    addPost,
   } = usePostsStore();
   const [filters, setFilters] = useState({
     postType: "all",
-    skillsIds: [] as string[]
+    skillsIds: [] as string[],
   });
   const user = useUserStore();
   const getSkillById = useSkillsStore((state) => state.getSkillById);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -73,7 +75,7 @@ export default function Home() {
       content: post.content,
       user: post.user,
       skills: post.skills,
-      imageUrl: post.imageUrl
+      imageUrl: post.imageUrl,
     });
 
     if (response.status === 201) {
@@ -89,7 +91,7 @@ export default function Home() {
         imageUrl: post.imageUrl,
         skills,
         comments: [],
-        likes: 0
+        likes: 0,
       };
 
       addPost(newPost);
@@ -105,7 +107,7 @@ export default function Home() {
       title: post.title,
       content: post.content,
       skills: post.skills.map((skill) => skill._id),
-      imageUrl: post.imageUrl
+      imageUrl: post.imageUrl,
     };
 
     const response = await updatePostApi(postToUpdate);
@@ -209,9 +211,16 @@ export default function Home() {
                   onDelete={handleDeletePost}
                   onCommentLike={handleLikeComment}
                   showEditDelete={true}
+                  setSelectedPost={setSelectedPost}
                 />
               ))}
             </div>
+            {selectedPost && (
+              <PostDialog
+                onClose={() => setSelectedPost(null)}
+                post={selectedPost}
+              />
+            )}
             {paginatedPosts.length > 0 ? (
               <div
                 className="mt-8 flex justify-center"
