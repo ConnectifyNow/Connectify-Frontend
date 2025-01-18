@@ -3,7 +3,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useUserStore from "@/stores/setUserStore";
@@ -19,10 +19,11 @@ interface PostDialogProps {
 export default function PostDialog({
   post,
   onClose,
-  onCommentLike,
+  onCommentLike
 }: PostDialogProps) {
-  if (!post) return null;
   const currentUser = useUserStore();
+
+  if (!post) return null;
 
   const handleCommentLike = (commentId: string) => {
     onCommentLike(post._id, currentUser._id, commentId);
@@ -59,24 +60,37 @@ export default function PostDialog({
               <p className="text-gray-700 mb-6">{post.content}</p>
               <h3 className="text-lg font-semibold mb-2">Comments</h3>
               <div className="space-y-4">
-                <ScrollArea className="h-[200px] w-full rounded-md border p-4">
+                <ScrollArea className="h-[300px] w-full rounded-md border p-4">
                   {post.comments.map((comment) => (
                     <div
                       key={comment._id}
-                      className="bg-gray-50 p-3 rounded-lg"
+                      className="bg-gray-100 p-3 rounded-lg my-1"
                     >
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                        }}
-                      >
+                      <div>
                         <div>
-                          <span className="font-semibold text-sm">
-                            {comment.user.role === Role.Volunteer
-                              ? `${comment.user.volunteer?.firstName} ${comment.user.volunteer?.lastName}`
-                              : comment.user.organization?.name}
-                          </span>
+                          <div className="flex justify-between mb-2">
+                            <div className="flex items-center">
+                              <img
+                                src={
+                                  comment.user.role === Role.Volunteer
+                                    ? comment.user.volunteer?.imageUrl
+                                    : comment.user.organization?.imageUrl
+                                }
+                                alt={comment.user.username}
+                                width={24}
+                                height={24}
+                                className="rounded-full mr-2"
+                              />
+                              <span className="font-semibold text-sm">
+                                {comment.user.role === Role.Volunteer
+                                  ? `${comment.user.volunteer?.firstName} ${comment.user.volunteer?.lastName}`
+                                  : comment.user.organization?.name}
+                              </span>
+                            </div>
+                            <span className="text-xs text-gray-500">
+                              {new Date(comment.date).toLocaleString()}
+                            </span>
+                          </div>
                           <p className="text-gray-600">{comment.text}</p>
                         </div>
                       </div>
