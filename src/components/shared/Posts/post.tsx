@@ -13,7 +13,6 @@ interface PostProps {
   onComment: (postId: string, comment: ApiComment) => void;
   onEdit: (updatedPost: Post) => void;
   onDelete: (postId: string) => void;
-  onCommentLike: (postId: string, userId: string, commentId: string) => void;
   showEditDelete?: boolean;
   setSelectedPost: (selectedPost: Post) => void;
 }
@@ -24,7 +23,6 @@ export default function PostCard({
   onComment,
   onEdit,
   onDelete,
-  onCommentLike,
   showEditDelete = false,
   setSelectedPost,
 }: PostProps) {
@@ -56,10 +54,6 @@ export default function PostCard({
   const handleDelete = () => {
     onDelete(post._id);
     setIsDeleteDialogOpen(false);
-  };
-
-  const handleCommentLike = (commentId: string) => {
-    onCommentLike(post._id, currentUser._id, commentId);
   };
 
   const isCurrentUserPost = post.author._id === currentUser._id;

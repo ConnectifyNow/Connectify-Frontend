@@ -13,7 +13,15 @@ import {
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/home/sidebar";
 import usePostsStore from "../../stores/setPostsStore";
-import { ApiComment, IdName, Post, reqApiPost, Role, User } from "../../types";
+import {
+  ApiComment,
+  Comment,
+  IdName,
+  Post,
+  reqApiPost,
+  Role,
+  User,
+} from "../../types";
 import { Toaster } from "@/components/ui/toaster";
 import {
   addCommentToPost,
@@ -138,6 +146,23 @@ export default function Home() {
 
     if (response.status === 200) {
       likeComment(postId, commentId);
+      const updatedComments: Comment[] =
+        selectedPost?.comments.map((comment) => {
+          if (comment._id === commentId) {
+            return { ...comment, likes: response.data.likes };
+          }
+          return comment;
+        }) ?? [];
+
+      setSelectedPost((prevPost) => {
+        if (prevPost) {
+          return {
+            ...prevPost,
+            comments: updatedComments,
+          };
+        }
+        return prevPost;
+      });
     } else if (response.status === 500) {
       console.error("Failed to like comment:", response.statusText);
     }
@@ -209,7 +234,6 @@ export default function Home() {
                   onComment={handleAddComment}
                   onEdit={handleEditPost}
                   onDelete={handleDeletePost}
-                  onCommentLike={handleLikeComment}
                   showEditDelete={true}
                   setSelectedPost={setSelectedPost}
                 />
@@ -219,6 +243,7 @@ export default function Home() {
               <PostDialog
                 onClose={() => setSelectedPost(null)}
                 post={selectedPost}
+                onCommentLike={handleLikeComment}
               />
             )}
             {paginatedPosts.length > 0 ? (
