@@ -1,13 +1,13 @@
-import { useNavigate } from "react-router-dom";
+import useChatStore from "@/stores/setChatStore";
+import { GeneralCardProps } from "@/types";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger
+  TooltipTrigger,
 } from "@radix-ui/react-tooltip";
 import { MessageSquareText } from "lucide-react";
-import { GeneralCardProps } from "@/types";
-import useChatStore from "@/stores/setChatStore";
+import { useNavigate } from "react-router-dom";
 
 export default function GeneralCard({
   name,
@@ -17,7 +17,7 @@ export default function GeneralCard({
   linkText,
   linkUrl,
   additionalInfo,
-  userId
+  userId,
 }: GeneralCardProps) {
   const addConversation = useChatStore((state) => state.addConversation);
 

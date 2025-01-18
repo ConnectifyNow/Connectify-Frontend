@@ -1,10 +1,9 @@
-import { Organization, User } from "@/types";
-import { tagType } from "@/types";
+import { Organization, tagType, User } from "@/types";
 import GeneralCard from "../shared/generic-card";
 
 export default function OrganizationCard({
   organization,
-  userId
+  userId,
 }: {
   organization: Organization;
   userId: User["_id"];
@@ -13,7 +12,7 @@ export default function OrganizationCard({
     type: tagType.focusArea,
     text: area,
     bgColor: "bg-green-100",
-    textColor: "text-green-800"
+    textColor: "text-green-800",
   }));
 
   return (
