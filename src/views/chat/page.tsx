@@ -19,12 +19,10 @@ export default function ChatPage() {
       if (savedUserId) {
         const response = await getUserById(savedUserId);
         if (response.data) {
-          console.log(response.data);
           setSelectedUser(response.data);
           initMessagesByUserId(response.data._id);
         }
       }
-      console.log(savedUserId);
     }
     fetchData();
   }, []);

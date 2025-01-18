@@ -33,7 +33,6 @@ export default function PostDialog({
     post.author.role === Role.Volunteer
       ? post.author.volunteer?.imageUrl
       : post.author.organization?.imageUrl;
-  console.log(post);
 
   return (
     <Dialog open={!!post} onOpenChange={onClose}>
