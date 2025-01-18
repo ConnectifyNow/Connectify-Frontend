@@ -29,6 +29,12 @@ export default function PostDialog({
     onCommentLike(post._id, currentUser._id, commentId);
   };
 
+  const userImageUrl =
+    post.author.role === Role.Volunteer
+      ? post.author.volunteer?.imageUrl
+      : post.author.organization?.imageUrl;
+  console.log(post);
+
   return (
     <Dialog open={!!post} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl">
@@ -36,16 +42,18 @@ export default function PostDialog({
           <DialogTitle>{post.title}</DialogTitle>
         </DialogHeader>
         <div className="mt-4">
-          <img
-            src={post.imageUrl}
-            alt={post.title}
-            width={800}
-            height={400}
-            className="w-full h-64 object-cover rounded-lg mb-4"
-          />
-          <div className="flex items-center mb-4">
+          {post.imageUrl && (
             <img
               src={post.imageUrl}
+              alt={post.title}
+              width={800}
+              height={400}
+              className="w-full h-64 object-cover rounded-lg mb-4"
+            />
+          )}
+          <div className="flex items-center mb-4">
+            <img
+              src={userImageUrl}
               alt={post.author.username}
               width={40}
               height={40}

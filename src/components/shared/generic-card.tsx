@@ -4,7 +4,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger,
+  TooltipTrigger
 } from "@radix-ui/react-tooltip";
 import { MessageSquareText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -17,12 +17,13 @@ export default function GeneralCard({
   linkText,
   linkUrl,
   additionalInfo,
-  userId,
+  userId
 }: GeneralCardProps) {
   const addConversation = useChatStore((state) => state.addConversation);
 
   const navigate = useNavigate();
-  const userClick = async () => {
+  const userClick = async (event: React.MouseEvent) => {
+    event.stopPropagation();
     await addConversation(userId);
     localStorage.setItem("selectedUserId", userId);
     navigate("/chat");
@@ -44,6 +45,7 @@ export default function GeneralCard({
             {linkText && linkUrl && (
               <a
                 href={linkUrl}
+                onClick={(e) => e.stopPropagation()}
                 className="text-blue-600 hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -82,7 +84,7 @@ export default function GeneralCard({
           <Tooltip>
             <TooltipTrigger asChild>
               <button
-                onClick={async () => await userClick()}
+                onClick={async (event) => await userClick(event)}
                 className="bg-black text-white font-bold py-2 px-4 rounded hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 "
               >
                 <MessageSquareText></MessageSquareText>
