@@ -105,6 +105,7 @@ export default function Directory() {
                     onClick={() =>
                       setSelectedOrganization(item as Organization)
                     }
+                    key={item.userId}
                   >
                     <OrganizationCard
                       key={item.userId}
