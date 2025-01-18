@@ -5,6 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import useUserStore from "@/stores/setUserStore";
 import { Post, Role } from "@/types";
 import { Heart } from "lucide-react";
@@ -35,7 +36,7 @@ export default function PostDialog({
         </DialogHeader>
         <div className="mt-4">
           <img
-            src={post.imageUrl || "/placeholder.svg"}
+            src={post.imageUrl}
             alt={post.title}
             width={800}
             height={400}
@@ -43,7 +44,7 @@ export default function PostDialog({
           />
           <div className="flex items-center mb-4">
             <img
-              src={post.imageUrl || "/placeholder.svg"}
+              src={post.imageUrl}
               alt={post.author.username}
               width={40}
               height={40}
@@ -53,58 +54,59 @@ export default function PostDialog({
               {post.author.username}
             </span>
           </div>
-          <p className="text-gray-700 mb-6">{post.content}</p>
-          <h3 className="text-lg font-semibold mb-2">Comments</h3>
-          <div className="space-y-4">
-            {post.comments.map((comment) => (
-              <div key={comment._id} className="bg-gray-50 p-3 rounded-lg">
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <div>
-                    <span className="font-semibold text-sm">
-                      {comment.user.role === Role.Volunteer
-                        ? `${comment.user.volunteer?.firstName} ${comment.user.volunteer?.lastName}`
-                        : comment.user.organization?.name}
-                    </span>
-                    <p className="text-gray-600">{comment.text}</p>
-                  </div>
-                  <img
-                    src={
-                      comment.user.role === Role.Volunteer
-                        ? `${import.meta.env.VITE_REACT_APP_API_URL}/${
-                            comment.user.volunteer?.imageUrl
-                          }`
-                        : `${import.meta.env.VITE_REACT_APP_API_URL}/${
-                            comment.user.organization?.imageUrl
-                          }`
-                    }
-                    alt={comment.user.username}
-                    width={24}
-                    height={24}
-                    className="rounded-full mr-2"
-                  />
-                </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    handleCommentLike(comment._id);
-                  }}
-                  className="flex items-center space-x-1"
-                >
-                  <Heart
-                    className={`w-4 h-4 ${
-                      comment.likes.length > 0
-                        ? "fill-red-500 text-red-500"
-                        : ""
-                    }`}
-                  />
-                  <span className="text-xs">{comment.likes.length}</span>
-                </Button>
+          {post.comments.length > 0 ? (
+            <>
+              <p className="text-gray-700 mb-6">{post.content}</p>
+              <h3 className="text-lg font-semibold mb-2">Comments</h3>
+              <div className="space-y-4">
+                <ScrollArea className="h-[200px] w-full rounded-md border p-4">
+                  {post.comments.map((comment) => (
+                    <div
+                      key={comment._id}
+                      className="bg-gray-50 p-3 rounded-lg"
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <div>
+                          <span className="font-semibold text-sm">
+                            {comment.user.role === Role.Volunteer
+                              ? `${comment.user.volunteer?.firstName} ${comment.user.volunteer?.lastName}`
+                              : comment.user.organization?.name}
+                          </span>
+                          <p className="text-gray-600">{comment.text}</p>
+                        </div>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          handleCommentLike(comment._id);
+                        }}
+                        className="flex items-center space-x-1"
+                      >
+                        <Heart
+                          className={`w-4 h-4 ${
+                            comment.likes.length > 0
+                              ? "fill-red-500 text-red-500"
+                              : ""
+                          }`}
+                        />
+                        <span className="text-xs">{comment.likes.length}</span>
+                      </Button>
+                    </div>
+                  ))}
+                </ScrollArea>
               </div>
-            ))}
-          </div>
+            </>
+          ) : (
+            <div className="text-lg font-semibold mb-2">
+              No comments on this post
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>
