@@ -17,19 +17,18 @@ type UserInformationProps = {
   profile: ProfileData;
   setProfile: (profile: ProfileData) => void;
   isEditing: boolean;
-  setUser: (user: User) => void;
 };
 
 export default function UserInformation({
   profile,
   setProfile,
   isEditing,
-  setUser,
-}: UserInformationProps) {
+}: // setUser,
+UserInformationProps) {
   const cities = useCitiesStore((state) => state.cities);
   const ProfileDataCity = cities?.find((city) => city._id === profile.city);
-  const user = useUserStore.getState();
-  setUser(user);
+  // const user = useUserStore.getState();
+  // setUser(user);
 
   return (
     <Card>

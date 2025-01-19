@@ -89,6 +89,20 @@ export default function ProfilePage() {
       }
       if (response?.status === 200) {
         console.log("user updated successfully");
+        console.log({ data: response.data });
+        if (user?.role === Role.Organization) {
+          myUser.setUser({ ...user, organization: response.data });
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ ...user, organization: response.data })
+          );
+        } else {
+          myUser.setUser({ ...user, volunteer: response.data });
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ ...user, volunteer: response.data })
+          );
+        }
       } else {
         console.error(
           "Failed to update user:",
@@ -114,7 +128,6 @@ export default function ProfilePage() {
           profile={profile}
           setProfile={setProfile}
           isEditing={isEditing}
-          setUser={setUser}
         />
         <UserAboutCard
           profile={profile}
@@ -123,6 +136,7 @@ export default function ProfilePage() {
           setIsEditing={setIsEditing}
           handleLogout={handleLogout}
           saveProfile={saveProfile}
+          setUser={setUser}
         />
       </div>
       <div className="grid grid-cols-3 md:grid-cols-1 gap-8">
