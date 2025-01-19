@@ -1,13 +1,12 @@
-import { ProfileData, Role, Skill, User } from "../../../types/index";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Textarea } from "../../ui/textarea";
 import { Label } from "@/components/ui/label";
-import CustomSelect from "@/components/shared/customSelect";
-import { useEffect, useState } from "react";
 import { getAiDescription } from "@/services/aiService";
 import useSkillsStore from "@/stores/setSkillsStore";
 import useUserStore from "@/stores/setUserStore";
+import { useEffect, useState } from "react";
+import { ProfileData, Role, User } from "../../../types/index";
+import { Textarea } from "../../ui/textarea";
 
 type UserAboutProps = {
   profile: ProfileData;
@@ -30,9 +29,7 @@ export default function UserAboutCard({
 }: UserAboutProps) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [coolDownTime, setCoolDownTime] = useState(0);
-  const skills = useSkillsStore((state) => state.skills);
   const getSkillById = useSkillsStore((state) => state.getSkillById);
-  const toggleSkill = useUserStore((state) => state.toggleSkill);
   const profileSkills = profile.skills?.map((skill: any) =>
     getSkillById(skill)
   );
@@ -56,14 +53,6 @@ export default function UserAboutCard({
       if (timer) clearInterval(timer);
     };
   }, [isDisabled, coolDownTime]);
-
-  // const handleSkillsChange = (value: string) => {
-  //   const skill = getSkillById(value);
-
-  //   if (skill !== undefined) {
-  //     toggleSkill(skill);
-  //   }
-  // };
 
   const handleClick = async (profile: ProfileData) => {
     const response = await getAiDescription(profile.username);
@@ -109,18 +98,6 @@ export default function UserAboutCard({
                   : "Generate Description using AI"}
               </Button>
             )}
-            {/* 
-            {profile?.role === Role.Volunteer && (
-              <div>
-                <CustomSelect
-                  options={skills}
-                  selectedOptions={
-                    profile.skills?.map((skill) => skill._id) ?? []
-                  }
-                  onChange={handleSkillsChange}
-                />
-              </div>
-            )} */}
           </>
         ) : (
           <>
