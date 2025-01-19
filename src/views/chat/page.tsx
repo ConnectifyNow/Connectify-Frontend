@@ -27,10 +27,18 @@ export default function ChatPage() {
     fetchData();
   }, []);
 
-  const initMessagesByUserId = (userId: string) => {
-    const chatId = chat.getChatId(userId);
-    setConversationId(chatId);
-    chat.setMessages(chatId);
+  const initMessagesByUserId = async (userId: string) => {
+    let chatId = chat.getChatId(userId);
+
+    if (!chatId) {
+      await chat.fetchChats();
+      chatId = chat.getChatId(userId);
+
+      if (chatId) {
+        setConversationId(chatId);
+        chat.setMessages(chatId);
+      }
+    }
   };
 
   const chooseUser = (user: User) => {
