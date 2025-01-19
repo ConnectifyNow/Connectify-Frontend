@@ -105,10 +105,12 @@ export default function PostCard({
               className="flex items-center space-x-1">
               <Heart
                 className={`w-5 h-5 ${
-                  post.likes > 0 ? "fill-red-500 text-red-500" : ""
+                  post.likes.includes(currentUser._id)
+                    ? "fill-red-500 text-red-500"
+                    : ""
                 }`}
               />
-              <span>{post.likes}</span>
+              <span>{post.likes.length}</span>
             </Button>
             <Button
               variant="ghost"
