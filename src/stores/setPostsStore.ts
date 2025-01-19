@@ -29,7 +29,7 @@ const usePostsStore = create<PostsStore>((set) => ({
         author: apiPost.user,
         content: apiPost.content,
         title: apiPost.title,
-        likes: apiPost.likes.length,
+        likes: apiPost.likes,
         skills: filteredSkills,
         comments: apiPost.comments,
         imageUrl: apiPost.imageUrl,
@@ -49,10 +49,14 @@ const usePostsStore = create<PostsStore>((set) => ({
       posts: state.posts.filter((post) => post._id !== postId),
     })),
   likePost: (postId) => {
+    const user = useUserStore.getState();
     set((state) => ({
-      posts: state.posts?.map((post) =>
-        post._id === postId ? { ...post, likes: post.likes + 1 } : post
-      ),
+      posts: state.posts?.map((post) => {
+        if (post._id === postId) {
+          post.likes.push(user._id);
+        }
+        return post;
+      }),
     }));
   },
   addComment: (postId, apiComment) => {
