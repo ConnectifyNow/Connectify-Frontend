@@ -89,6 +89,39 @@ export default function ProfilePage() {
       }
       if (response?.status === 200) {
         console.log("user updated successfully");
+        if (user?.role === Role.Organization && user.organization) {
+          const newUser = {
+            ...user,
+            email: profile?.email,
+            username: profile.username,
+            organization: {
+              ...user.organization,
+              _id: user.organization._id,
+              city: profile?.city ?? user.organization.city,
+              name: profile?.name,
+              description: profile?.about ?? user.organization.description,
+              imageUrl: profile?.imageUrl,
+            },
+          };
+          myUser.setUser(newUser);
+          localStorage.setItem("user", JSON.stringify(newUser));
+        } else if (user.volunteer) {
+          const newUser: User = {
+            ...user,
+            email: profile?.email,
+            username: profile.username,
+            volunteer: {
+              ...user.volunteer,
+              _id: user.volunteer._id,
+              city: profile?.city ?? user.volunteer.city,
+              firstName: profile?.name,
+              about: profile?.about ?? user.volunteer.about,
+              imageUrl: profile?.imageUrl,
+            },
+          };
+          myUser.setUser(newUser);
+          localStorage.setItem("user", JSON.stringify(newUser));
+        }
       } else {
         console.error(
           "Failed to update user:",
@@ -114,7 +147,6 @@ export default function ProfilePage() {
           profile={profile}
           setProfile={setProfile}
           isEditing={isEditing}
-          setUser={setUser}
         />
         <UserAboutCard
           profile={profile}
@@ -123,6 +155,7 @@ export default function ProfilePage() {
           setIsEditing={setIsEditing}
           handleLogout={handleLogout}
           saveProfile={saveProfile}
+          setUser={setUser}
         />
       </div>
       <div className="grid grid-cols-3 md:grid-cols-1 gap-8">

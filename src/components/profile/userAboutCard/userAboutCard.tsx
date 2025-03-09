@@ -1,13 +1,12 @@
-import { ProfileData, Role } from "../../../types/index";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Textarea } from "../../ui/textarea";
 import { Label } from "@/components/ui/label";
-import CustomSelect from "@/components/shared/customSelect";
-import { useEffect, useState } from "react";
 import { getAiDescription } from "@/services/aiService";
 import useSkillsStore from "@/stores/setSkillsStore";
 import useUserStore from "@/stores/setUserStore";
+import { useEffect, useState } from "react";
+import { ProfileData, Role, User } from "../../../types/index";
+import { Textarea } from "../../ui/textarea";
 
 type UserAboutProps = {
   profile: ProfileData;
@@ -16,6 +15,7 @@ type UserAboutProps = {
   setIsEditing: (isEditing: boolean) => void;
   saveProfile: () => void;
   handleLogout: () => void;
+  setUser: (user: User) => void;
 };
 
 export default function UserAboutCard({
@@ -24,13 +24,18 @@ export default function UserAboutCard({
   isEditing,
   setIsEditing,
   saveProfile,
+  setUser,
   handleLogout,
 }: UserAboutProps) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [coolDownTime, setCoolDownTime] = useState(0);
-  const skills = useSkillsStore((state) => state.skills);
   const getSkillById = useSkillsStore((state) => state.getSkillById);
-  const toggleSkill = useUserStore((state) => state.toggleSkill);
+  const profileSkills = profile.skills?.map((skill: any) =>
+    getSkillById(skill)
+  );
+
+  const user = useUserStore.getState();
+  setUser(user);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -48,14 +53,6 @@ export default function UserAboutCard({
       if (timer) clearInterval(timer);
     };
   }, [isDisabled, coolDownTime]);
-
-  const handleSkillsChange = (value: string) => {
-    const skill = getSkillById(value);
-
-    if (skill !== undefined) {
-      toggleSkill(skill);
-    }
-  };
 
   const handleClick = async (profile: ProfileData) => {
     const response = await getAiDescription(profile.username);
@@ -94,23 +91,12 @@ export default function UserAboutCard({
                   setProfile({ ...profile, about: fromAI });
                 }}
                 disabled={isDisabled}
-                className="w-55 bg-blue-900 hover:bg-blue-900 hover:shadow-md">
+                className="w-55 bg-blue-900 hover:bg-blue-900 hover:shadow-md"
+              >
                 {isDisabled
                   ? `Wait ${coolDownTime}s`
                   : "Generate Description using AI"}
               </Button>
-            )}
-
-            {profile?.role === Role.Volunteer && (
-              <div>
-                <CustomSelect
-                  options={skills}
-                  selectedOptions={
-                    profile.skills?.map((skill) => skill._id) ?? []
-                  }
-                  onChange={handleSkillsChange}
-                />
-              </div>
             )}
           </>
         ) : (
@@ -118,11 +104,12 @@ export default function UserAboutCard({
             <div style={{ wordWrap: "break-word" }}>{profile.about}</div>
             <div>
               <div className="flex flex-wrap gap-2 mt-2">
-                {(profile.skills ?? [])?.map((skill) => (
+                {(profileSkills ?? [])?.map((skill) => (
                   <span
-                    key={skill._id}
-                    className="text-primary-foreground px-2 py-1 rounded-full bg-green-600 text-sm">
-                    {skill.name}
+                    key={skill?._id}
+                    className="text-primary-foreground px-2 py-1 rounded-full bg-green-600 text-sm"
+                  >
+                    {skill?.name}
                   </span>
                 ))}
               </div>
@@ -133,13 +120,15 @@ export default function UserAboutCard({
           {isEditing ? (
             <Button
               className="bg-blue-900 hover:bg-blue-900 hover:shadow-md"
-              onClick={saveProfile}>
+              onClick={saveProfile}
+            >
               Save Profile
             </Button>
           ) : (
             <Button
               className="bg-blue-900 hover:bg-blue-900 hover:shadow-md"
-              onClick={() => setIsEditing(true)}>
+              onClick={() => setIsEditing(true)}
+            >
               Edit Profile
             </Button>
           )}

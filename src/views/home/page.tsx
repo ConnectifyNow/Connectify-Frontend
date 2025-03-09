@@ -81,6 +81,7 @@ export default function Home() {
       if (loading) return;
       setLoading(true);
       try {
+<<<<<<< HEAD
         const response = await getPosts(
           skip,
           POSTS_PER_LOAD,
@@ -99,6 +100,13 @@ export default function Home() {
 
           setHasMore(response.hasMore);
           setSkip((prevSkip) => prevSkip + POSTS_PER_LOAD);
+=======
+        const response = await getPosts();
+        if (response.status === 200) {
+          const fetchedPosts = await response.data;
+          setPosts(fetchedPosts);
+          console.log(fetchedPosts);
+>>>>>>> 7b2350aa92576e23f3ef3675670c840ea8431e39
         } else {
           console.error("Failed to fetch posts:", response.d.statusText);
         }
@@ -109,8 +117,14 @@ export default function Home() {
       }
     };
 
+<<<<<<< HEAD
     fetchPosts();
   }, [page, filters]); // Removed setPosts and posts dependencies to avoid infinite loops
+=======
+  const sortedPosts = [...posts].sort(
+    (a, b) => b.likes.length - a.likes.length
+  );
+>>>>>>> 7b2350aa92576e23f3ef3675670c840ea8431e39
 
   const handleAddPost = async (post: reqApiPost) => {
     const response = await createPost({
@@ -134,7 +148,11 @@ export default function Home() {
         imageUrl: post.imageUrl,
         skills,
         comments: [],
+<<<<<<< HEAD
         likes: 0,
+=======
+        likes: [],
+>>>>>>> 7b2350aa92576e23f3ef3675670c840ea8431e39
       };
 
       addPost(newPost);
@@ -275,6 +293,7 @@ export default function Home() {
                 onCommentLike={handleLikeComment}
               />
             )}
+<<<<<<< HEAD
             {loading && (
               <div className="text-center mt-4">
                 <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
@@ -288,6 +307,43 @@ export default function Home() {
             {posts.length === 0 && !loading && (
               <div className="text-center text-gray-500 mt-6">
                 no posts exsits, be the first one to post something!
+=======
+            {paginatedPosts.length > 0 ? (
+              <div
+                className="mt-8 flex justify-center"
+                style={{ cursor: "pointer" }}>
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
+                        onClick={() =>
+                          setCurrentPage((prev) => Math.max(prev - 1, 1))
+                        }
+                        className={currentPage === 1 ? "disabled" : ""}
+                      />
+                    </PaginationItem>
+                    {[...Array(totalPages)]?.map((_, index) => (
+                      <PaginationItem key={index}>
+                        <PaginationLink
+                          isActive={currentPage === index + 1}
+                          onClick={() => setCurrentPage(index + 1)}>
+                          {index + 1}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    <PaginationItem>
+                      <PaginationNext
+                        onClick={() =>
+                          setCurrentPage((prev) =>
+                            Math.min(prev + 1, totalPages)
+                          )
+                        }
+                        className={currentPage === totalPages ? "disabled" : ""}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+>>>>>>> 7b2350aa92576e23f3ef3675670c840ea8431e39
               </div>
             )}
           </div>
