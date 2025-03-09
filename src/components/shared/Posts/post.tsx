@@ -56,12 +56,20 @@ export default function PostCard({
     setIsDeleteDialogOpen(false);
   };
 
-  const isCurrentUserPost = post.author._id === currentUser._id;
-  const imagePath =
-    post.author.role === Role.Volunteer
-      ? post.author.volunteer?.imageUrl
-      : post.author.organization?.imageUrl;
+  let isCurrentUserPost = false;
+  let imagePath: string | undefined = "";
+  let authorUsername = "";
+  let authorRole: Role | undefined = undefined;
 
+  if (post.author) {
+    isCurrentUserPost = post.author._id === currentUser._id;
+    imagePath =
+      post.author.role === Role.Volunteer
+        ? post.author.volunteer?.imageUrl
+        : post.author.organization?.imageUrl;
+    authorUsername = post.author.username;
+    authorRole = post.author.role;
+  }
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
       <div style={{ display: "flex" }}>
@@ -70,19 +78,15 @@ export default function PostCard({
             <div className="flex items-center">
               <img
                 src={imagePath}
-                alt={post.author.username}
+                alt={authorUsername}
                 width={40}
                 height={40}
                 className="rounded-full mr-4"
               />
               <div>
-                <h3 className="font-semibold text-lg">
-                  {post.author.username}
-                </h3>
+                <h3 className="font-semibold text-lg">{authorUsername}</h3>
                 <span className="text-sm text-gray-500">
-                  {post.author.role === Role.Volunteer
-                    ? "Volunteer"
-                    : "Organization"}
+                  {authorRole === Role.Volunteer ? "Volunteer" : "Organization"}
                 </span>
               </div>
             </div>
@@ -92,8 +96,7 @@ export default function PostCard({
             {post.skills?.map((skill) => (
               <span
                 key={skill._id}
-                className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
-              >
+                className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
                 {skill.name}
               </span>
             ))}
@@ -103,8 +106,7 @@ export default function PostCard({
               variant="ghost"
               size="sm"
               onClick={handleLike}
-              className="flex items-center space-x-1"
-            >
+              className="flex items-center space-x-1">
               <Heart
                 className={`w-5 h-5 ${
                   post.likes > 0 ? "fill-red-500 text-red-500" : ""
@@ -119,8 +121,7 @@ export default function PostCard({
                 setShowComments(!showComments);
                 setSelectedPost(post);
               }}
-              className="flex items-center space-x-1"
-            >
+              className="flex items-center space-x-1">
               <MessageCircle className="w-5 h-5" />
               <span>{post.comments.length}</span>
             </Button>
@@ -148,7 +149,7 @@ export default function PostCard({
           {post.imageUrl && (
             <img
               src={post.imageUrl}
-              alt={post.author.username}
+              alt={authorUsername}
               style={{ width: "100%", height: "100%" }}
             />
           )}
@@ -165,8 +166,7 @@ export default function PostCard({
           <Button
             type="submit"
             size="sm"
-            className="bg-blue-900 hover:bg-blue-900 hover:shadow-md"
-          >
+            className="bg-blue-900 hover:bg-blue-900 hover:shadow-md">
             Add Comment
           </Button>
           {showEditDelete && isCurrentUserPost && (
@@ -174,16 +174,14 @@ export default function PostCard({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setIsEditModalOpen(true)}
-              >
+                onClick={() => setIsEditModalOpen(true)}>
                 <Edit className="w-4 h-4 mr-2" />
                 Edit
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setIsDeleteDialogOpen(true)}
-              >
+                onClick={() => setIsDeleteDialogOpen(true)}>
                 <Trash2 className="w-4 h-4 mr-2" />
                 Delete
               </Button>

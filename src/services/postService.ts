@@ -4,7 +4,7 @@ import apiClient from "./apiClient";
 
 export const createPost = async (post: reqApiPost) => {
   return await apiClient.post(`/posts`, post, {
-    headers: headers()
+    headers: headers(),
   });
 };
 
@@ -13,20 +13,33 @@ export const likePostApi = async (postId: string, userId: string) => {
     `/posts/${postId}/like`,
     { userId },
     {
-      headers: headers()
+      headers: headers(),
     }
   );
 };
 
-export const getPosts = async () => {
-  return await apiClient.get(`/posts`, {
-    headers: headers()
-  });
+export const getPosts = async (
+  skip: number,
+  top: number,
+  type: string,
+  skills: string[]
+) => {
+  const skillsOptions = skills.join(",");
+  const d = await apiClient.get(
+    `/posts?skills=${skillsOptions}&skip=${skip}&top=${top}`,
+    {
+      headers: headers(),
+    }
+  );
+  return {
+    d,
+    hasMore: d.data.length === 0,
+  };
 };
 
 export const deletePostApi = async (postId: string) => {
   return await apiClient.delete(`/posts/${postId}`, {
-    headers: headers()
+    headers: headers(),
   });
 };
 
@@ -35,7 +48,7 @@ export const likeCommentApi = async (userId: string, commentId: string) => {
     `/comments/${commentId}/like`,
     { userId },
     {
-      headers: headers()
+      headers: headers(),
     }
   );
 };
@@ -45,13 +58,13 @@ export const addCommentToPost = async (postId: string, comment: ApiComment) => {
     `/posts/${postId}/comment`,
     { text: comment.text, userId: comment.user },
     {
-      headers: headers()
+      headers: headers(),
     }
   );
 };
 
 export const updatePostApi = async (post: reqApiPost) => {
   return await apiClient.put(`/posts/${post._id}`, post, {
-    headers: headers()
+    headers: headers(),
   });
 };

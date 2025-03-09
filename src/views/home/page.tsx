@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { AddPostButton } from "@/components/home/addPostButton";
 import { NoPostsScreen } from "@/components/emptyState/noPosts";
 import PostCard from "@/components/shared/Posts/post";
@@ -8,19 +7,20 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious
+  PaginationPrevious,
 } from "@/components/ui/pagination";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Sidebar from "../../components/home/sidebar";
 import usePostsStore from "../../stores/setPostsStore";
 import {
   ApiComment,
+  ApiPost,
   Comment,
   IdName,
   Post,
   reqApiPost,
   Role,
-  User
+  User,
 } from "../../types";
 import { Toaster } from "@/components/ui/toaster";
 import {
@@ -30,13 +30,13 @@ import {
   getPosts,
   likeCommentApi,
   likePostApi,
-  updatePostApi
+  updatePostApi,
 } from "@/services/postService";
 import useUserStore from "@/stores/setUserStore";
 import useSkillsStore from "@/stores/setSkillsStore";
 import PostDialog from "@/components/shared/Posts/comments-dialog";
 
-const POSTS_PER_PAGE = 3;
+const POSTS_PER_LOAD = 5;
 
 export default function Home() {
   const {
@@ -47,35 +47,70 @@ export default function Home() {
     deletePost,
     addComment,
     likeComment,
-    addPost
+    addPost,
   } = usePostsStore();
   const [filters, setFilters] = useState({
     postType: "all",
-    skillsIds: [] as string[]
+    skillsIds: [] as string[],
   });
   const user = useUserStore();
   const getSkillById = useSkillsStore((state) => state.getSkillById);
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [skip, setSkip] = useState(0);
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  const lastPostElementRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [loading, hasMore]
+  );
 
   useEffect(() => {
     const fetchPosts = async () => {
+      if (loading) return;
+      setLoading(true);
       try {
-        const response = await getPosts();
-        if (response.status === 200) {
-          const fetchedPosts = await response.data;
-          setPosts(fetchedPosts);
+        const response = await getPosts(
+          skip,
+          POSTS_PER_LOAD,
+          filters.postType,
+          filters.skillsIds
+        );
+        if (response.d.status === 200) {
+          const fetchedPosts = await response.d.data;
+
+          // Only append posts if not the initial load (page > 1)
+          if (page === 1) {
+            setPosts(fetchedPosts);
+          } else {
+            setPosts([...posts, ...fetchedPosts]);
+          }
+
+          setHasMore(response.hasMore);
+          setSkip((prevSkip) => prevSkip + POSTS_PER_LOAD);
         } else {
-          console.error("Failed to fetch posts:", response.statusText);
+          console.error("Failed to fetch posts:", response.d.statusText);
         }
       } catch (error) {
         console.error("Error fetching posts:", error);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchPosts();
-  }, []);
 
-  const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
+    fetchPosts();
+  }, [page, filters]); // Removed setPosts and posts dependencies to avoid infinite loops
 
   const handleAddPost = async (post: reqApiPost) => {
     const response = await createPost({
@@ -83,7 +118,7 @@ export default function Home() {
       content: post.content,
       user: post.user,
       skills: post.skills,
-      imageUrl: post.imageUrl
+      imageUrl: post.imageUrl,
     });
 
     if (response.status === 201) {
@@ -99,7 +134,7 @@ export default function Home() {
         imageUrl: post.imageUrl,
         skills,
         comments: [],
-        likes: 0
+        likes: 0,
       };
 
       addPost(newPost);
@@ -115,7 +150,7 @@ export default function Home() {
       title: post.title,
       content: post.content,
       skills: post.skills.map((skill) => skill._id),
-      imageUrl: post.imageUrl
+      imageUrl: post.imageUrl,
     };
 
     const response = await updatePostApi(postToUpdate);
@@ -158,7 +193,7 @@ export default function Home() {
         if (prevPost) {
           return {
             ...prevPost,
-            comments: updatedComments
+            comments: updatedComments,
           };
         }
         return prevPost;
@@ -192,30 +227,6 @@ export default function Home() {
     }
   };
 
-  const filteredPosts = sortedPosts.filter((post) => {
-    const isAllPosts = filters.postType === "all";
-    const isMyPosts = filters.postType === "my" && post.author._id === user._id;
-
-    const typeMatch =
-      isAllPosts ||
-      Role[post.author.role].toLowerCase() === filters.postType ||
-      isMyPosts;
-    const skillsMatch: boolean =
-      filters.skillsIds.length === 0 ||
-      filters.skillsIds.some((skillId: string) =>
-        post.skills
-          ?.map((skill: { _id: string }) => skill._id)
-          .includes(skillId)
-      );
-    return typeMatch && skillsMatch;
-  });
-
-  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
-  const paginatedPosts = filteredPosts.slice(
-    (currentPage - 1) * POSTS_PER_PAGE,
-    currentPage * POSTS_PER_PAGE
-  );
-
   return (
     <main className="min-h-screen bg-blue-50 py-12">
       <div className="max-w-6xl mx-auto px-4">
@@ -226,18 +237,36 @@ export default function Home() {
           </div>
           <div className="w-3/4">
             <div className="space-y-6">
-              {paginatedPosts?.map((post: Post) => (
-                <PostCard
-                  key={post._id}
-                  post={post}
-                  onLike={handleLikePost}
-                  onComment={handleAddComment}
-                  onEdit={handleEditPost}
-                  onDelete={handleDeletePost}
-                  showEditDelete={true}
-                  setSelectedPost={setSelectedPost}
-                />
-              ))}
+              {posts?.map((post: Post, index: number) => {
+                if (posts.length === index + 1) {
+                  return (
+                    <div key={post._id} ref={lastPostElementRef}>
+                      <PostCard
+                        post={post}
+                        onLike={handleLikePost}
+                        onComment={handleAddComment}
+                        onEdit={handleEditPost}
+                        onDelete={handleDeletePost}
+                        showEditDelete={true}
+                        setSelectedPost={setSelectedPost}
+                      />
+                    </div>
+                  );
+                } else {
+                  return (
+                    <PostCard
+                      key={post._id}
+                      post={post}
+                      onLike={handleLikePost}
+                      onComment={handleAddComment}
+                      onEdit={handleEditPost}
+                      onDelete={handleDeletePost}
+                      showEditDelete={true}
+                      setSelectedPost={setSelectedPost}
+                    />
+                  );
+                }
+              })}
             </div>
             {selectedPost && (
               <PostDialog
@@ -246,46 +275,20 @@ export default function Home() {
                 onCommentLike={handleLikeComment}
               />
             )}
-            {paginatedPosts.length > 0 ? (
-              <div
-                className="mt-8 flex justify-center"
-                style={{ cursor: "pointer" }}
-              >
-                <Pagination>
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious
-                        onClick={() =>
-                          setCurrentPage((prev) => Math.max(prev - 1, 1))
-                        }
-                        className={currentPage === 1 ? "disabled" : ""}
-                      />
-                    </PaginationItem>
-                    {[...Array(totalPages)]?.map((_, index) => (
-                      <PaginationItem key={index}>
-                        <PaginationLink
-                          isActive={currentPage === index + 1}
-                          onClick={() => setCurrentPage(index + 1)}
-                        >
-                          {index + 1}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))}
-                    <PaginationItem>
-                      <PaginationNext
-                        onClick={() =>
-                          setCurrentPage((prev) =>
-                            Math.min(prev + 1, totalPages)
-                          )
-                        }
-                        className={currentPage === totalPages ? "disabled" : ""}
-                      />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
+            {loading && (
+              <div className="text-center mt-4">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
               </div>
-            ) : (
-              <NoPostsScreen role={""} />
+            )}
+            {!hasMore && posts.length > 0 && (
+              <div className="text-center text-gray-500 mt-6">
+                No more posts to load.
+              </div>
+            )}
+            {posts.length === 0 && !loading && (
+              <div className="text-center text-gray-500 mt-6">
+                no posts exsits, be the first one to post something!
+              </div>
             )}
           </div>
         </div>
