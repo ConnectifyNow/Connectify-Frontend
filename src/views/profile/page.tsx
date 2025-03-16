@@ -57,16 +57,16 @@ export default function ProfilePage() {
   const handleEditProfile = async () => {
     let response;
     try {
-      if (profile.username !== user.username) {
+      if (profile.username !== myUser.username) {
         await updateUserApi({
-          _id: user._id,
+          _id: myUser._id,
           username: profile.username,
         });
       }
 
-      if (profile?.role === Role.Volunteer && user.volunteer) {
+      if (profile?.role === Role.Volunteer && myUser.volunteer) {
         const profileToUpdate = {
-          _id: user.volunteer?._id,
+          _id: myUser.volunteer?._id,
           city: profile?.city,
           name: profile?.name,
           about: profile?.about,
@@ -74,9 +74,9 @@ export default function ProfilePage() {
           email: profile?.email,
         };
         response = await updateVolunteerApi(profileToUpdate);
-      } else if (user?.role === Role.Organization && user.organization) {
+      } else if (myUser?.role === Role.Organization && myUser.organization) {
         const profileToUpdate = {
-          _id: user.organization?._id,
+          _id: myUser.organization?._id,
           city: profile?.city,
           name: profile?.name,
           description: profile?.about,
@@ -88,33 +88,33 @@ export default function ProfilePage() {
       }
       if (response?.status === 200) {
         console.log("user updated successfully");
-        if (user?.role === Role.Organization && user.organization) {
+        if (myUser?.role === Role.Organization && myUser.organization) {
           const newUser = {
-            ...user,
+            ...myUser,
             email: profile?.email,
             username: profile.username,
             organization: {
-              ...user.organization,
-              _id: user.organization._id,
-              city: profile?.city ?? user.organization.city,
+              ...myUser.organization,
+              _id: myUser.organization._id,
+              city: profile?.city ?? myUser.organization.city,
               name: profile?.name,
-              description: profile?.about ?? user.organization.description,
+              description: profile?.about ?? myUser.organization.description,
               imageUrl: profile?.imageUrl,
             },
           };
           myUser.setUser(newUser);
           localStorage.setItem("user", JSON.stringify(newUser));
-        } else if (user.volunteer) {
+        } else if (myUser.volunteer) {
           const newUser: User = {
-            ...user,
+            ...myUser,
             email: profile?.email,
             username: profile.username,
             volunteer: {
-              ...user.volunteer,
-              _id: user.volunteer._id,
-              city: profile?.city ?? user.volunteer.city,
+              ...myUser.volunteer,
+              _id: myUser.volunteer._id,
+              city: profile?.city ?? myUser.volunteer.city,
               firstName: profile?.name,
-              about: profile?.about ?? user.volunteer.about,
+              about: profile?.about ?? myUser.volunteer.about,
               imageUrl: profile?.imageUrl,
             },
           };
@@ -154,7 +154,7 @@ export default function ProfilePage() {
           setIsEditing={setIsEditing}
           handleLogout={handleLogout}
           saveProfile={saveProfile}
-          setUser={(newUser: any) => {
+          setUser={(newUser: User) => {
             useUserStore.setState(newUser);
           }}
         />
