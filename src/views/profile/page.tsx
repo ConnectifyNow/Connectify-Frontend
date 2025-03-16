@@ -154,7 +154,7 @@ export default function ProfilePage() {
           setIsEditing={setIsEditing}
           handleLogout={handleLogout}
           saveProfile={saveProfile}
-          setUser={(newUser: any) => {
+          setUser={(newUser: User) => {
             useUserStore.setState(newUser);
           }}
         />
