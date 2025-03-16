@@ -92,7 +92,7 @@ export interface Post {
   imageUrl: string;
   skills: Skill[] | FocusArea[];
   comments: Comment[];
-  likes: number;
+  likes: string[];
 }
 
 export interface reqApiPost {
@@ -157,12 +157,12 @@ export interface Comment {
 
 export enum Role {
   Volunteer = 0,
-  Organization = 1
+  Organization = 1,
 }
 
 export enum tagType {
   skill = "skill",
-  focusArea = "focus-area"
+  focusArea = "focus-area",
 }
 
 export interface ProfileData {
