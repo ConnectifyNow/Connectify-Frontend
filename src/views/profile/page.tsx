@@ -12,42 +12,41 @@ import { useNavigate } from "react-router-dom";
 import { ProfileData, Role, User } from "../../types/index";
 
 export default function ProfilePage() {
-  const myUser = useUserStore.getState();
+  const myUser = useUserStore();
   const navigate = useNavigate();
   const logoutMutation = useMutation(logout);
 
-  const [user, setUser] = useState<User>(myUser);
   const [profile, setProfile] = useState<ProfileData>({} as ProfileData);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    if (user?.role === Role.Volunteer && user.volunteer) {
+    if (myUser?.role === Role.Volunteer && myUser.volunteer) {
       setProfile({
-        ...user.volunteer,
-        name: user.volunteer?.firstName,
+        ...myUser.volunteer,
+        name: myUser.volunteer?.firstName,
         role: Role.Volunteer,
-        email: user.email,
-        username: user.username,
-        city: user?.volunteer.city,
-        imageUrl: user?.volunteer.imageUrl,
-        about: user.volunteer.about,
+        email: myUser.email,
+        username: myUser.username,
+        city: myUser?.volunteer.city,
+        imageUrl: myUser?.volunteer.imageUrl,
+        about: myUser.volunteer.about,
       });
-    } else if (user?.role === Role.Organization && user.organization) {
+    } else if (myUser?.role === Role.Organization && myUser.organization) {
       setProfile({
-        ...user.organization,
-        name: user.organization.name,
+        ...myUser.organization,
+        name: myUser.organization.name,
         role: Role.Organization,
-        email: user.email,
-        about: user.organization.description,
-        username: user.username,
-        city: user?.organization.city,
-        imageUrl: user?.organization.imageUrl,
+        email: myUser.email,
+        about: myUser.organization.description,
+        username: myUser.username,
+        city: myUser?.organization.city,
+        imageUrl: myUser?.organization.imageUrl,
       });
     }
-  }, [user]);
+  }, [myUser]);
 
   const handleLogout = async () => {
-    if (user.isLoggedIn) {
+    if (myUser.isLoggedIn) {
       await logoutMutation.mutateAsync();
       resetTokens();
       myUser.resetUser();
@@ -155,7 +154,9 @@ export default function ProfilePage() {
           setIsEditing={setIsEditing}
           handleLogout={handleLogout}
           saveProfile={saveProfile}
-          setUser={setUser}
+          setUser={(newUser: any) => {
+            useUserStore.setState(newUser);
+          }}
         />
       </div>
       <div className="grid grid-cols-3 md:grid-cols-1 gap-8">
