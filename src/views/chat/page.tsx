@@ -30,14 +30,11 @@ export default function ChatPage() {
   const initMessagesByUserId = async (userId: string) => {
     let chatId = chat.getChatId(userId);
 
-    if (!chatId) {
+    if (chatId) {
       await chat.fetchChats();
       chatId = chat.getChatId(userId);
-
-      if (chatId) {
-        setConversationId(chatId);
-        chat.setMessages(chatId);
-      }
+      setConversationId(chatId);
+      chat.setMessages(chatId);
     }
   };
 
