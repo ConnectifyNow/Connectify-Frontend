@@ -65,7 +65,6 @@ export default function Home() {
         if (response.status === 200) {
           const fetchedPosts = await response.data;
           setPosts(fetchedPosts);
-          console.log(fetchedPosts);
         } else {
           console.error("Failed to fetch posts:", response.statusText);
         }
@@ -252,7 +251,8 @@ export default function Home() {
             {paginatedPosts.length > 0 ? (
               <div
                 className="mt-8 flex justify-center"
-                style={{ cursor: "pointer" }}>
+                style={{ cursor: "pointer" }}
+              >
                 <Pagination>
                   <PaginationContent>
                     <PaginationItem>
@@ -267,7 +267,8 @@ export default function Home() {
                       <PaginationItem key={index}>
                         <PaginationLink
                           isActive={currentPage === index + 1}
-                          onClick={() => setCurrentPage(index + 1)}>
+                          onClick={() => setCurrentPage(index + 1)}
+                        >
                           {index + 1}
                         </PaginationLink>
                       </PaginationItem>
