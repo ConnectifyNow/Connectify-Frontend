@@ -45,9 +45,7 @@ export default function PostDialog({
             <img
               src={post.imageUrl}
               alt={post.title}
-              width={800}
-              height={400}
-              className="w-full h-64 object-cover rounded-lg mb-4"
+              className="h-64 flex justify-center mx-auto"
             />
           )}
           <div className="flex items-center mb-4">

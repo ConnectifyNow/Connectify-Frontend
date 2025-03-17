@@ -25,11 +25,12 @@ export default function UserAboutCard({
   setIsEditing,
   saveProfile,
   setUser,
-  handleLogout,
+  handleLogout
 }: UserAboutProps) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [coolDownTime, setCoolDownTime] = useState(0);
   const getSkillById = useSkillsStore((state) => state.getSkillById);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const profileSkills = profile.skills?.map((skill: any) =>
     getSkillById(skill)
   );

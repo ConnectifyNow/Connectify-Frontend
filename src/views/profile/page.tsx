@@ -12,42 +12,41 @@ import { useNavigate } from "react-router-dom";
 import { ProfileData, Role, User } from "../../types/index";
 
 export default function ProfilePage() {
-  const myUser = useUserStore.getState();
+  const myUser = useUserStore();
   const navigate = useNavigate();
   const logoutMutation = useMutation(logout);
 
-  const [user, setUser] = useState<User>(myUser);
   const [profile, setProfile] = useState<ProfileData>({} as ProfileData);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    if (user?.role === Role.Volunteer && user.volunteer) {
+    if (myUser?.role === Role.Volunteer && myUser.volunteer) {
       setProfile({
-        ...user.volunteer,
-        name: user.volunteer?.firstName,
+        ...myUser.volunteer,
+        name: myUser.volunteer?.firstName,
         role: Role.Volunteer,
-        email: user.email,
-        username: user.username,
-        city: user?.volunteer.city,
-        imageUrl: user?.volunteer.imageUrl,
-        about: user.volunteer.about,
+        email: myUser.email,
+        username: myUser.username,
+        city: myUser?.volunteer.city,
+        imageUrl: myUser?.volunteer.imageUrl,
+        about: myUser.volunteer.about,
       });
-    } else if (user?.role === Role.Organization && user.organization) {
+    } else if (myUser?.role === Role.Organization && myUser.organization) {
       setProfile({
-        ...user.organization,
-        name: user.organization.name,
+        ...myUser.organization,
+        name: myUser.organization.name,
         role: Role.Organization,
-        email: user.email,
-        about: user.organization.description,
-        username: user.username,
-        city: user?.organization.city,
-        imageUrl: user?.organization.imageUrl,
+        email: myUser.email,
+        about: myUser.organization.description,
+        username: myUser.username,
+        city: myUser?.organization.city,
+        imageUrl: myUser?.organization.imageUrl,
       });
     }
-  }, [user]);
+  }, [myUser]);
 
   const handleLogout = async () => {
-    if (user.isLoggedIn) {
+    if (myUser.isLoggedIn) {
       await logoutMutation.mutateAsync();
       resetTokens();
       myUser.resetUser();
@@ -58,16 +57,16 @@ export default function ProfilePage() {
   const handleEditProfile = async () => {
     let response;
     try {
-      if (profile.username !== user.username) {
+      if (profile.username !== myUser.username) {
         await updateUserApi({
-          _id: user._id,
+          _id: myUser._id,
           username: profile.username,
         });
       }
 
-      if (profile?.role === Role.Volunteer && user.volunteer) {
+      if (profile?.role === Role.Volunteer && myUser.volunteer) {
         const profileToUpdate = {
-          _id: user.volunteer?._id,
+          _id: myUser.volunteer?._id,
           city: profile?.city,
           name: profile?.name,
           about: profile?.about,
@@ -75,9 +74,9 @@ export default function ProfilePage() {
           email: profile?.email,
         };
         response = await updateVolunteerApi(profileToUpdate);
-      } else if (user?.role === Role.Organization && user.organization) {
+      } else if (myUser?.role === Role.Organization && myUser.organization) {
         const profileToUpdate = {
-          _id: user.organization?._id,
+          _id: myUser.organization?._id,
           city: profile?.city,
           name: profile?.name,
           description: profile?.about,
@@ -89,33 +88,33 @@ export default function ProfilePage() {
       }
       if (response?.status === 200) {
         console.log("user updated successfully");
-        if (user?.role === Role.Organization && user.organization) {
+        if (myUser?.role === Role.Organization && myUser.organization) {
           const newUser = {
-            ...user,
+            ...myUser,
             email: profile?.email,
             username: profile.username,
             organization: {
-              ...user.organization,
-              _id: user.organization._id,
-              city: profile?.city ?? user.organization.city,
+              ...myUser.organization,
+              _id: myUser.organization._id,
+              city: profile?.city ?? myUser.organization.city,
               name: profile?.name,
-              description: profile?.about ?? user.organization.description,
+              description: profile?.about ?? myUser.organization.description,
               imageUrl: profile?.imageUrl,
             },
           };
           myUser.setUser(newUser);
           localStorage.setItem("user", JSON.stringify(newUser));
-        } else if (user.volunteer) {
+        } else if (myUser.volunteer) {
           const newUser: User = {
-            ...user,
+            ...myUser,
             email: profile?.email,
             username: profile.username,
             volunteer: {
-              ...user.volunteer,
-              _id: user.volunteer._id,
-              city: profile?.city ?? user.volunteer.city,
+              ...myUser.volunteer,
+              _id: myUser.volunteer._id,
+              city: profile?.city ?? myUser.volunteer.city,
               firstName: profile?.name,
-              about: profile?.about ?? user.volunteer.about,
+              about: profile?.about ?? myUser.volunteer.about,
               imageUrl: profile?.imageUrl,
             },
           };
@@ -155,7 +154,9 @@ export default function ProfilePage() {
           setIsEditing={setIsEditing}
           handleLogout={handleLogout}
           saveProfile={saveProfile}
-          setUser={setUser}
+          setUser={(newUser: User) => {
+            useUserStore.setState(newUser);
+          }}
         />
       </div>
       <div className="grid grid-cols-3 md:grid-cols-1 gap-8">
