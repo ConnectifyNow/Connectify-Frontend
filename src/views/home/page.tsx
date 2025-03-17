@@ -57,6 +57,7 @@ export default function Home() {
   const getSkillById = useSkillsStore((state) => state.getSkillById);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [page, setPage] = useState(1);
+  const prevPageRef = useRef(page);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [skip, setSkip] = useState(0);
@@ -67,7 +68,7 @@ export default function Home() {
       if (loading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
+        if (entries[0].isIntersecting && !hasMore) {
           setPage((prevPage) => prevPage + 1);
         }
       });
@@ -81,7 +82,6 @@ export default function Home() {
       if (loading) return;
       setLoading(true);
       try {
-<<<<<<< HEAD
         const response = await getPosts(
           skip,
           POSTS_PER_LOAD,
@@ -99,14 +99,15 @@ export default function Home() {
           }
 
           setHasMore(response.hasMore);
-          setSkip((prevSkip) => prevSkip + POSTS_PER_LOAD);
-=======
-        const response = await getPosts();
-        if (response.status === 200) {
-          const fetchedPosts = await response.data;
-          setPosts(fetchedPosts);
-          console.log(fetchedPosts);
->>>>>>> 7b2350aa92576e23f3ef3675670c840ea8431e39
+
+          if (prevPageRef.current !== page) {
+            setSkip((prevSkip) => prevSkip + POSTS_PER_LOAD);
+            prevPageRef.current = page;
+          } else {
+            //filters have changed
+            setSkip(0);
+            setPosts(fetchedPosts);
+          }
         } else {
           console.error("Failed to fetch posts:", response.d.statusText);
         }
@@ -117,14 +118,11 @@ export default function Home() {
       }
     };
 
-<<<<<<< HEAD
     fetchPosts();
-  }, [page, filters]); // Removed setPosts and posts dependencies to avoid infinite loops
-=======
+  }, [page, filters]);
   const sortedPosts = [...posts].sort(
     (a, b) => b.likes.length - a.likes.length
   );
->>>>>>> 7b2350aa92576e23f3ef3675670c840ea8431e39
 
   const handleAddPost = async (post: reqApiPost) => {
     const response = await createPost({
@@ -148,11 +146,7 @@ export default function Home() {
         imageUrl: post.imageUrl,
         skills,
         comments: [],
-<<<<<<< HEAD
-        likes: 0,
-=======
         likes: [],
->>>>>>> 7b2350aa92576e23f3ef3675670c840ea8431e39
       };
 
       addPost(newPost);
@@ -237,9 +231,6 @@ export default function Home() {
     const response = await deletePostApi(postId); // delete from API
 
     if (response.status === 200) {
-      // toast({
-      //   description: "Post deleted successfully!",
-      // });
     } else {
       console.error("Failed to delete post:", response.statusText);
     }
@@ -293,57 +284,14 @@ export default function Home() {
                 onCommentLike={handleLikeComment}
               />
             )}
-<<<<<<< HEAD
             {loading && (
               <div className="text-center mt-4">
                 <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
               </div>
             )}
-            {!hasMore && posts.length > 0 && (
-              <div className="text-center text-gray-500 mt-6">
-                No more posts to load.
-              </div>
-            )}
             {posts.length === 0 && !loading && (
               <div className="text-center text-gray-500 mt-6">
                 no posts exsits, be the first one to post something!
-=======
-            {paginatedPosts.length > 0 ? (
-              <div
-                className="mt-8 flex justify-center"
-                style={{ cursor: "pointer" }}>
-                <Pagination>
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious
-                        onClick={() =>
-                          setCurrentPage((prev) => Math.max(prev - 1, 1))
-                        }
-                        className={currentPage === 1 ? "disabled" : ""}
-                      />
-                    </PaginationItem>
-                    {[...Array(totalPages)]?.map((_, index) => (
-                      <PaginationItem key={index}>
-                        <PaginationLink
-                          isActive={currentPage === index + 1}
-                          onClick={() => setCurrentPage(index + 1)}>
-                          {index + 1}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))}
-                    <PaginationItem>
-                      <PaginationNext
-                        onClick={() =>
-                          setCurrentPage((prev) =>
-                            Math.min(prev + 1, totalPages)
-                          )
-                        }
-                        className={currentPage === totalPages ? "disabled" : ""}
-                      />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
->>>>>>> 7b2350aa92576e23f3ef3675670c840ea8431e39
               </div>
             )}
           </div>

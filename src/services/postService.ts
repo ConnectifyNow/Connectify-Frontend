@@ -26,7 +26,7 @@ export const getPosts = async (
 ) => {
   const skillsOptions = skills.join(",");
   const d = await apiClient.get(
-    `/posts?skills=${skillsOptions}&skip=${skip}&top=${top}`,
+    `/posts?postType=${type}&skills=${skillsOptions}&skip=${skip}&top=${top}`,
     {
       headers: headers(),
     }
