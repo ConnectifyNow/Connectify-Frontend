@@ -77,7 +77,7 @@ export default function PostCard({
               />
               <div>
                 <h3 className="font-semibold text-lg">
-                  {post.author.username}
+                  {post.title}
                 </h3>
                 <span className="text-sm text-gray-500">
                   {post.author.role === Role.Volunteer
