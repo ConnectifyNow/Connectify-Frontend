@@ -3,7 +3,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useUserStore from "@/stores/setUserStore";
@@ -19,7 +19,7 @@ interface PostDialogProps {
 export default function PostDialog({
   post,
   onClose,
-  onCommentLike
+  onCommentLike,
 }: PostDialogProps) {
   const currentUser = useUserStore();
 
@@ -36,7 +36,10 @@ export default function PostDialog({
 
   return (
     <Dialog open={!!post} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl">
+      <DialogContent
+        className="max-w-3xl"
+        style={{ maxHeight: "80vh", overflowY: "auto" }}
+      >
         <DialogHeader>
           <DialogTitle>{post.title}</DialogTitle>
         </DialogHeader>
