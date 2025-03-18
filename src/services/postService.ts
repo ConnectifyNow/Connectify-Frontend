@@ -1,4 +1,5 @@
 import { ApiComment, reqApiPost } from "../types/index";
+import useUserStore from "../stores/setUserStore";
 import { headers } from "./authService";
 import apiClient from "./apiClient";
 
@@ -25,12 +26,13 @@ export const getPosts = async (
   skills: string[]
 ) => {
   const skillsOptions = skills.join(",");
-  const d = await apiClient.get(
-    `/posts?postType=${type}&skills=${skillsOptions}&skip=${skip}&top=${top}`,
-    {
-      headers: headers(),
-    }
-  );
+  const baseQuery = `/posts?postType=${type}&skills=${skillsOptions}&skip=${skip}&top=${top}`;
+  const userIdFilter =
+    type === "my" ? `&userId=${useUserStore.getState()._id}` : "";
+  const query = baseQuery + userIdFilter;
+  const d = await apiClient.get(query, {
+    headers: headers(),
+  });
   return {
     d,
     hasMore: d.data.length === 0,
