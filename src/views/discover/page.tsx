@@ -55,11 +55,12 @@ export default function Directory() {
 
   useEffect(() => {
     if (filters.mode === "organizations") {
-      fetchOrganizations(currentPage, ITEMS_PER_PAGE);
+      fetchOrganizations(currentPage, ITEMS_PER_PAGE, filters.searchTerm);
     } else {
-      fetchVolunteers(currentPage, ITEMS_PER_PAGE);
+      fetchVolunteers(currentPage, ITEMS_PER_PAGE, filters.searchTerm);
     }
-  }, [currentPage, filters]);
+  }, [currentPage, filters.mode, filters.searchTerm]);
+
 
   const filteredOrganizations = organizations.filter((organization) =>
     organization.name.toLowerCase().includes(filters.searchTerm.toLowerCase())
@@ -78,13 +79,13 @@ export default function Directory() {
   const currentPages =
     filters.mode === "organizations" ? organizationPages : volunteerPages;
 
-  const onFilterChange = (filters: {
-    mode: "organizations" | "volunteers";
-    searchTerm: string;
-  }) => {
-    setCurrentPage(1);
-    setFilters(filters);
-  };
+    const onFilterChange = (filters: {
+      mode: "organizations" | "volunteers";
+      searchTerm: string;
+    }) => {
+      setCurrentPage(1); // Reset to first page when filter changes
+      setFilters(filters);
+    };
 
   return (
     <main className="min-h-screen bg-blue-50 py-12">
