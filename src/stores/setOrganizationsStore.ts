@@ -6,17 +6,17 @@ import useFocusAreaStore from "./setFocusAreas";
 interface OrganizationsStore {
   organizations: Organization[];
   pages: number;
-  fetchOrganizations: (page: number, limit: number) => Promise<void>;
+  fetchOrganizations: (page?: number, limit?: number, searchTerm?: string) => Promise<void>;
 }
 
 const useOrganizationsStore = create<OrganizationsStore>((set) => ({
   organizations: [],
   pages: 0,
 
-  fetchOrganizations: async (page = 1, limit = 10) => {
+  fetchOrganizations: async (page = 1, limit = 10, searchTerm = '') => {
     try {
       const focusAreas = useFocusAreaStore.getState().focusAreas;
-      const response = await getOrganizations(page, limit);
+      const response = await getOrganizations(page, limit, searchTerm);
 
       const simpleOrganizations = response.data.organizations;
 
@@ -37,7 +37,7 @@ const useOrganizationsStore = create<OrganizationsStore>((set) => ({
 
       set({ organizations, pages: response.data.pages });
     } catch (error) {
-      console.error("Failed to fetch skills:", error);
+      console.error("Failed to fetch organizations:", error);
     }
   }
 }));
