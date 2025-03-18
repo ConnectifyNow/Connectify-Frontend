@@ -120,9 +120,6 @@ export default function Home() {
 
     fetchPosts();
   }, [page, filters]);
-  const sortedPosts = [...posts].sort(
-    (a, b) => b.likes.length - a.likes.length
-  );
 
   const handleAddPost = async (post: reqApiPost) => {
     const response = await createPost({
@@ -249,8 +246,9 @@ export default function Home() {
               {posts?.map((post: Post, index: number) => {
                 if (posts.length === index + 1) {
                   return (
-                    <div key={post._id} ref={lastPostElementRef}>
+                    <div ref={lastPostElementRef}>
                       <PostCard
+                        key={`${post._id}-${index}`}
                         post={post}
                         onLike={handleLikePost}
                         onComment={handleAddComment}
@@ -264,7 +262,7 @@ export default function Home() {
                 } else {
                   return (
                     <PostCard
-                      key={post._id}
+                      key={`${post._id}-${index}`}
                       post={post}
                       onLike={handleLikePost}
                       onComment={handleAddComment}
