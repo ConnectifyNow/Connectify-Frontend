@@ -93,9 +93,17 @@ export default function Home() {
 
           // Only append posts if not the initial load (page > 1)
           if (page === 1) {
-            setPosts(fetchedPosts);
+            setPosts(
+              fetchedPosts.sort(
+                (a: Post, b: Post) => b.likes.length - a.likes.length
+              )
+            );
           } else {
-            setPosts([...posts, ...fetchedPosts]);
+            setPosts(
+              [...posts, ...fetchedPosts].sort(
+                (a: Post, b: Post) => b.likes.length - a.likes.length
+              )
+            );
           }
 
           setHasMore(response.hasMore);
@@ -106,7 +114,11 @@ export default function Home() {
           } else {
             //filters have changed
             setSkip(0);
-            setPosts(fetchedPosts);
+            setPosts(
+              fetchedPosts.sort(
+                (a: Post, b: Post) => b.likes.length - a.likes.length
+              )
+            );
           }
         } else {
           console.error("Failed to fetch posts:", response.d.statusText);
