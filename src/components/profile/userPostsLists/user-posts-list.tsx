@@ -8,7 +8,7 @@ import PostDialog from "@/components/shared/Posts/comments-dialog";
 import {
   addCommentToPost,
   getUserPosts,
-  likeCommentApi,
+  likeCommentApi
 } from "@/services/postService";
 
 export default function PostsList() {
@@ -19,7 +19,7 @@ export default function PostsList() {
     updatePost,
     deletePost,
     likeComment,
-    setUserPosts,
+    setUserPosts
   } = usePostsStore();
   const currentUser = useUserStore();
   const [selectedPost, setSelectedPost] = useState<PostType | null>(null);
@@ -39,7 +39,7 @@ export default function PostsList() {
       }
     };
     fetchPosts();
-  }, []);
+  }, [currentUser._id]);
 
   const handleAddComment = async (postId: string, comment: ApiComment) => {
     const response = await addCommentToPost(postId, comment);
@@ -72,7 +72,7 @@ export default function PostsList() {
         if (prevPost) {
           return {
             ...prevPost,
-            comments: updatedComments,
+            comments: updatedComments
           };
         }
         return prevPost;
