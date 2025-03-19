@@ -1,19 +1,46 @@
-import { NoPostsScreen } from "@/components/noPosts/noPosts";
-import { useState } from "react";
+import { NoPostsScreen } from "@/components/emptyState/noPosts";
+import PostDialog from "@/components/shared/Posts/comments-dialog";
+import {
+  addCommentToPost,
+  deletePostApi,
+  getUserPosts,
+  likeCommentApi,
+  likePostApi,
+  updatePostApi
+} from "@/services/postService";
+import { ApiComment, Comment, Post as PostType } from "@/types";
+import { useEffect, useState } from "react";
 import usePostsStore from "../../../stores/setPostsStore";
 import useUserStore from "../../../stores/setUserStore";
 import Post from "../../shared/Posts/post";
-import { ApiComment, Comment, Post as PostType } from "@/types";
-import PostDialog from "@/components/shared/Posts/comments-dialog";
-import { addCommentToPost, likeCommentApi } from "@/services/postService";
 
 export default function PostsList() {
-  const { posts, likePost, addComment, updatePost, deletePost, likeComment } =
-    usePostsStore();
+  const {
+    userPosts,
+    likePost,
+    addComment,
+    updatePost,
+    deletePost,
+    likeComment,
+    setUserPosts
+  } = usePostsStore();
   const currentUser = useUserStore();
   const [selectedPost, setSelectedPost] = useState<PostType | null>(null);
 
-  const userPosts = posts.filter((post) => post.author._id === currentUser._id);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await getUserPosts(currentUser._id);
+        if (response?.status === 200) {
+          const fetchedPosts = await response.data;
+          setUserPosts(fetchedPosts);
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+    fetchPosts();
+  }, [currentUser._id]);
 
   const handleAddComment = async (postId: string, comment: ApiComment) => {
     const response = await addCommentToPost(postId, comment);
@@ -46,13 +73,55 @@ export default function PostsList() {
         if (prevPost) {
           return {
             ...prevPost,
-            comments: updatedComments,
+            comments: updatedComments
           };
         }
         return prevPost;
       });
     } else if (response.status === 500) {
       console.error("Failed to like comment:", response.statusText);
+    }
+  };
+
+  const handleEditPost = async (post: PostType) => {
+    const postToUpdate = {
+      _id: post._id,
+      user: post.author._id,
+      title: post.title,
+      content: post.content,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      skills: post.skills.map((skill: any) => skill._id),
+      imageUrl: post.imageUrl
+    };
+
+    const response = await updatePostApi(postToUpdate);
+
+    if (response.status === 200) {
+      updatePost(post);
+    } else {
+      console.error("Failed to update post:", response.statusText);
+    }
+  };
+
+  const handleLikePost = async (postId: string, userId: string) => {
+    const response = await likePostApi(postId, userId);
+
+    if (response.status === 200) {
+      likePost(postId);
+    } else if (response.status === 500) {
+      console.error("Failed to like post:", response.statusText);
+    }
+  };
+
+  const handleDeletePost = async (postId: string) => {
+    deletePost(postId);
+
+    const response = await deletePostApi(postId);
+
+    if (response.status === 200) {
+      deletePost(postId);
+    } else {
+      console.error("Failed to delete post:", response.statusText);
     }
   };
 
@@ -67,10 +136,10 @@ export default function PostsList() {
                 <Post
                   key={post._id}
                   post={post}
-                  onLike={likePost}
+                  onLike={handleLikePost}
                   onComment={handleAddComment}
-                  onEdit={updatePost}
-                  onDelete={deletePost}
+                  onEdit={handleEditPost}
+                  onDelete={handleDeletePost}
                   showEditDelete={true}
                   setSelectedPost={setSelectedPost}
                 />

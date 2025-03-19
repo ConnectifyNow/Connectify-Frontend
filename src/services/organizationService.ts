@@ -18,9 +18,16 @@ export const createOrganization = async (
 
 export const getOrganizations = async (
   page = 1,
-  limit = 10
+  limit = 10,
+  searchTerm = ''
 ): Promise<AxiosResponse<PaginationSimpleOrganization>> => {
-  return await apiClient.get(`/organizations?page=${page}&limit=${limit}`, {
+  let url = `/organizations?page=${page}&limit=${limit}`;
+  
+  if (searchTerm) {
+    url += `&search=${encodeURIComponent(searchTerm)}`;
+  }
+  
+  return await apiClient.get(url, {
     headers: headers(),
   });
 };

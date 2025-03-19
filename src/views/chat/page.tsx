@@ -19,20 +19,23 @@ export default function ChatPage() {
       if (savedUserId) {
         const response = await getUserById(savedUserId);
         if (response.data) {
-          console.log(response.data);
           setSelectedUser(response.data);
           initMessagesByUserId(response.data._id);
         }
       }
-      console.log(savedUserId);
     }
     fetchData();
   }, []);
 
-  const initMessagesByUserId = (userId: string) => {
-    const chatId = chat.getChatId(userId);
-    setConversationId(chatId);
-    chat.setMessages(chatId);
+  const initMessagesByUserId = async (userId: string) => {
+    let chatId = chat.getChatId(userId);
+
+    if (chatId) {
+      await chat.fetchChats();
+      chatId = chat.getChatId(userId);
+      setConversationId(chatId);
+      chat.setMessages(chatId);
+    }
   };
 
   const chooseUser = (user: User) => {

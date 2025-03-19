@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AddPostButton } from "@/components/home/addPostButton";
-import { NoPostsScreen } from "@/components/noPosts/noPosts";
+import { NoPostsScreen } from "@/components/emptyState/noPosts";
 import PostCard from "@/components/shared/Posts/post";
 import {
   Pagination,
@@ -8,7 +8,7 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious,
+  PaginationPrevious
 } from "@/components/ui/pagination";
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/home/sidebar";
@@ -20,7 +20,7 @@ import {
   Post,
   reqApiPost,
   Role,
-  User,
+  User
 } from "../../types";
 import { Toaster } from "@/components/ui/toaster";
 import {
@@ -30,7 +30,7 @@ import {
   getPosts,
   likeCommentApi,
   likePostApi,
-  updatePostApi,
+  updatePostApi
 } from "@/services/postService";
 import useUserStore from "@/stores/setUserStore";
 import useSkillsStore from "@/stores/setSkillsStore";
@@ -47,11 +47,11 @@ export default function Home() {
     deletePost,
     addComment,
     likeComment,
-    addPost,
+    addPost
   } = usePostsStore();
   const [filters, setFilters] = useState({
     postType: "all",
-    skillsIds: [] as string[],
+    skillsIds: [] as string[]
   });
   const user = useUserStore();
   const getSkillById = useSkillsStore((state) => state.getSkillById);
@@ -75,7 +75,17 @@ export default function Home() {
     fetchPosts();
   }, []);
 
-  const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
+  const sortedPosts = [...posts].sort(
+    (a, b) => b.likes.length - a.likes.length
+  );
+
+  const handleSkillsChange = (filters: {
+    postType: string;
+    skillsIds: string[];
+  }) => {
+    setCurrentPage(1);
+    setFilters((prevFilters) => ({ ...prevFilters, ...filters }));
+  };
 
   const handleAddPost = async (post: reqApiPost) => {
     const response = await createPost({
@@ -83,7 +93,7 @@ export default function Home() {
       content: post.content,
       user: post.user,
       skills: post.skills,
-      imageUrl: post.imageUrl,
+      imageUrl: post.imageUrl
     });
 
     if (response.status === 201) {
@@ -99,7 +109,7 @@ export default function Home() {
         imageUrl: post.imageUrl,
         skills,
         comments: [],
-        likes: 0,
+        likes: []
       };
 
       addPost(newPost);
@@ -115,7 +125,7 @@ export default function Home() {
       title: post.title,
       content: post.content,
       skills: post.skills.map((skill) => skill._id),
-      imageUrl: post.imageUrl,
+      imageUrl: post.imageUrl
     };
 
     const response = await updatePostApi(postToUpdate);
@@ -158,7 +168,7 @@ export default function Home() {
         if (prevPost) {
           return {
             ...prevPost,
-            comments: updatedComments,
+            comments: updatedComments
           };
         }
         return prevPost;
@@ -222,7 +232,7 @@ export default function Home() {
         <h1 className="text-3xl font-bold text-center mb-8">Feed</h1>
         <div className="flex gap-8">
           <div className="w-1/4">
-            <Sidebar onFilterChange={setFilters} />
+            <Sidebar onFilterChange={handleSkillsChange} />
           </div>
           <div className="w-3/4">
             <div className="space-y-6">

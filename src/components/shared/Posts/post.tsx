@@ -76,10 +76,16 @@ export default function PostCard({
                 className="rounded-full mr-4"
               />
               <div>
-                <h3 className="font-semibold text-lg">
-                  {post.author.username}
+                <h3
+                  className="font-semibold text-lg"
+                  style={{
+                    maxWidth: "40vh",
+                    overflowX: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {post.title}
                 </h3>
-                <h4 className="text-gray-600">{post.title}</h4>
                 <span className="text-sm text-gray-500">
                   {post.author.role === Role.Volunteer
                     ? "Volunteer"
@@ -88,7 +94,16 @@ export default function PostCard({
               </div>
             </div>
           </div>
-          <p className="text-gray-800 mb-4">{post.content}</p>
+          <div
+            className="text-gray-800 mb-4"
+            style={{
+              maxWidth: "55vh",
+              overflowX: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {post.content}
+          </div>
           <div className="flex flex-wrap gap-2 mb-4">
             {post.skills?.map((skill) => (
               <span
@@ -108,10 +123,12 @@ export default function PostCard({
             >
               <Heart
                 className={`w-5 h-5 ${
-                  post.likes > 0 ? "fill-red-500 text-red-500" : ""
+                  post.likes.includes(currentUser._id)
+                    ? "fill-red-500 text-red-500"
+                    : ""
                 }`}
               />
-              <span>{post.likes}</span>
+              <span>{post.likes.length}</span>
             </Button>
             <Button
               variant="ghost"

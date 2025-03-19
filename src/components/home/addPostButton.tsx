@@ -79,7 +79,9 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
           <Plus className="w-8 h-8" />
         </Button>
       </DialogTrigger>
-      <DialogContent aria-description="edit-post" className="sm:max-w-[425px]">
+      <DialogContent
+        aria-description="add-post"
+        className="sm:max-w-[425px] max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Create a New Post</DialogTitle>
         </DialogHeader>

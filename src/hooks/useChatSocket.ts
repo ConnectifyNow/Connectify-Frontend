@@ -16,7 +16,8 @@ const useChatSocket = (
       {
         auth: {
           token: getTokens().accessToken
-        }
+        },
+        path: "/socket.io",
       }
     );
     setSocketInstance(socket);

@@ -7,29 +7,24 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/components/ui/select";
 import useCitiesStore from "@/stores/setCitiesStore";
-import { City, ProfileData, Role, User } from "../../../types/index";
-import useUserStore from "@/stores/setUserStore";
+import { City, ProfileData, Role } from "../../../types/index";
 
 type UserInformationProps = {
   profile: ProfileData;
   setProfile: (profile: ProfileData) => void;
   isEditing: boolean;
-  setUser: (user: User) => void;
 };
 
 export default function UserInformation({
   profile,
   setProfile,
-  isEditing,
-  setUser,
+  isEditing
 }: UserInformationProps) {
   const cities = useCitiesStore((state) => state.cities);
   const ProfileDataCity = cities?.find((city) => city._id === profile.city);
-  const user = useUserStore.getState();
-  setUser(user);
 
   return (
     <Card>
@@ -52,7 +47,7 @@ export default function UserInformation({
                   onChange={(e) =>
                     setProfile({
                       ...profile,
-                      name: e.target.value,
+                      name: e.target.value
                     })
                   }
                 />
@@ -65,7 +60,7 @@ export default function UserInformation({
                   onChange={(e) =>
                     setProfile({
                       ...profile,
-                      username: e.target.value,
+                      username: e.target.value
                     })
                   }
                 />
@@ -79,7 +74,7 @@ export default function UserInformation({
                   onChange={(e) =>
                     setProfile({
                       ...profile,
-                      email: e.target.value,
+                      email: e.target.value
                     })
                   }
                 />
@@ -90,7 +85,7 @@ export default function UserInformation({
                   onValueChange={(e) => {
                     setProfile({
                       ...profile,
-                      city: e,
+                      city: e
                     });
                   }}
                   required
@@ -121,7 +116,7 @@ export default function UserInformation({
                   setPreview={(e) => {
                     setProfile({
                       ...profile,
-                      imageUrl: e,
+                      imageUrl: e
                     });
                   }}
                 />
@@ -148,9 +143,10 @@ export default function UserInformation({
               <img
                 src={profile.imageUrl}
                 alt={profile.username}
-                width={"60%"}
+                width={"50%"}
                 height={"60%"}
                 className="rounded-full mr-4"
+                style={{ marginRight: "0" }}
               />
             </div>
           </div>

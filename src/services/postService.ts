@@ -24,6 +24,13 @@ export const getPosts = async () => {
   });
 };
 
+export const getUserPosts = async (userId?: string) => {
+  if (!userId) return;
+  return await apiClient.get(`/posts/${userId}`, {
+    headers: headers()
+  });
+};
+
 export const deletePostApi = async (postId: string) => {
   return await apiClient.delete(`/posts/${postId}`, {
     headers: headers()

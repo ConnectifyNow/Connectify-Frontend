@@ -18,9 +18,16 @@ export const createVolunteer = async (
 
 export const getVolunteers = async (
   page = 1,
-  limit = 10
+  limit = 10,
+  searchTerm = ''
 ): Promise<AxiosResponse<PaginationSimpleVolunteer>> => {
-  return await apiClient.get(`/volunteers?page=${page}&limit=${limit}`, {
+  let url = `/volunteers?page=${page}&limit=${limit}`;
+  
+  if (searchTerm) {
+    url += `&search=${encodeURIComponent(searchTerm)}`;
+  }
+  
+  return await apiClient.get(url, {
     headers: headers(),
   });
 };
