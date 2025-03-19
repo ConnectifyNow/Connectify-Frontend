@@ -1,19 +1,45 @@
 import { NoPostsScreen } from "@/components/emptyState/noPosts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import usePostsStore from "../../../stores/setPostsStore";
 import useUserStore from "../../../stores/setUserStore";
 import Post from "../../shared/Posts/post";
 import { ApiComment, Comment, Post as PostType } from "@/types";
 import PostDialog from "@/components/shared/Posts/comments-dialog";
-import { addCommentToPost, likeCommentApi } from "@/services/postService";
+import {
+  addCommentToPost,
+  getUserPosts,
+  likeCommentApi,
+} from "@/services/postService";
 
 export default function PostsList() {
-  const { posts, likePost, addComment, updatePost, deletePost, likeComment } =
-    usePostsStore();
+  const {
+    userPosts,
+    likePost,
+    addComment,
+    updatePost,
+    deletePost,
+    likeComment,
+    setUserPosts,
+  } = usePostsStore();
   const currentUser = useUserStore();
   const [selectedPost, setSelectedPost] = useState<PostType | null>(null);
 
-  const userPosts = posts.filter((post) => post.author._id === currentUser._id);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await getUserPosts(currentUser._id);
+        if (response.status === 200) {
+          const fetchedPosts = await response.data;
+          setUserPosts(fetchedPosts);
+        } else {
+          console.error("Failed to fetch posts:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+    fetchPosts();
+  }, []);
 
   const handleAddComment = async (postId: string, comment: ApiComment) => {
     const response = await addCommentToPost(postId, comment);
@@ -46,7 +72,7 @@ export default function PostsList() {
         if (prevPost) {
           return {
             ...prevPost,
-            comments: updatedComments
+            comments: updatedComments,
           };
         }
         return prevPost;

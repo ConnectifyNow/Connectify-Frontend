@@ -5,8 +5,10 @@ import useUserStore from "./setUserStore";
 
 interface PostsStore {
   posts: Post[];
+  userPosts: Post[];
   apiPosts: ApiPost[];
   setPosts: (posts: ApiPost[]) => void;
+  setUserPosts: (posts: ApiPost[]) => void;
   addPost: (post: Post) => void;
   updatePost: (updatedPost: Post) => void;
   deletePost: (postId: string) => void;
@@ -17,6 +19,7 @@ interface PostsStore {
 
 const usePostsStore = create<PostsStore>((set) => ({
   posts: [],
+  userPosts: [],
   apiPosts: [],
   setPosts: (apiPosts) => {
     const { getSkillById } = useSkillsStore.getState();
@@ -36,6 +39,25 @@ const usePostsStore = create<PostsStore>((set) => ({
       };
     });
     set(() => ({ apiPosts, posts }));
+  },
+  setUserPosts: (apiPosts) => {
+    const { getSkillById } = useSkillsStore.getState();
+    const userPosts = apiPosts.map((apiPost) => {
+      const skills = apiPost.skills.map((skill) => getSkillById(skill));
+      const filteredSkills = skills.filter((skill) => skill !== undefined);
+
+      return {
+        _id: apiPost._id,
+        author: apiPost.user,
+        content: apiPost.content,
+        title: apiPost.title,
+        likes: apiPost.likes,
+        skills: filteredSkills,
+        comments: apiPost.comments,
+        imageUrl: apiPost.imageUrl,
+      };
+    });
+    set(() => ({ apiPosts, userPosts }));
   },
   addPost: (post) => set((state) => ({ posts: [post, ...state.posts] })),
   updatePost: (updatedPost) =>
