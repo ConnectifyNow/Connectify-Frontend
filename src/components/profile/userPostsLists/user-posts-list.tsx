@@ -3,23 +3,44 @@ import PostDialog from "@/components/shared/Posts/comments-dialog";
 import {
   addCommentToPost,
   deletePostApi,
+  getUserPosts,
   likeCommentApi,
   likePostApi,
-  updatePostApi,
+  updatePostApi
 } from "@/services/postService";
 import { ApiComment, Comment, Post as PostType } from "@/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import usePostsStore from "../../../stores/setPostsStore";
 import useUserStore from "../../../stores/setUserStore";
 import Post from "../../shared/Posts/post";
 
 export default function PostsList() {
-  const { posts, likePost, addComment, updatePost, deletePost, likeComment } =
-    usePostsStore();
+  const {
+    userPosts,
+    likePost,
+    addComment,
+    updatePost,
+    deletePost,
+    likeComment,
+    setUserPosts
+  } = usePostsStore();
   const currentUser = useUserStore();
   const [selectedPost, setSelectedPost] = useState<PostType | null>(null);
 
-  const userPosts = posts.filter((post) => post.author._id === currentUser._id);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await getUserPosts(currentUser._id);
+        if (response?.status === 200) {
+          const fetchedPosts = await response.data;
+          setUserPosts(fetchedPosts);
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+    fetchPosts();
+  }, [currentUser._id]);
 
   const handleAddComment = async (postId: string, comment: ApiComment) => {
     const response = await addCommentToPost(postId, comment);
@@ -52,7 +73,7 @@ export default function PostsList() {
         if (prevPost) {
           return {
             ...prevPost,
-            comments: updatedComments,
+            comments: updatedComments
           };
         }
         return prevPost;
@@ -68,8 +89,9 @@ export default function PostsList() {
       user: post.author._id,
       title: post.title,
       content: post.content,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       skills: post.skills.map((skill: any) => skill._id),
-      imageUrl: post.imageUrl,
+      imageUrl: post.imageUrl
     };
 
     const response = await updatePostApi(postToUpdate);
@@ -97,6 +119,7 @@ export default function PostsList() {
     const response = await deletePostApi(postId);
 
     if (response.status === 200) {
+      deletePost(postId);
     } else {
       console.error("Failed to delete post:", response.statusText);
     }

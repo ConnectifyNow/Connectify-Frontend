@@ -64,7 +64,9 @@ export function EditPostModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent aria-describedby="edit-post" className="sm:max-w-[425px]">
+      <DialogContent
+        aria-description="edit-post"
+        className="sm:max-w-[425px] max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Edit Post</DialogTitle>
         </DialogHeader>
@@ -94,13 +96,13 @@ export function EditPostModal({
                 <div className="flex flex-wrap gap-2">
                   {skills?.map((skill: { _id: string; name: string }) => (
                     <Button
+                      className="bg-green-600 hover:bg-green-700 hover:shadow-md"
                       key={skill._id}
                       type="button"
                       variant={
                         selectedSkills.includes(skill) ? "default" : "outline"
                       }
-                      onClick={() => handleSkillsChange(skill)}
-                    >
+                      onClick={() => handleSkillsChange(skill)}>
                       {skill.name}
                     </Button>
                   ))}
@@ -116,7 +118,11 @@ export function EditPostModal({
               </CardContent>
             </Card>
           </div>
-          <Button type="submit">Save Changes</Button>
+          <Button
+            className="bg-blue-900 hover:bg-blue-900 hover:shadow-md"
+            type="submit">
+            Save Changes
+          </Button>
         </form>
       </DialogContent>
     </Dialog>

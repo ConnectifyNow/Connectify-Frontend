@@ -105,14 +105,16 @@ export default function UserAboutCard({
             <div style={{ wordWrap: "break-word" }}>{profile.about}</div>
             <div>
               <div className="flex flex-wrap gap-2 mt-2">
-                {(profileSkills ?? [])?.map((skill) => (
-                  <span
-                    key={skill?._id}
-                    className="text-primary-foreground px-2 py-1 rounded-full bg-green-600 text-sm"
-                  >
-                    {skill?.name}
-                  </span>
-                ))}
+                {(profileSkills ?? [])?.map((skill, index) =>
+                  skill ? (
+                    <span
+                      key={skill._id || `skill-${index}`}
+                      className="text-primary-foreground px-2 py-1 rounded-full bg-green-600 text-sm"
+                    >
+                      {skill.name}
+                    </span>
+                  ) : null
+                )}
               </div>
             </div>
           </>
