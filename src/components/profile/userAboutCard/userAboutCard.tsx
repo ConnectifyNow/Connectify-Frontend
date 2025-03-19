@@ -5,7 +5,7 @@ import { getAiDescription } from "@/services/aiService";
 import useSkillsStore from "@/stores/setSkillsStore";
 import useUserStore from "@/stores/setUserStore";
 import { useEffect, useState } from "react";
-import { ProfileData, Role, User } from "../../../types/index";
+import { IdName, ProfileData, Role, User } from "../../../types/index";
 import { Textarea } from "../../ui/textarea";
 
 type UserAboutProps = {
@@ -30,10 +30,17 @@ export default function UserAboutCard({
   const [isDisabled, setIsDisabled] = useState(false);
   const [coolDownTime, setCoolDownTime] = useState(0);
   const getSkillById = useSkillsStore((state) => state.getSkillById);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const profileSkills = profile.skills?.map((skill: any) =>
-    getSkillById(skill)
-  );
+  const { skills } = useSkillsStore();
+  const [profileSkills, setProfileSkills] = useState<IdName[]>([]);
+
+  useEffect(() => {
+    if (profile.skills && skills) {
+      const mappedSkills = profile.skills
+        .map((skill: IdName) => getSkillById(skill._id))
+        .filter((skill): skill is IdName => skill !== undefined);
+      setProfileSkills(mappedSkills);
+    }
+  }, [skills, profile.skills, getSkillById]);
 
   const user = useUserStore.getState();
   setUser(user);
