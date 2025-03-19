@@ -90,7 +90,7 @@ export default function Chat({
         )}
         <span className="font-semibold">{selectedUser.username}</span>
       </div>
-      <ScrollArea className=" rounded-md p-4 " style={{ height: "80%" }}>
+      <ScrollArea className="rounded-md p-4 h-4/5">
         <div className=" p-4 space-y-4">
           {currentMessages?.map((message, index) => (
             <div
@@ -100,15 +100,13 @@ export default function Chat({
                 message.sender._id === currentUser._id
                   ? "justify-end"
                   : "justify-start"
-              }`}
-            >
+              }`}>
               <div
                 className={`rounded-lg p-2 max-w-sm ${
                   message.sender._id === currentUser._id
                     ? "bg-gray-500 text-white"
                     : "bg-gray-300"
-                }`}
-              >
+                }`}>
                 <div>{message.content}</div>
                 <div className="text-xs mt-1 opacity-70">
                   {new Date(message.createdAt).toLocaleTimeString()}
@@ -128,8 +126,7 @@ export default function Chat({
         />
         <Button
           type="submit"
-          className="bg-blue-900 hover:bg-blue-900 hover:shadow-md"
-        >
+          className="bg-blue-900 hover:bg-blue-900 hover:shadow-md">
           Send
         </Button>
       </form>

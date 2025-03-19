@@ -75,16 +75,13 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
       <DialogTrigger asChild>
         <Button
           className="fixed bottom-8 right-8 bg-green-600 hover:bg-green-700 hover:shadow-md rounded-full w-16 h-16 shadow-lg"
-          onClick={() => setIsOpen(true)}
-        >
+          onClick={() => setIsOpen(true)}>
           <Plus className="w-8 h-8" />
         </Button>
       </DialogTrigger>
       <DialogContent
-        aria-description="edit-post"
-        className="sm:max-w-[425px]"
-        style={{ maxHeight: "100vh", overflowY: "auto" }}
-      >
+        aria-description="add-post"
+        className="sm:max-w-[425px] max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Create a New Post</DialogTitle>
         </DialogHeader>
@@ -131,8 +128,7 @@ export function AddPostButton({ onAddPost }: AddPostButtonProps) {
           </div>
           <Button
             className="bg-blue-900 hover:bg-blue-900 hover:shadow-md"
-            type="submit"
-          >
+            type="submit">
             Create Post
           </Button>
         </form>
