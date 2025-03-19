@@ -1,11 +1,15 @@
 import { NoPostsScreen } from "@/components/emptyState/noPosts";
+import PostDialog from "@/components/shared/Posts/comments-dialog";
+import {
+  addCommentToPost,
+  likeCommentApi,
+  updatePostApi,
+} from "@/services/postService";
+import { ApiComment, Comment, Post as PostType } from "@/types";
 import { useState } from "react";
 import usePostsStore from "../../../stores/setPostsStore";
 import useUserStore from "../../../stores/setUserStore";
 import Post from "../../shared/Posts/post";
-import { ApiComment, Comment, Post as PostType } from "@/types";
-import PostDialog from "@/components/shared/Posts/comments-dialog";
-import { addCommentToPost, likeCommentApi } from "@/services/postService";
 
 export default function PostsList() {
   const { posts, likePost, addComment, updatePost, deletePost, likeComment } =
@@ -46,13 +50,32 @@ export default function PostsList() {
         if (prevPost) {
           return {
             ...prevPost,
-            comments: updatedComments
+            comments: updatedComments,
           };
         }
         return prevPost;
       });
     } else if (response.status === 500) {
       console.error("Failed to like comment:", response.statusText);
+    }
+  };
+
+  const handleEditPost = async (post: PostType) => {
+    const postToUpdate = {
+      _id: post._id,
+      user: post.author._id,
+      title: post.title,
+      content: post.content,
+      skills: post.skills.map((skill: any) => skill._id),
+      imageUrl: post.imageUrl,
+    };
+
+    const response = await updatePostApi(postToUpdate);
+
+    if (response.status === 200) {
+      updatePost(post);
+    } else {
+      console.error("Failed to update post:", response.statusText);
     }
   };
 
@@ -69,7 +92,7 @@ export default function PostsList() {
                   post={post}
                   onLike={likePost}
                   onComment={handleAddComment}
-                  onEdit={updatePost}
+                  onEdit={handleEditPost}
                   onDelete={deletePost}
                   showEditDelete={true}
                   setSelectedPost={setSelectedPost}
