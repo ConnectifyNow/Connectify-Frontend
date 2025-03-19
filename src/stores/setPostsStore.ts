@@ -64,17 +64,27 @@ const usePostsStore = create<PostsStore>((set) => ({
     set((state) => ({
       posts: state.posts.map((post) =>
         post._id === updatedPost._id ? updatedPost : post
+      ),
+      userPosts: state.userPosts.map((post) =>
+        post._id === updatedPost._id ? updatedPost : post
       )
     }));
   },
   deletePost: (postId) =>
     set((state) => ({
-      posts: state.posts.filter((post) => post._id !== postId)
+      posts: state.posts.filter((post) => post._id !== postId),
+      userPosts: state.userPosts.filter((post) => post._id !== postId)
     })),
   likePost: (postId) => {
     const user = useUserStore.getState();
     set((state) => ({
       posts: state.posts?.map((post) => {
+        if (post._id === postId) {
+          post.likes.push(user._id);
+        }
+        return post;
+      }),
+      userPosts: state.userPosts?.map((post) => {
         if (post._id === postId) {
           post.likes.push(user._id);
         }
@@ -98,6 +108,14 @@ const usePostsStore = create<PostsStore>((set) => ({
               comments: [...post.comments, comment]
             }
           : post
+      ),
+      userPosts: state.userPosts?.map((post) =>
+        post._id === postId
+          ? {
+              ...post,
+              comments: [...post.comments, comment]
+            }
+          : post
       )
     }));
   },
@@ -105,6 +123,18 @@ const usePostsStore = create<PostsStore>((set) => ({
     const userId = useUserStore.getState()._id;
     set((state) => ({
       posts: state.posts?.map((post) =>
+        post._id === postId
+          ? {
+              ...post,
+              comments: post.comments?.map((comment) =>
+                comment._id === commentId
+                  ? { ...comment, likes: [...comment.likes, userId] }
+                  : comment
+              )
+            }
+          : post
+      ),
+      userPosts: state.userPosts?.map((post) =>
         post._id === postId
           ? {
               ...post,
