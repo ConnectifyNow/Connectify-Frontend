@@ -25,7 +25,7 @@ export default function UserAboutCard({
   setIsEditing,
   saveProfile,
   setUser,
-  handleLogout
+  handleLogout,
 }: UserAboutProps) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [coolDownTime, setCoolDownTime] = useState(0);
