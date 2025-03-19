@@ -35,7 +35,7 @@ const usePostsStore = create<PostsStore>((set) => ({
         likes: apiPost.likes,
         skills: filteredSkills,
         comments: apiPost.comments,
-        imageUrl: apiPost.imageUrl,
+        imageUrl: apiPost.imageUrl
       };
     });
     set(() => ({ apiPosts, posts }));
@@ -54,21 +54,22 @@ const usePostsStore = create<PostsStore>((set) => ({
         likes: apiPost.likes,
         skills: filteredSkills,
         comments: apiPost.comments,
-        imageUrl: apiPost.imageUrl,
+        imageUrl: apiPost.imageUrl
       };
     });
     set(() => ({ apiPosts, userPosts }));
   },
   addPost: (post) => set((state) => ({ posts: [post, ...state.posts] })),
-  updatePost: (updatedPost) =>
+  updatePost: (updatedPost) => {
     set((state) => ({
-      posts: state.posts?.map((post) =>
+      posts: state.posts.map((post) =>
         post._id === updatedPost._id ? updatedPost : post
-      ),
-    })),
+      )
+    }));
+  },
   deletePost: (postId) =>
     set((state) => ({
-      posts: state.posts.filter((post) => post._id !== postId),
+      posts: state.posts.filter((post) => post._id !== postId)
     })),
   likePost: (postId) => {
     const user = useUserStore.getState();
@@ -78,7 +79,7 @@ const usePostsStore = create<PostsStore>((set) => ({
           post.likes.push(user._id);
         }
         return post;
-      }),
+      })
     }));
   },
   addComment: (postId, apiComment) => {
@@ -86,7 +87,7 @@ const usePostsStore = create<PostsStore>((set) => ({
     const comment: Comment = {
       ...apiComment,
       user,
-      likes: [],
+      likes: []
     };
 
     set((state) => ({
@@ -94,10 +95,10 @@ const usePostsStore = create<PostsStore>((set) => ({
         post._id === postId
           ? {
               ...post,
-              comments: [...post.comments, comment],
+              comments: [...post.comments, comment]
             }
           : post
-      ),
+      )
     }));
   },
   likeComment: (postId, commentId) => {
@@ -111,12 +112,12 @@ const usePostsStore = create<PostsStore>((set) => ({
                 comment._id === commentId
                   ? { ...comment, likes: [...comment.likes, userId] }
                   : comment
-              ),
+              )
             }
           : post
-      ),
+      )
     }));
-  },
+  }
 }));
 
 export default usePostsStore;

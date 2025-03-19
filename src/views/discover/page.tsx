@@ -61,7 +61,6 @@ export default function Directory() {
     }
   }, [currentPage, filters.mode, filters.searchTerm]);
 
-
   const filteredOrganizations = organizations.filter((organization) =>
     organization.name.toLowerCase().includes(filters.searchTerm.toLowerCase())
   );
@@ -79,13 +78,13 @@ export default function Directory() {
   const currentPages =
     filters.mode === "organizations" ? organizationPages : volunteerPages;
 
-    const onFilterChange = (filters: {
-      mode: "organizations" | "volunteers";
-      searchTerm: string;
-    }) => {
-      setCurrentPage(1); // Reset to first page when filter changes
-      setFilters(filters);
-    };
+  const onFilterChange = (filters: {
+    mode: "organizations" | "volunteers";
+    searchTerm: string;
+  }) => {
+    setCurrentPage(1); // Reset to first page when filter changes
+    setFilters(filters);
+  };
 
   return (
     <main className="min-h-screen bg-blue-50 py-12">
@@ -109,15 +108,16 @@ export default function Directory() {
                     key={item.userId}
                   >
                     <OrganizationCard
-                      key={item.userId}
                       organization={item as Organization}
                       userId={item.userId}
                     />
                   </div>
                 ) : (
-                  <div onClick={() => setSelectedVolunteer(item as Volunteer)}>
+                  <div
+                    onClick={() => setSelectedVolunteer(item as Volunteer)}
+                    key={item.userId}
+                  >
                     <VolunteerCard
-                      key={item.userId}
                       volunteer={item as Volunteer}
                       userId={item.userId}
                     />
